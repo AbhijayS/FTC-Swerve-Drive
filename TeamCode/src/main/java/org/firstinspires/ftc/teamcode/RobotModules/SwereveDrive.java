@@ -92,5 +92,48 @@ public class SwereveDrive {
     }
 
 
+    /**
+     * This method adjusts the maximum drivespeed of the robot
+     * @param param Input of speed Enum value to allow for speed adjustments
+     * @return drivespeed outputs adjusted drivespeed
+     */
+    public double setSpeed(DriveSpeed param) {
+        double drivespeed;
+        switch (param) {
+            case HALFSPEED:
+                drivespeed = UniversalConstants.maxDriveSpeed / 2;
+                break;
+            case QUARTERSPEED:
+                drivespeed = UniversalConstants.maxDriveSpeed / 4;
+                break;
+            case FULLSPEED:
+            default:
+                drivespeed = UniversalConstants.maxDriveSpeed;
+                break;
+
+        }
+        return drivespeed;
+    }
+
+    /**
+     *
+     * @param power input the power that you want to run the motor at
+     * @param speed input of the speed returned by
+     * @return
+     */
+    public double ScaledPower(double power, double speed) {
+        if (power == 0) {
+            return 0;
+        }
+        double maxValueOfScaled = (Math.cbrt(1 - UniversalConstants.joystickDeadzone));
+
+        if (power > 0) {
+            return speed * Math.cbrt(power - UniversalConstants.joystickDeadzone) /
+                    maxValueOfScaled;
+        } else {
+            return speed * Math.cbrt(power + UniversalConstants.joystickDeadzone) /
+                    maxValueOfScaled;
+        }
+    }
 
 }
