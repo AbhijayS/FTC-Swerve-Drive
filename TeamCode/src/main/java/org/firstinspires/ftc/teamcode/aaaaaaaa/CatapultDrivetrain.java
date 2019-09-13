@@ -17,10 +17,12 @@ public class CatapultDrivetrain {
     private Telemetry telemetry;
     private DcMotorEx leftOne, rightOne;
     private BNO055IMU imu;
+
     public void status(String s) {
         telemetry.addLine(s);
         telemetry.update();
     }
+
     public CatapultDrivetrain(LinearOpMode l, DcMotor.ZeroPowerBehavior zeroPowerBehavior) {
         linearOpMode = l;
         telemetry = l.telemetry;
@@ -61,9 +63,25 @@ public class CatapultDrivetrain {
         leftOne.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightOne.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
-    public void updateByGamepad(){
-        leftOne.setPower(linearOpMode.gamepad1.left_stick_y);
-        rightOne.setPower(linearOpMode.gamepad1.right_stick_y);
+
+    public void updateByGamepad() {
+        leftOne.setPower(ScaledPower(linearOpMode.gamepad1.left_stick_y,.75));
+        rightOne.setPower(ScaledPower(linearOpMode.gamepad1.right_stick_y,.75));
+    }
+
+    public double ScaledPower(double power, double speed) {
+        if (power == 0) {
+            return 0;
+        }
+        double maxValueOfScaled = (Math.cbrt(1 - UniversalConstants.joystickDeadzone));
+
+        if (power > 0) {
+            return speed * Math.cbrt(power - UniversalConstants.joystickDeadzone) /
+                    maxValueOfScaled;
+        } else {
+            return speed * Math.cbrt(power + UniversalConstants.joystickDeadzone) /
+                    maxValueOfScaled;
         }
     }
+}
 
