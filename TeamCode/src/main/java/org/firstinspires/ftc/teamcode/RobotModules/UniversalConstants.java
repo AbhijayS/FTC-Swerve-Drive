@@ -14,7 +14,7 @@ public class UniversalConstants {
     public static final String leftRear = "lr";
     public static final double maxDriveSpeed = 1;
     public static final float joystickDeadzone = .1f;
-    public static final String vuforiaLicenceKey = "AUOJsRT/////AAABmYi3VkMsIEfwqQWzYHy+azUX1Gn6Y7BJYd/mmPwXlF2Npp3vKk34hM9KN+FbPVSrgsFgx3aXg6kHf0bPV6VtOlo5DN+sgaFKofKlskY5KtWfkw16qtNo54ZUMMMhJWMD6xJ9zmkmRz1WE0SWFn5W6VnqRBY0HDAmd7W6ySjG7b5EyUT3utNNd7bK/0tTb7QIlVl/o8ItGBnN7vKIUhVMklz1n1T4PNpq7wzTlVgnyQ1DlpAgc5ZBKgEng2ib+kTQ/vGKdO466yWgHyzJji6zOPwhxoTyuzQy4xpezLlb9ML9A1xFgKO+ZaLwn1Ul280CoJTB23GP7lemvNFpGWvMU024QZDauBLi/Z56JnDHWitu";
+    public static final String vuforiaLicenceKey = "AfWYo6H/////AAABmQhOGpga9kzugmfBYrjJDQs2b+vIsT5Pjplu+VgGrxevhveFPbYqHKZeHrJKY1bhrSNzeogphVwdC2ndsu9sn9WZ/yOrOhQ9s8egFXfDzkPN6uhzqVo5A3qGAPK8CPqAcdraaJxMKINGPo+aBqbzELtMl+kX1BkUfbapRDYIBRS+oySt71kDzykpd0Iy7NgJGU5xfsEm8fJm9xWVTFV7IsChCAKeo7bmBUtcpIVR6smjqRT9noJcmWv2aP9J1C2CcW766ptLy0lKIl08M+S2uY8XYHjK2kBpOnHvkSrzsnrROgE/g7V4xDiFCEFBjk1w4qAcO5veTVzbhqxxSmWMQkb7JiORCUCZ+Dz5F8bYW5zY"
 
     public enum Status {
         DEBUGGING, TESTING, RELEASE
