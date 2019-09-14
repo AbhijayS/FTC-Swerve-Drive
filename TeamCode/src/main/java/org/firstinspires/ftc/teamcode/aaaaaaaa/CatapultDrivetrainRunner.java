@@ -12,6 +12,12 @@ public class CatapultDrivetrainRunner extends LinearOpMode {
         waitForStart();
         while (opModeIsActive()){
             drivetrain.updateByGamepad();
+            /**
+             * below:
+             * if x pressed, then moves the servo down for half a second.
+             * if y pressed, then moves servo up for half a second.
+             * all this so you can move the foundation in and out of the building zone.
+             */
             if (gamepad1.x){
                 bobTheMover.setPower(-.3);
                 wait(500)
