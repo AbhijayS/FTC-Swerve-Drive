@@ -15,12 +15,12 @@ public class CatapultDrivetrainRunner extends LinearOpMode {
             bob.setPosition(0);
             if (gamepad1.x){
                 bobTheMover.setPower(-.3);
-                wait(100)
+                wait(500)
                 bobTheMover.setPower(0);
             }
             if (gamepade.y) {
                 bobTheMover.setPower(.3);
-                wait(100)
+                wait(500)
                 bobTheMover.setPower(0);
             }
         }
