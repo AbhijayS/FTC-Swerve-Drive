@@ -8,9 +8,12 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 public class CatapultDrivetrainRunner extends LinearOpMode {
     public void runOpMode() {
         CatapultDrivetrain drivetrain = new CatapultDrivetrain(this, DcMotor.ZeroPowerBehavior.BRAKE);
+        CRServo bob = hardwareMap.crservo.get("s1");
         waitForStart();
         while (opModeIsActive()){
             drivetrain.updateByGamepad();
+            
+            }
         }
     }
 }
