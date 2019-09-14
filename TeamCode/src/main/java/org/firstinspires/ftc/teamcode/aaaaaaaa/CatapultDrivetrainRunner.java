@@ -12,7 +12,6 @@ public class CatapultDrivetrainRunner extends LinearOpMode {
         waitForStart();
         while (opModeIsActive()){
             drivetrain.updateByGamepad();
-            bob.setPosition(0);
             if (gamepad1.x){
                 bobTheMover.setPower(-.3);
                 wait(500)
