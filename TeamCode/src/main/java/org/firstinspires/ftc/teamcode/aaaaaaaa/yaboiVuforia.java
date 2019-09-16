@@ -23,6 +23,7 @@ import java.util.List;
 
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
 
+
 @TeleOp(name="vuforiaTest")
 public class yaboiVuforia extends LinearOpMode {
 
@@ -59,6 +60,7 @@ public class yaboiVuforia extends LinearOpMode {
          * Once you've obtained a license key, copy the string from the Vuforia web site
          * and paste it in to your code on the next line, between the double quotes.
          */
+
         parameters.vuforiaLicenseKey = UniversalConstants.vuforiaLicenceKey;
 
         /*
