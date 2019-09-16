@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.aaaaaaaa;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
@@ -22,6 +23,7 @@ import java.util.List;
 
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
 
+@TeleOp(name="vuforiaTest")
 public class yaboiVuforia extends LinearOpMode {
 
     public static final String TAG = "Vuforia VuMark Sample";
@@ -57,7 +59,7 @@ public class yaboiVuforia extends LinearOpMode {
          * Once you've obtained a license key, copy the string from the Vuforia web site
          * and paste it in to your code on the next line, between the double quotes.
          */
-        parameters.vuforiaLicenseKey = " -- YOUR NEW VUFORIA KEY GOES HERE  --- ";
+        parameters.vuforiaLicenseKey = UniversalConstants.vuforiaLicenceKey;
 
         /*
          * We also indicate which camera on the RC that we wish to use.
@@ -128,6 +130,7 @@ public class yaboiVuforia extends LinearOpMode {
                 }
                 else{
                     telemetry.addLine("No Targets Visible");
+                    telemetry.update();
                 }
             }
         }
