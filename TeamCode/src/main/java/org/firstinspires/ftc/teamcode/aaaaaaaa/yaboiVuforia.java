@@ -118,7 +118,18 @@ public class yaboiVuforia extends LinearOpMode {
         ssTrackables.activate();
 
         while (opModeIsActive()) {
-
+            // check all the trackable targets to see which one (if any) is visible.
+            boolean targetVisible = false;
+            for (VuforiaTrackable trackable : allTrackables) {
+                if (((VuforiaTrackableDefaultListener)trackable.getListener()).isVisible()) {
+                    telemetry.addData("Visible Target", trackable.getName());
+                    telemetry.update();
+                    targetVisible = true;
+                }
+                else{
+                    telemetry.addLine("No Targets Visible");
+                }
+            }
         }
     }
 
