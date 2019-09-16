@@ -25,7 +25,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
 
 
 @TeleOp(name="vuforiaTest")
-public class yaboiVuforia extends LinearOpMode {
+public class vuforiaTest extends LinearOpMode {
     VuforiaLocalizer vuforia;
     @Override public void runOpMode() {
 
