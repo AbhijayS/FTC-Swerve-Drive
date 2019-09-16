@@ -127,6 +127,7 @@ public class yaboiVuforia extends LinearOpMode {
                 }
                 else{
                     telemetry.addLine("No Targets Visible");
+                    telemtery.update();
                 }
             }
         }
