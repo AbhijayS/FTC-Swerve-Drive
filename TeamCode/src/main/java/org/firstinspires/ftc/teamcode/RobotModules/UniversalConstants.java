@@ -126,35 +126,35 @@ public class UniversalConstants {
 
     }
     static final int     CYCLE_MS            =   50;
-    static final Status  ROBOT_STATUS        =   Status.DEBUGGING;
+    public static final Status  ROBOT_STATUS        =   Status.DEBUGGING;
     static final double  ROBOT_WIDTH         =   14.5; // INCHES
     static final double  ROBOT_LENGTH        =   15; // INCHES
-    static final double  ROBOT_MAX_SPEED     =   0.05;
+    public static final double  ROBOT_MAX_SPEED     =   0.05;
     static final double  ROBOT_COM_X         =   0; // offset from (0,0)
     static final double  ROBOT_COM_Y         =   0; // offset from (0,0)
     static final double  PI                  =   Math.PI;
     static final double  HALF_PI             =   PI/2;
 
     static final double  TURN_FACTOR         =   2; // Tune the robot's speed at turns (1 - 5)
-    static final int     servoRange          = 270;      // 225° to -45° on the Unit Circle
-    static final double  servoSpeed          = 0.16/60;  // sec/1° @ 5V TODO: Update speed for 6V input from the servo power module
-    static final int     servoDefaultAngle   = 90;
-    static final int     ticksPerRevolution  = 560;
-    static final int     wheelDiameter       = 3; //inches
-    static final double  wheelCircumference  = wheelDiameter*Math.PI; //inches
+    public static final int     servoRange          = 270;      // 225° to -45° on the Unit Circle
+    public static final double  servoSpeed          = 0.16/60;  // sec/1° @ 5V TODO: Update speed for 6V input from the servo power module
+    public static final int     servoDefaultAngle   = 90;
+    public static final int     ticksPerRevolution  = 560;
+    public static final int     wheelDiameter       = 3; //inches
+    public static final double  wheelCircumference  = wheelDiameter*Math.PI; //inches
 
-    static final double  driveGearRatio      = 24.0/18.0; // Output rate : Input rate
+    public static final double  driveGearRatio      = 24.0/18.0; // Output rate : Input rate
     static final double  K                   =   5; // Steering gain
 
 
-    static final PwmControl.PwmRange pwmRange = new PwmControl.PwmRange(500, 2500);
+    public static final PwmControl.PwmRange pwmRange = new PwmControl.PwmRange(500, 2500);
 
     /**
      *
      * @param a - any angle in degrees in the range (-infinity to infinity)
      * @return Normalizes the angle in the range (-180 to 180)
      */
-    static double clipAngle(double a) {
+    public static double clipAngle(double a) {
         return Math.toDegrees(Math.atan2(Math.sin(Math.toRadians(a)), Math.cos(Math.toRadians(a))));
     }
 }
