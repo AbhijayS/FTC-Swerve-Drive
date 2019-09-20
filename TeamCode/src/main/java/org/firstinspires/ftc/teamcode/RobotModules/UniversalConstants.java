@@ -6,4 +6,5 @@ public class UniversalConstants {
     public static final String leftFront = "lf";
     public static final String leftRear = "lr";
     public static final double maxDriveSpeed = 1;
+    public static double joystickDeadzone;
 }
