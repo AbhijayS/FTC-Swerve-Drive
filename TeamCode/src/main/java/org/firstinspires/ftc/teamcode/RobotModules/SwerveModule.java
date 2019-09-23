@@ -11,7 +11,6 @@ import com.qualcomm.robotcore.util.Range;
 
 import java.util.Locale;
 
-import static org.firstinspires.ftc.teamcode.RobotModules.UniversalConstants.ModuleConfig;
 import static org.firstinspires.ftc.teamcode.RobotModules.UniversalConstants.MotorDirection;
 import static org.firstinspires.ftc.teamcode.RobotModules.UniversalConstants.ROBOT_MAX_SPEED;
 import static org.firstinspires.ftc.teamcode.RobotModules.UniversalConstants.ROBOT_STATUS;
@@ -23,7 +22,6 @@ import static org.firstinspires.ftc.teamcode.RobotModules.UniversalConstants.ser
 import static org.firstinspires.ftc.teamcode.RobotModules.UniversalConstants.ticksPerRevolution;
 import static org.firstinspires.ftc.teamcode.RobotModules.UniversalConstants.wheelCircumference;
 
-
 public class SwerveModule {
 
     public static double MID_POS = 0.5; // Default value. Updated in constructor.
@@ -32,22 +30,19 @@ public class SwerveModule {
     /* Public OpMode members. */
     public Servo turnServo;
     public DcMotor driveMotor;
-    public double xCoordinate;
-    public double yCoordinate;
-    public double movementVector;
+
     /* local OpMode members. */
     LinearOpMode linearOpMode;
-    private ModuleConfig swerveModule;
+    private UniversalConstants.ModuleConfig swerveModule;
     private double internalServoPosition; // considers the servo delta
     private double servoPosition; // ignores the servo delta
     private double mileage; // in inches
-    private double positionChange;
     private boolean disabled = false;
     private MotorDirection motorDirection;
-    private org.firstinspires.ftc.teamcode.RobotModules.Point pose;
+    private Point pose;
 
 
-    public SwerveModule(LinearOpMode l, ModuleConfig module) {
+    public SwerveModule(LinearOpMode l, UniversalConstants.ModuleConfig module) {
         swerveModule = module;
 
         // Save reference to LinearOpMode
@@ -82,7 +77,7 @@ public class SwerveModule {
         if (swerveModule.isModuleDisabled)
             disableModule();
 
-        pose = new org.firstinspires.ftc.teamcode.RobotModules.Point(swerveModule.x,swerveModule.y,90);
+        pose = new Point(swerveModule.x, swerveModule.y, 90);
     }
 
     public double swivel(double toAngle) {
@@ -210,6 +205,10 @@ public class SwerveModule {
 
     private void resetMotorDirection() {
         motorDirection = swerveModule.motorDirection;
+    }
+
+    public MotorDirection getMotorDirection() {
+        return this.motorDirection;
     }
 
     public String toString() {

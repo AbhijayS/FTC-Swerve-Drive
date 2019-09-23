@@ -20,7 +20,22 @@ public class UniversalConstants {
         DEBUGGING, TESTING, RELEASE
     }
 
-    public static final DecimalFormat decimalFormat = new DecimalFormat("#.##");
+    public enum SwerveState {
+        PATH_FOLLOWING,
+        PATH_FOLLOWING_COMPLETE,
+        HUMAN_INPUT
+    }
+
+    public static double roundTo2DecimalPlaces(double a) {
+        return Math.round(a * 100.0) / 100.0;
+    }
+
+    public enum MotionState {
+        STOPPED,
+        IN_MOTION,
+        ACCELERATING,
+        DECELERATING;
+    }
 
     public enum Debugging {
         RX("Robot X"),
@@ -38,6 +53,7 @@ public class UniversalConstants {
         PATH("Path");
 
         private final String name;
+
         Debugging(String name) {
             this.name = name;
         }
@@ -47,7 +63,7 @@ public class UniversalConstants {
             return name;
         }
 
-        static List<String> getDebuggingMarkers() {
+        public static List<String> getDebuggingMarkers() {
             ArrayList<String> result = new ArrayList<>();
             for (Debugging d : Debugging.values()) {
                 result.add(d.toString());
@@ -57,9 +73,12 @@ public class UniversalConstants {
 
     }
 
+    public static final DecimalFormat decimalFormat = new DecimalFormat("#.##");
+
+
     public enum MotorDirection {
-        FORWARD(1.0f,"Forward"),
-        REVERSE(-1.0f,"Reverse");
+        FORWARD(1.0f, "Forward"),
+        REVERSE(-1.0f, "Reverse");
 
         private final float sign;
         private final String name;
@@ -69,7 +88,7 @@ public class UniversalConstants {
             this.sign = sign;
             this.name = name;
             if (name.length() > 0)
-                abbreviation = name.substring(0,1);
+                abbreviation = name.substring(0, 1);
             else
                 abbreviation = "";
         }
@@ -98,64 +117,118 @@ public class UniversalConstants {
         }
     }
 
+    static final int CYCLE_MS = 50;
+    public static final Status ROBOT_STATUS = Status.DEBUGGING;
+    static final double ROBOT_WIDTH = 14.5; // INCHES
+    static final double ROBOT_LENGTH = 15; // INCHES
+    public static final double ROBOT_MAX_SPEED = 0.05;
+    static final double ROBOT_COM_X = 0; // offset from (0,0)
+    static final double ROBOT_COM_Y = 0; // offset from (0,0)
+    static final double PI = Math.PI;
+    static final double HALF_PI = PI / 2;
+
+    static final double TURN_FACTOR = 2; // Tune the robot's speed at turns (1 - 5)
+    public static final int servoRange = 270;      // 225° to -45° on the Unit Circle
+    public static final double servoSpeed = 0.16 / 60;  // sec/1° @ 5V TODO: Update speed for 6V input from the servo power module
+    public static final int servoDefaultAngle = 90;
+    public static final int ticksPerRevolution = 560;
+    public static final int wheelDiameter = 3; //inches
+    public static final double wheelCircumference = wheelDiameter * Math.PI; //inches
+
+    public static final double driveGearRatio = 24.0 / 18.0; // Output rate : Input rate
+    public static final double kS =   5; // Steering gain (path following only)
+    public static final double kP =   0; // Proportional gain
+    public static final double kI =   0; // Integral gain
+    public static final double kD =   0; // Derivative gain
+
+
+    public static final PwmControl.PwmRange pwmRange = new PwmControl.PwmRange(500, 2500);
+
     public enum ModuleConfig {
-        MODULE_ZERO     ("Module ZERO",     (-ROBOT_WIDTH/2)-ROBOT_COM_X,(ROBOT_LENGTH/2)-ROBOT_COM_Y,     false,  "front_left_servo",    0        ,  Servo.Direction.REVERSE,    "front_left_motor",  MotorDirection.REVERSE)  ,
-        MODULE_ONE      ("Module ONE",      (ROBOT_WIDTH/2)-ROBOT_COM_X,(ROBOT_LENGTH/2)-ROBOT_COM_Y,      false,  "front_right_servo",   -3.07    ,  Servo.Direction.FORWARD,    "front_right_motor", MotorDirection.FORWARD)  ,
-        MODULE_TWO      ("Module TWO",      (ROBOT_WIDTH/2)-ROBOT_COM_X,(-ROBOT_LENGTH/2)-ROBOT_COM_Y,     false,  "rear_right_servo",    2.92     ,  Servo.Direction.FORWARD,    "rear_right_motor",  MotorDirection.FORWARD)  ,
-        MODULE_THREE    ("Module THREE",    (-ROBOT_WIDTH/2)-ROBOT_COM_X,(-ROBOT_LENGTH/2)-ROBOT_COM_Y,    false,  "rear_left_servo",     -4.43    ,  Servo.Direction.FORWARD,    "rear_left_motor",   MotorDirection.REVERSE)  ;
+        MODULE_ZERO("Module ZERO", (-ROBOT_WIDTH / 2) - ROBOT_COM_X, (ROBOT_LENGTH / 2) - ROBOT_COM_Y, false, "front_left_servo", 0, Servo.Direction.REVERSE, "front_left_motor", MotorDirection.REVERSE),
+        MODULE_ONE("Module ONE", (ROBOT_WIDTH / 2) - ROBOT_COM_X, (ROBOT_LENGTH / 2) - ROBOT_COM_Y, false, "front_right_servo", -3.07, Servo.Direction.FORWARD, "front_right_motor", MotorDirection.FORWARD),
+        MODULE_TWO("Module TWO", (ROBOT_WIDTH / 2) - ROBOT_COM_X, (-ROBOT_LENGTH / 2) - ROBOT_COM_Y, false, "rear_right_servo", 2.92, Servo.Direction.FORWARD, "rear_right_motor", MotorDirection.FORWARD),
+        MODULE_THREE("Module THREE", (-ROBOT_WIDTH / 2) - ROBOT_COM_X, (-ROBOT_LENGTH / 2) - ROBOT_COM_Y, false, "rear_left_servo", -4.43, Servo.Direction.FORWARD, "rear_left_motor", MotorDirection.REVERSE);
 
-        public final String                     moduleName;
-        public final String                     servoID;
-        public final double                     servoDelta;
-        public final Servo.Direction            servoDirection;
-        public final boolean                    isModuleDisabled;
-        public final String                     motorID;
-        public final double                     x, y;
+        public final String moduleName;
+        public final String servoID;
+        public final double servoDelta;
+        public final Servo.Direction servoDirection;
+        public final boolean isModuleDisabled;
+        public final String motorID;
+        public final double x, y;
 
-        public final MotorDirection    motorDirection;
+        public final MotorDirection motorDirection;
+
         ModuleConfig(String module_name, double x, double y, boolean is_module_disabled, String servo_id, double servo_delta, Servo.Direction servo_direction, String motor_id, MotorDirection motor_direction) {
-            this.moduleName         = module_name;
-            this.isModuleDisabled   = is_module_disabled;
-            this.servoID            = servo_id;
-            this.servoDelta         = servo_delta;
-            this.servoDirection     = servo_direction;
-            this.motorID            = motor_id;
-            this.motorDirection     = motor_direction;
+            this.moduleName = module_name;
+            this.isModuleDisabled = is_module_disabled;
+            this.servoID = servo_id;
+            this.servoDelta = servo_delta;
+            this.servoDirection = servo_direction;
+            this.motorID = motor_id;
+            this.motorDirection = motor_direction;
             this.x = x;
             this.y = y;
         }
 
     }
-    static final int     CYCLE_MS            =   50;
-    public static final Status  ROBOT_STATUS        =   Status.DEBUGGING;
-    static final double  ROBOT_WIDTH         =   14.5; // INCHES
-    static final double  ROBOT_LENGTH        =   15; // INCHES
-    public static final double  ROBOT_MAX_SPEED     =   0.05;
-    static final double  ROBOT_COM_X         =   0; // offset from (0,0)
-    static final double  ROBOT_COM_Y         =   0; // offset from (0,0)
-    static final double  PI                  =   Math.PI;
-    static final double  HALF_PI             =   PI/2;
-
-    static final double  TURN_FACTOR         =   2; // Tune the robot's speed at turns (1 - 5)
-    public static final int     servoRange          = 270;      // 225° to -45° on the Unit Circle
-    public static final double  servoSpeed          = 0.16/60;  // sec/1° @ 5V TODO: Update speed for 6V input from the servo power module
-    public static final int     servoDefaultAngle   = 90;
-    public static final int     ticksPerRevolution  = 560;
-    public static final int     wheelDiameter       = 3; //inches
-    public static final double  wheelCircumference  = wheelDiameter*Math.PI; //inches
-
-    public static final double  driveGearRatio      = 24.0/18.0; // Output rate : Input rate
-    static final double  K                   =   5; // Steering gain
-
-
-    public static final PwmControl.PwmRange pwmRange = new PwmControl.PwmRange(500, 2500);
 
     /**
-     *
      * @param a - any angle in degrees in the range (-infinity to infinity)
      * @return Normalizes the angle in the range (-180 to 180)
      */
     public static double clipAngle(double a) {
         return Math.toDegrees(Math.atan2(Math.sin(Math.toRadians(a)), Math.cos(Math.toRadians(a))));
+    }
+
+    public enum Direction {
+        FORWARD(1.0f,"Forward"),
+        REVERSE(-1.0f,"Reverse"),
+        RIGHT(1.0f, "Right"),
+        LEFT(-1.0f, "Left");
+
+        private final float sign;
+        private final String name;
+        private final String abbreviation;
+
+        Direction(float sign, String name) {
+            this.sign = sign;
+            this.name = name;
+            if (name.length() > 0)
+                abbreviation = name.substring(0,1);
+            else
+                abbreviation = "";
+        }
+
+        @Override
+        public String toString() {
+            return name;
+        }
+
+        public String getAbbreviation() {
+            return abbreviation;
+        }
+
+        public float getSign() {
+            return sign;
+        }
+
+        public Direction getOpposite() {
+            switch (this) {
+                case LEFT:
+                    return RIGHT;
+                case RIGHT:
+                    return LEFT;
+                case FORWARD:
+                    return REVERSE;
+                default:
+                    return FORWARD;
+            }
+        }
+
+        public double assignDirection(double value) {
+            return Math.copySign(value, sign);
+        }
     }
 }
