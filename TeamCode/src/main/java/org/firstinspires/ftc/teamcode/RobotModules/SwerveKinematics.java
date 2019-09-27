@@ -17,13 +17,13 @@ public class SwerveKinematics {
     private Double[] dS;
     private double dT;
     private double velocity;
-    private Debugger debugger;
+    //private Debugger debugger;
     private BNO055IMU imu;
     private double IMU_ZERO;
 
-    public SwerveKinematics(LinearOpMode linearOpMode, Debugger debugger, SwerveDrive swerveDrive) {
+    public SwerveKinematics(LinearOpMode linearOpMode, SwerveDrive swerveDrive) {
         UniversalConstants.ModuleConfig[] modulesConfig = UniversalConstants.ModuleConfig.values();
-        this.debugger = debugger;
+        //this.debugger = debugger;
         this.stopwatch = new Stopwatch();
         this.stopwatch.start();
         this.swerveDrive = swerveDrive;

@@ -36,6 +36,11 @@ public class Path {
         splineSegment = 1;
     }
 
+    public void setNewPath(double[] x, double[] y){
+        this.x = x.clone();
+        this.y = y.clone();
+    }
+
     /**
      * @param _x
      * @return Curvature equation: y'' / (1+(y'^2))^(3/2)

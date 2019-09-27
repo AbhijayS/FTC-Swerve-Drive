@@ -6,13 +6,6 @@ import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.RobotModules.UniversalConstants.SwerveState;
 
-import static org.firstinspires.ftc.teamcode.RobotModules.UniversalConstants.Debugging.CORRECTION;
-import static org.firstinspires.ftc.teamcode.RobotModules.UniversalConstants.Debugging.ERROR;
-import static org.firstinspires.ftc.teamcode.RobotModules.UniversalConstants.Debugging.PATH;
-import static org.firstinspires.ftc.teamcode.RobotModules.UniversalConstants.Debugging.PX;
-import static org.firstinspires.ftc.teamcode.RobotModules.UniversalConstants.Debugging.PY;
-import static org.firstinspires.ftc.teamcode.RobotModules.UniversalConstants.Debugging.VELOCITY;
-import static org.firstinspires.ftc.teamcode.RobotModules.UniversalConstants.Debugging.WA;
 import static org.firstinspires.ftc.teamcode.RobotModules.UniversalConstants.HALF_PI;
 import static org.firstinspires.ftc.teamcode.RobotModules.UniversalConstants.ROBOT_LENGTH;
 import static org.firstinspires.ftc.teamcode.RobotModules.UniversalConstants.ROBOT_MAX_SPEED;
@@ -37,15 +30,15 @@ public class SwerveDrive {
     private Point CoM;
     private Point trackingPoint; // Point on the path to be tracked
     private int splineSegment;
-    private Debugger debugger;
+    //private Debugger debugger;
     private UniversalConstants.SwerveState swerveState;
     private UniversalConstants.MotionState motionState;
     public SwerveKinematics swerveKinematics;
 
-    public SwerveDrive(LinearOpMode l, Debugger debugger) {
+    public SwerveDrive(LinearOpMode l) {
         linearOpMode = l;
-        this.debugger = debugger;
-        this.swerveKinematics = new SwerveKinematics(l, debugger, this);
+        //this.debugger = debugger;
+        this.swerveKinematics = new SwerveKinematics(l, this);
         this.swerveState = UniversalConstants.SwerveState.HUMAN_INPUT;
         this.motionState = UniversalConstants.MotionState.STOPPED;
 
@@ -63,6 +56,10 @@ public class SwerveDrive {
 
     public void requestState(UniversalConstants.SwerveState swerveState) {
         this.swerveState = swerveState;
+    }
+
+    public UniversalConstants.SwerveState returnSwerveState(){
+        return swerveState;
     }
 
     public void turnDrive(Gamepad g) {
@@ -292,7 +289,7 @@ public class SwerveDrive {
             turnDrive(crossTrackAngle, .05,0, yaw);
 
 
-            if (!ROBOT_STATUS.equals(RELEASE)) {
+            /*if (!ROBOT_STATUS.equals(RELEASE)) {
                 debugger.addData("Yaw", Double.toString(yaw));
                 debugger.addData(PATH.toString(), path.toString());
                 debugger.addData(PX.toString(), Double.toString(trackingPoint.getX()));
@@ -303,7 +300,7 @@ public class SwerveDrive {
                 debugger.addData(PATH.toString(), path.toString());
                 debugger.addData(WA.toString(), Double.toString(module0.getServoPosition()));
                 debugger.addData(VELOCITY.toString(), Double.toString(velocity));
-            }
+            }*/
         }
     }
 }
