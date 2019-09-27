@@ -8,12 +8,11 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.VEX393Servo;
 
-
 @TeleOp(name="foundationIntakeTest")
 public class CatapultDrivetrainRunner extends LinearOpMode {
     public void runOpMode() {
         CatapultDrivetrain drivetrain = new CatapultDrivetrain(this, DcMotor.ZeroPowerBehavior.BRAKE);
-        CRServo bobTheMover = hardwareMap.crservo.get("s1");
+        Servo foundationMover = hardwareMap.servo.get("s1");
         waitForStart();
         while (opModeIsActive()){
             drivetrain.updateByGamepad();
@@ -25,13 +24,12 @@ public class CatapultDrivetrainRunner extends LinearOpMode {
              * all this so you can move the foundation in and out of the building zone.
              *
             if (gamepad1.x){
-                bobTheMover.setPower(-.3);
-                bobTheMover.setPower(0);
+                foundationMover.setPosition(1);
             }
             if (gamepad1.y) {
-                bobTheMover.setPower(.3);
-                bobTheMover.setPower(0);
+                foundationMover.setPosition(1);
             }
+<<<<<<< Updated upstream
              **/
 
         }
