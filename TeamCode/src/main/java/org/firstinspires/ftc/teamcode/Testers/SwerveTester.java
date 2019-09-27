@@ -18,7 +18,7 @@ public class SwerveTester extends LinearOpMode {
         double y[] = {
                 0,0
         };
-        Path toInterpolate = new Path(x, y);
+        Path toInterpolate = new Path(this,x, y);
         swerveDrive.setPath(toInterpolate);
         swerveDrive.requestState(UniversalConstants.SwerveState.PATH_FOLLOWING);
 

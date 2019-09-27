@@ -244,8 +244,8 @@ public class SwerveDrive {
         module3.setPower(power3);
     }
 
-    public void setPath(Path _path) {
-        path = _path;
+    public void setPath(Path path) {
+        this.path = path;
         trackingPoint = new Point(0, 0, path.heading(0));
         splineSegment = 1;
     }

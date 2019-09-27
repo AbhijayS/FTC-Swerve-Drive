@@ -29,7 +29,7 @@ public class EventLoopAuto extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         AutoStates autoStates = AutoStates.SCANNING;
         SwerveDrive swerveDrive = new SwerveDrive(this);
-        Path toInterpolate = new Path(AutoStates.PATH_ONE.x, AutoStates.PATH_ONE.y);
+        Path toInterpolate = new Path(this, AutoStates.PATH_ONE.x, AutoStates.PATH_ONE.y);
         swerveDrive.setPath(toInterpolate);
         swerveDrive.requestState(UniversalConstants.SwerveState.PATH_FOLLOWING);
 

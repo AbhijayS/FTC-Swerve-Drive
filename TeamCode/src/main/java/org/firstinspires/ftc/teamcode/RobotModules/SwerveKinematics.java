@@ -17,11 +17,11 @@ public class SwerveKinematics {
     private Double[] dS;
     private double dT;
     private double velocity;
-    //private Debugger debugger;
+    private Debugger debugger;
     private BNO055IMU imu;
     private double IMU_ZERO;
 
-    public SwerveKinematics(LinearOpMode linearOpMode, SwerveDrive swerveDrive) {
+    public SwerveKinematics(LinearOpMode linearOpMode,  SwerveDrive swerveDrive) {
         UniversalConstants.ModuleConfig[] modulesConfig = UniversalConstants.ModuleConfig.values();
         //this.debugger = debugger;
         this.stopwatch = new Stopwatch();
@@ -38,7 +38,7 @@ public class SwerveKinematics {
                 swerveModules[2].getDisplacement(),
                 swerveModules[3].getDisplacement()
         };
-        this.modulesPose = new Point[]{
+        this.modulesPose = new Point[] {
                 new Point(modulesConfig[0].x, modulesConfig[0].y, servoDefaultAngle),
                 new Point(modulesConfig[1].x, modulesConfig[1].y, servoDefaultAngle),
                 new Point(modulesConfig[2].x, modulesConfig[2].y, servoDefaultAngle),
@@ -57,8 +57,6 @@ public class SwerveKinematics {
         this.yawStamp = getYaw();
         this.centerOfMass = new Point(0, 0, 90 + this.yawStamp);
         this.velocity = 0;
-
-        linearOpMode.telemetry.addLine("Calibrating Kinematics ...");
 
         // Define and Initialize REV IMU sensor
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
@@ -79,7 +77,7 @@ public class SwerveKinematics {
         }
         // save IMU "zero" value in case it's non-zero after calibration
         IMU_ZERO = imu.getAngularOrientation().firstAngle;
-        linearOpMode.telemetry.addLine("Kinematics Calibrated!");
+        linearOpMode.telemetry.addLine("Swerve Kinematics Calibrated!");
     }
 
 
@@ -90,7 +88,7 @@ public class SwerveKinematics {
         dT = stopwatch.seconds();
         stopwatch.start();
 
-        double currentYaw = getYaw();
+        double currentYaw = yaw();
         double angularDelta = currentYaw - yawStamp;
         angularDelta += (angularDelta > 180) ? -360 : (angularDelta < -180) ? 360 : 0;
         angularDelta = Math.toRadians(angularDelta);
@@ -109,13 +107,6 @@ public class SwerveKinematics {
                 swerveModules[2].getDisplacement(),
                 swerveModules[3].getDisplacement()
         };
-//        dS = new Double[]{
-//                FastMath.abs(temp[0] - wheelStamps[0]),
-//                FastMath.abs(temp[1] - wheelStamps[1]),
-//                FastMath.abs(temp[2] - wheelStamps[2]),
-//                FastMath.abs(temp[3] - wheelStamps[3])
-//        };
-
         dS = new Double[]{
                 (temp[0] - wheelStamps[0]) * swerveModules[0].getMotorDirection().getSign(),
                 (temp[1] - wheelStamps[1]) * swerveModules[1].getMotorDirection().getSign(),
@@ -218,9 +209,6 @@ public class SwerveKinematics {
                 temp[2],
                 temp[3]
         };
-
-//        debugger.addData(Debugging.RX.toString(), Double.toString(centerOfMass.getX()));
-//        debugger.addData(Debugging.RY.toString(), Double.toString(centerOfMass.getY()));
     }
 
     public double getVelocity() {
@@ -251,7 +239,7 @@ public class SwerveKinematics {
         return new Double[]{upperX - lowerX, upperY - lowerY};
     }
 
-    public double getYaw() {
+    private double yaw() {
         double angle = imu.getAngularOrientation().firstAngle;
         double delta = angle - IMU_ZERO;
 
@@ -259,6 +247,10 @@ public class SwerveKinematics {
         if (delta < -180) delta += 360;
 
         return delta;
+    }
+
+    public double getYaw() {
+        return yawStamp;
     }
 
     public double getRawIMU() {

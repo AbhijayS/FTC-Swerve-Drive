@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
@@ -31,6 +32,12 @@ public class TensorFlowLite {
         telemetry.update();
     }
 
+
+    /**
+     * Constructor for the TensorFlowLite object detection class
+     *
+     * @param l Input this to run using LinearOpMode functions
+     */
     public TensorFlowLite(LinearOpMode l) {
         linearOpMode = l;
         telemetry = linearOpMode.telemetry;
@@ -51,18 +58,31 @@ public class TensorFlowLite {
     }
 
 
+    /**
+     * This function activates the TensorFlow Object Detection engine
+     */
     public void activateTfod() {
         if (tfod != null) {
             tfod.activate();
         }
     }
 
+
+    /**
+     * This function deactivates the TensorFlow Object Detection engine
+     */
     public void shutDownTfod() {
         if (tfod != null) {
             tfod.shutdown();
         }
     }
 
+
+    /**
+     * This function is used to determine the SkyStone Arrangement Pattern.
+     * It will set the pattern variable to A, B or C depending on SkyStone arrangement.
+     * The function has a background elimination method based off of the one implemented in Rover Ruckus
+     */
     public void determinePattern() {
         if (tfod != null) {
             List<Recognition> updateRecognitions = tfod.getUpdatedRecognitions();
@@ -91,35 +111,114 @@ public class TensorFlowLite {
                     }
                     int indexToRemove = 0;
                     for (int i = 0; i < SkystoneYvals.size(); i++) {
-                        if (SkyStoneY <= SkystoneYvals.get(i) && SkyStoneX < SkystoneXvals.get(i)) {
-                            goldMineralY = goldYvals.get(i);
-                            goldMineralX = goldXvals.get(i);
+                        if (SkyStoneY <= SkystoneYvals.get(i) || SkyStoneX < SkystoneXvals.get(i)) {
+                            SkyStoneY = SkystoneXvals.get(i);
+                            SkyStoneX = SkystoneXvals.get(i);
                         }
                     }
 
-                    for (int i = 0; i < silverYvals.size(); i++) {
-                        if (silverMineral1Y < silverYvals.get(i)) {
-                            silverMineral1Y = silverYvals.get(i);
-                            silverMineral1X = silverXvals.get(i);
+                    for (int i = 0; i < StoneYvals.size(); i++) {
+                        if (Stone1Y < StoneYvals.get(i)) {
+                            Stone1Y = StoneYvals.get(i);
+                            Stone1X = StoneXvals.get(i);
                             indexToRemove = i;
                         }
                     }
-                    if (silverYvals.size() > 0) {
-                        silverXvals.remove(indexToRemove);
-                        silverYvals.remove(indexToRemove);
+                    if (StoneYvals.size() > 0) {
+                        StoneXvals.remove(indexToRemove);
+                        StoneYvals.remove(indexToRemove);
                     }
-                    for (int i = 0; i < silverYvals.size(); i++) {
-                        if (silverMineral2Y < silverYvals.get(i)) {
-                            silverMineral2Y = silverYvals.get(i);
-                            silverMineral2X = silverXvals.get(i);
+                    for (int i = 0; i < StoneYvals.size(); i++) {
+                        if (Stone2Y < StoneYvals.get(i)) {
+                            Stone2Y = StoneYvals.get(i);
+                            Stone2X = StoneXvals.get(i);
+                        }
+                    }
+                    if (SkyStoneX != -1 && Stone1X != -1 && Stone2X != -1) {
+                        if (SkyStoneX < Stone1X && SkyStoneX < Stone2X) {
+                            pattern = "A";
+                            telemetry.addData("Pattern", "A");
+                        } else if (SkyStoneX > Stone1X && SkyStoneX > Stone2X) {
+                            pattern = "C";
+                            telemetry.addData("Pattern", "C");
+                        } else {
+                            pattern = "B";
+                            telemetry.addData("Position", "B");
                         }
                     }
                 }
+                telemetry.addData("Pattern Variable: ", pattern);
+                telemetry.update();
+
+            }
+        }
+    }
+
+    public void updateTensorFlowSingle() {
+        if (tfod != null) {
+            List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+            if (updatedRecognitions != null) {
+                telemetry.addData("# Object Detected", updatedRecognitions.size());
+                // the following code was taken form FTC sample code and partially modified for our robot's purposes
+                // It is alright if not understood.
+                //x and y position values for minerals
+                int SkystoneX = -1;
+                int SkystoneY = -1;
+                double Azimuth = 0;
+                /* Creates an array list of x and y values for all minerals*/
+                ArrayList<Integer> SkyStoneXvals = new ArrayList<Integer>();
+                ArrayList<Integer> SkyStoneYvals = new ArrayList<Integer>();
+                ArrayList<Double> SkyStoneAzimuths = new ArrayList<Double>();
+                for (Recognition recognition : updatedRecognitions) {
+                    if (recognition.getLabel().equals(LABEL_SECOND_ELEMENT)) {
+                        SkyStoneXvals.add((((int) recognition.getLeft()) + ((int) recognition.getRight())) / 2);
+                        SkyStoneYvals.add((int) recognition.getBottom());
+                        SkyStoneAzimuths.add(recognition.estimateAngleToObject(AngleUnit.DEGREES));
+
+                    }
+                }
+                int indexToRemove = 0;
+                for (int i = 0; i < SkyStoneYvals.size(); i++) {
+                    if (SkystoneY < SkyStoneYvals.get(i)) {
+                        SkystoneY = SkyStoneYvals.get(i);
+                        SkystoneX = SkyStoneXvals.get(i);
+                        Azimuth = SkyStoneAzimuths.get(i);
+                    }
+                }
+                telemetry.addData("Gold X value: ", SkystoneX);
+                telemetry.addData("Azimuth: ", Azimuth);
+                if (SkystoneX != -1) {
+                    if (SkystoneX <= 426 && Azimuth <= -15) {
+                        pattern = "A";
+                        telemetry.addData("Position: ", "Left");
+                    } else if (SkystoneX >= 852 && Azimuth >= 15) {
+                        pattern = "C";
+                        telemetry.addData("Position: ", "Right");
+                    } else {
+                        pattern = "B";
+                        telemetry.addData("Position: ", "Center");
+                    }
+                }
+
+                telemetry.addData("Pattern Variable: ", pattern);
+                telemetry.update();
             }
         }
     }
 
 
+    /**
+     * Acccesses the private variable pattern which is set by determinePattern() function
+     *
+     * @return pattern
+     */
+    public String getPattern() {
+        return pattern;
+    }
+
+    /**
+     * This function initializes Vuforia to use camera on phones for object detection.
+     */
     private void initVuforia() {
         //This method will create all neccessary vuforia parameters and set them
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
@@ -129,6 +228,9 @@ public class TensorFlowLite {
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
     }
 
+    /**
+     * This function initializes Vuforia to use an external USB camera for object detection.
+     */
     private void initVuforiaWebCam() {
         /*
          * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.
@@ -144,11 +246,16 @@ public class TensorFlowLite {
         // Loading trackables is not necessary for the Tensor Flow Object Detection engine.
     }
 
+
+    /**
+     * This function loads all necessary information into the TensorFlow Object Detection Engine to use for image recognition.
+     */
     private void initTfod() {
         int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
                 "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
+        //Change these parameters when loading a new model asset for object detection. Set appropriate labels
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
     }
 }

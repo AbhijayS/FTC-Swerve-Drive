@@ -147,29 +147,28 @@ public class UniversalConstants {
 
 
     public enum ModuleConfig {
-        MODULE_ZERO("Module ZERO", (-ROBOT_WIDTH / 2) - ROBOT_COM_X, (ROBOT_LENGTH / 2) - ROBOT_COM_Y, false, "front_left_servo", 0, Servo.Direction.REVERSE, "front_left_motor", MotorDirection.REVERSE),
-        MODULE_ONE("Module ONE", (ROBOT_WIDTH / 2) - ROBOT_COM_X, (ROBOT_LENGTH / 2) - ROBOT_COM_Y, false, "front_right_servo", -3.07, Servo.Direction.FORWARD, "front_right_motor", MotorDirection.FORWARD),
-        MODULE_TWO("Module TWO", (ROBOT_WIDTH / 2) - ROBOT_COM_X, (-ROBOT_LENGTH / 2) - ROBOT_COM_Y, false, "rear_right_servo", 2.92, Servo.Direction.FORWARD, "rear_right_motor", MotorDirection.FORWARD),
-        MODULE_THREE("Module THREE", (-ROBOT_WIDTH / 2) - ROBOT_COM_X, (-ROBOT_LENGTH / 2) - ROBOT_COM_Y, false, "rear_left_servo", -4.43, Servo.Direction.FORWARD, "rear_left_motor", MotorDirection.REVERSE);
+        MODULE_ZERO     ("Module ZERO",     (-ROBOT_WIDTH/2)-ROBOT_COM_X,(ROBOT_LENGTH/2)-ROBOT_COM_Y,     false,  "front_left_servo",    0        ,  Servo.Direction.REVERSE,    "front_left_motor",  MotorDirection.REVERSE)  ,
+        MODULE_ONE      ("Module ONE",      (ROBOT_WIDTH/2)-ROBOT_COM_X,(ROBOT_LENGTH/2)-ROBOT_COM_Y,      false,  "front_right_servo",   -3.07    ,  Servo.Direction.FORWARD,    "front_right_motor", MotorDirection.FORWARD)  ,
+        MODULE_TWO      ("Module TWO",      (ROBOT_WIDTH/2)-ROBOT_COM_X,(-ROBOT_LENGTH/2)-ROBOT_COM_Y,     false,  "rear_right_servo",    2.92     ,  Servo.Direction.FORWARD,    "rear_right_motor",  MotorDirection.FORWARD)  ,
+        MODULE_THREE    ("Module THREE",    (-ROBOT_WIDTH/2)-ROBOT_COM_X,(-ROBOT_LENGTH/2)-ROBOT_COM_Y,    false,  "rear_left_servo",     -4.43    ,  Servo.Direction.FORWARD,    "rear_left_motor",   MotorDirection.REVERSE)  ;
 
-        public final String moduleName;
-        public final String servoID;
-        public final double servoDelta;
-        public final Servo.Direction servoDirection;
-        public final boolean isModuleDisabled;
-        public final String motorID;
-        public final double x, y;
+        public final String                     moduleName;
+        public final String                     servoID;
+        public final double                     servoDelta;
+        public final Servo.Direction            servoDirection;
+        public final boolean                    isModuleDisabled;
+        public final String                     motorID;
+        public final double                     x, y;
 
-        public final MotorDirection motorDirection;
-
+        public final MotorDirection    motorDirection;
         ModuleConfig(String module_name, double x, double y, boolean is_module_disabled, String servo_id, double servo_delta, Servo.Direction servo_direction, String motor_id, MotorDirection motor_direction) {
-            this.moduleName = module_name;
-            this.isModuleDisabled = is_module_disabled;
-            this.servoID = servo_id;
-            this.servoDelta = servo_delta;
-            this.servoDirection = servo_direction;
-            this.motorID = motor_id;
-            this.motorDirection = motor_direction;
+            this.moduleName         = module_name;
+            this.isModuleDisabled   = is_module_disabled;
+            this.servoID            = servo_id;
+            this.servoDelta         = servo_delta;
+            this.servoDirection     = servo_direction;
+            this.motorID            = motor_id;
+            this.motorDirection     = motor_direction;
             this.x = x;
             this.y = y;
         }
@@ -188,7 +187,8 @@ public class UniversalConstants {
         FORWARD(1.0f,"Forward"),
         REVERSE(-1.0f,"Reverse"),
         RIGHT(1.0f, "Right"),
-        LEFT(-1.0f, "Left");
+        LEFT(-1.0f, "Left"),
+        UNKOWN(0.0f, "Unknown");
 
         private final float sign;
         private final String name;

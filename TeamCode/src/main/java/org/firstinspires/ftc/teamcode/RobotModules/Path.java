@@ -1,44 +1,108 @@
 package org.firstinspires.ftc.teamcode.RobotModules;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+
 import org.apache.commons.math3.analysis.interpolation.SplineInterpolator;
 import org.apache.commons.math3.analysis.polynomials.PolynomialFunction;
 import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
 import org.apache.commons.math3.analysis.solvers.LaguerreSolver;
 import org.apache.commons.math3.complex.Complex;
-import org.firstinspires.ftc.teamcode.RobotModules.UniversalConstants.Direction;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 
 import static java.lang.Double.NaN;
 
 public class Path {
-
-    double[] x;
-    double[] y;
-    HashMap<Double, Double> X_Y;
     public PolynomialSplineFunction spline;
-    private LaguerreSolver laguerreSolver;
-
-    private Direction direction;
+    private SplineInterpolator splineInterpolator;
+    private LinkedHashMap<LinkedHashMap<Double, Double>, UniversalConstants.Direction> paths;
+    private LinkedList<LinkedHashMap<Double, Double>> segments;
+    private LinearOpMode linearOpMode;
+    private UniversalConstants.Direction direction;
+    private int polySegment;
     private int splineSegment;
 
-    private SplineInterpolator splineInterpolator;
 
-    public Path(double[] x, double[] y) {
-        this.x = x.clone();
-        this.y = y.clone();
+    public Path(LinearOpMode linearOpMode, double[] x, double[] y) {
+        this.linearOpMode = linearOpMode;
+        if (x.length != y.length)
+            throw new RuntimeException("Invalid arguments to the path!");
+
+        if (x.length < 3)
+            throw new RuntimeException("Path must include at least 3 points!");
+
+        int length = x.length;
+
+        LinkedHashMap<LinkedHashMap<Double, Double>, Integer> raw_paths = new LinkedHashMap<>();
+        LinkedHashMap<Double, Double> XY = new LinkedHashMap<>();
+        XY.put(x[0], y[0]);
+        int comparator = Double.compare(x[1], x[0]);
+
+        for (int i = 1; i < length; i++) {
+            if (Double.compare(x[i], x[i - 1]) == 0) {
+                raw_paths.put(XY, comparator);
+                XY = new LinkedHashMap<>();
+                XY.put(x[i], y[i]);
+                comparator = y[i] > y[i - 1] ? 2 : -2;
+            } else {
+                if (Double.compare(x[i], x[i - 1]) != comparator) {
+                    raw_paths.put(XY, comparator);
+                    XY = new LinkedHashMap<>();
+                    XY.put(x[i - 1], y[i - 1]);
+                    XY.put(x[i], y[i]);
+                    comparator = Double.compare(x[i], x[i - 1]);
+                } else {
+                    XY.put(x[i], y[i]);
+                }
+            }
+        }
+        raw_paths.put(XY, comparator);
+
+        paths = new LinkedHashMap<>();
+        segments = new LinkedList<>();
+        segments.addAll(raw_paths.keySet());
+
+        for (int i = 0; i < raw_paths.size(); i++) {
+            LinkedHashMap<Double, Double> lMap = segments.get(i);
+            int direction = raw_paths.get(lMap);
+            System.out.println(direction);
+
+            switch (direction) {
+                case 1:
+                    if (lMap.size() < 3)
+                        throw new RuntimeException("Each path segment must contain at least 3 points!");
+                    paths.put(lMap, UniversalConstants.Direction.RIGHT);
+                    break;
+
+                case -1:
+                    if (lMap.size() < 3)
+                        throw new RuntimeException("Each path segment must contain at least 3 points!");
+                    paths.put(lMap, UniversalConstants.Direction.LEFT);
+                    break;
+
+                case 2:
+                    paths.put(lMap, UniversalConstants.Direction.FORWARD);
+                    break;
+
+                case -2:
+                    paths.put(lMap, UniversalConstants.Direction.REVERSE);
+                    break;
+
+                default:
+                    // true if the first path segment is a straight line
+                    paths.put(lMap, UniversalConstants.Direction.UNKOWN);
+                    break;
+            }
+        }
         splineInterpolator = new SplineInterpolator();
-        spline = splineInterpolator.interpolate(this.x, this.y);
-        laguerreSolver = new LaguerreSolver();
-
-        direction = Direction.LEFT;
+        spline = splineInterpolator.interpolate(new double[]{0,1,2}, new double[]{0,0,0});
+        direction = UniversalConstants.Direction.UNKOWN;
+        polySegment = 1;
         splineSegment = 1;
-    }
-
-    public void setNewPath(double[] x, double[] y){
-        this.x = x.clone();
-        this.y = y.clone();
+        linearOpMode.telemetry.addLine(paths.toString());
     }
 
     /**
@@ -71,22 +135,21 @@ public class Path {
                 int index = raw.indexOf('x');
                 String toAppend = "";
                 while (index != -1) {
-                    toAppend = toAppend.concat(raw.substring(previous,index)).
+                    toAppend = toAppend.concat(raw.substring(previous, index)).
                             concat("(x-").
                             concat(offset).
                             concat(")");
-                    previous = index+1;
-                    index = raw.indexOf('x',previous);
+                    previous = index + 1;
+                    index = raw.indexOf('x', previous);
                 }
                 toAppend = toAppend.concat(raw.substring(previous));
                 result = result.concat(toAppend).concat(" || ");
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             throw new RuntimeException("Path toString() method has issues: " + e.getMessage());
         }
         return result;
     }
-
 
 
     /*
@@ -101,21 +164,21 @@ public class Path {
      */
     public double findTrackingPoint(Point oldTrackingPoint, Point CoM) {
 
-        if (CoM.getX() < spline.getKnots()[0])
-            return spline.getKnots()[0];
-
-        if (CoM.getX() > spline.getKnots()[spline.getN()])
-            return spline.getKnots()[spline.getN()];
+//        if (CoM.getX() < spline.getKnots()[0])
+//            return spline.getKnots()[0];
+//
+//        if (CoM.getX() > spline.getKnots()[spline.getN()])
+//            return spline.getKnots()[spline.getN()];
 
         // TODO simplify poly calculations
         boolean found = false;
         int i = 0;
         double trace = oldTrackingPoint.getX();
 
-        while (!found && (splineSegment + i <= spline.getN())) {
+        while (!found && (polySegment + i <= spline.getN())) {
 
             //-----knotA------currentSegment------knotB---//
-            int currentSegment = splineSegment + i;
+            int currentSegment = polySegment + i;
             double knotA = spline.getKnots()[currentSegment - 1];
             double knotB = spline.getKnots()[currentSegment];
             double shift = -knotA;
@@ -162,7 +225,7 @@ public class Path {
         }
 
         if (found) {
-            splineSegment += i;
+            polySegment += i;
             return trace;
         }
         return NaN;
@@ -174,7 +237,42 @@ public class Path {
         return 1;
     }
 
-    public Direction getDirection() {
+    public UniversalConstants.Direction getDirection() {
         return direction;
+    }
+
+    /**
+     * Path following - just for rightward movement
+     * get robot pose
+     * check if robot is within lower and upper bounds
+     * if (direction == right)
+     * return tracking point
+     * else
+     * return NaN
+     */
+    public double pathFollowing(Point oldTrackingPoint, Point CoM) {
+        LinkedHashMap<Double, Double> currentSegment = segments.get(splineSegment - 1);
+        LinkedList<Double> keys = new LinkedList<>(currentSegment.keySet());
+        LinkedList<Double> values = new LinkedList<>(currentSegment.values());
+
+        double[] x = new double[keys.size()];
+        double[] y = new double[keys.size()];
+        for (int i = 0; i < currentSegment.size(); i++) {
+            x[i] = keys.get(i);
+            y[i] = values.get(i);
+        }
+        linearOpMode.telemetry.addLine("Segment: " + Arrays.toString(x));
+        if (CoM.getX() < keys.getFirst())
+            return keys.getFirst();
+
+        if (CoM.getX() > keys.getLast())
+            return keys.getLast();
+
+        if (paths.get(currentSegment) == UniversalConstants.Direction.RIGHT) {
+            direction = UniversalConstants.Direction.RIGHT;
+            spline = splineInterpolator.interpolate(x, y);
+            return findTrackingPoint(oldTrackingPoint, CoM);
+        }
+        return NaN;
     }
 }
