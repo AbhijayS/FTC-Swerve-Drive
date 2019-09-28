@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.collins_demo_code;
+package org.firstinspires.ftc.teamcode.collins_dem o_code;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -19,7 +19,7 @@ public class collins_drivetrain extends LinearOpMode {
         waitForStart();
         while (opModeIsActive()){
             drivetrain.updateByGamepad();
-            if (gamepad1.Trigger1 > 0){
+            if (gamepad1. > 0){
                 RightMotor.setPower(1);
                 LeftMotor.setPower(-1);
             }
