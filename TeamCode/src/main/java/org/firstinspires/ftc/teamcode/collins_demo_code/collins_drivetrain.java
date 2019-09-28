@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 
 @TeleOp(name="collins_drivetrain")
 public class collins_drivetrain extends LinearOpMode {
-    
+
 
     public void runOpMode() {
         collins_drivetrain drivetrain = new collins_drivetrain(this, DcMotor.ZeroPowerBehavior.BRAKE);
@@ -37,6 +37,4 @@ public class collins_drivetrain extends LinearOpMode {
             }
         }
     }
-
-
 }
