@@ -138,5 +138,9 @@ public class yaboiVuforia extends LinearOpMode {
 
     String format(OpenGLMatrix transformationMatrix) {
         return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
+        /**
+         * Yazan got arrested by bringing a stick to school and got accused of a 3rd degree felony
+         * But... the charges got drooped because their was nothing to accuse him of.
+         */
     }
 }
