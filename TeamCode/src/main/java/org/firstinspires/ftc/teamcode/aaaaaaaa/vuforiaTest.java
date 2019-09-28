@@ -25,7 +25,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
 
 
 @TeleOp(name="vuforiaTest")
-public class yaboiVuforia extends LinearOpMode {
+public class yaboiVuforiaTraking extends LinearOpMode {
 
     public static final String TAG = "Vuforia VuMark Sample";
 
@@ -125,6 +125,7 @@ public class yaboiVuforia extends LinearOpMode {
             // check all the trackable targets to see which one (if any) is visible.
             for (VuforiaTrackable trackable : allTrackables) {
                 if (((VuforiaTrackableDefaultListener)trackable.getListener()).isVisible()) {
+
                     telemetry.addData("Visible Target", trackable.getName());
                     telemetry.update();
                 }
@@ -138,9 +139,6 @@ public class yaboiVuforia extends LinearOpMode {
 
     String format(OpenGLMatrix transformationMatrix) {
         return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
-        /**
-         * Yazan got arrested by bringing a stick to school and got accused of a 3rd degree felony
-         * But... the charges got drooped because their was nothing to accuse him of.
-         */
+
     }
 }
