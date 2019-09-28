@@ -9,18 +9,21 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 
 @TeleOp(name="collins_drivetrain")
-public class collins_drivetrain extends LinearOpMode {
+public class Test extends LinearOpMode {
     public void runOpMode() {
-        catapultDrivetrain drivetrain = new catapultDrivetrain(this, DcMotor.ZeroPowerBehavior.BRAKE);
+//        catapultDrivetrain drivetrain = new catapultDrivetrain(this, DcMotor.ZeroPowerBehavior.BRAKE);
         DcMotor RightMotor = hardwareMap.dcMotor.get("m1");
         DcMotor LeftMotor = hardwareMap.dcMotor.get("m2");
+        DcMotor leftFront = hardwareMap.dcMotor.get("lf");
+        DcMotor rightFront = hardwareMap.dcMotor.get("rf");
         Servo RightServo = hardwareMap.servo.get("s1");
         Servo LeftServo = hardwareMap.servo.get("s2");
         RightMotor.setPower(0);
         LeftMotor.setPower(0);
+        double scale = 0.25;
         waitForStart();
         while (opModeIsActive()){
-            drivetrain.updateByGamepad();
+
             if (gamepad2.left_bumper){
                 RightMotor.setPower(1);
                 LeftMotor.setPower(-1);
@@ -38,6 +41,13 @@ public class collins_drivetrain extends LinearOpMode {
                 LeftServo.setPosition(.28);
                 RightServo.setPosition(.52);
             }
+
+            double leftPower = scale*gamepad1.left_trigger;
+            double rightPower = -1*scale*gamepad1.right_trigger;
+
+            leftFront.setPower(leftPower);
+            rightFront.setPower(rightPower);
+
         }
     }
 }
