@@ -28,12 +28,12 @@ public class collins_drivetrain extends LinearOpMode {
                 LeftMotor.setPower(0);
             }
             if (gamepad1.x = 1) {
-                RightServo.power(1);
-                LeftServo.power(1);
+                RightServo.setPower(1);
+                LeftServo.setPower(1);
             }
             if (gamepad.y = 1) {
-                RightServo.power(0);
-                LeftServo.power(0);
+                RightServo.setPower(0);
+                LeftServo.setPower(0);
             }
         }
     }
