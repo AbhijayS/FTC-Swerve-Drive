@@ -25,7 +25,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
 
 
 @TeleOp(name="vuforiaTest")
-public class yaboiVuforiaTracking extends LinearOpMode {
+class yaboiVuforiaTracking extends LinearOpMode {
 
     public static final String TAG = "Vuforia VuMark Sample";
 
@@ -83,6 +83,10 @@ public class yaboiVuforiaTracking extends LinearOpMode {
          * @see VuMarkInstanceId
          */
         VuforiaTrackables ssTrackables = this.vuforia.loadTrackablesFromAsset("Skystone");
+
+        float mmPerInch        = 25.4f;
+        float mmBotWidth       = 18 * mmPerInch;            // ... or whatever is right for your robot
+        float mmFTCFieldWidth  = (12*12 - 2) * mmPerInch;   // the FTC field is ~11'10" center-to-center of the glass panels
 
         VuforiaTrackable stoneTarget = ssTrackables.get(0);
         stoneTarget.setName("Stone Target");
