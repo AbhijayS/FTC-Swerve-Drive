@@ -25,7 +25,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
 
 
 @TeleOp(name="vuforiaTest")
-public class yaboiVuforiaTraking extends LinearOpMode {
+public class yaboiVuforiaTracking extends LinearOpMode {
 
     public static final String TAG = "Vuforia VuMark Sample";
 
