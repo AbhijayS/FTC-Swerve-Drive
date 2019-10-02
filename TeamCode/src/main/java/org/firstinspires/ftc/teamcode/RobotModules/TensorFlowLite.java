@@ -24,6 +24,7 @@ public class TensorFlowLite {
     private Telemetry telemetry;
     private LinearOpMode linearOpMode;
     private HardwareMap hardwareMap;
+    private double confidence;
     String pattern;
 
 
@@ -38,12 +39,12 @@ public class TensorFlowLite {
      *
      * @param l Input this to run using LinearOpMode functions
      */
-    public TensorFlowLite(LinearOpMode l) {
+    public TensorFlowLite(LinearOpMode l, double confidence) {
         linearOpMode = l;
         telemetry = linearOpMode.telemetry;
         hardwareMap = linearOpMode.hardwareMap;
         pattern = "Unknown";
-
+        this.confidence = confidence;
 
         initVuforia();
 
@@ -207,6 +208,40 @@ public class TensorFlowLite {
     }
 
 
+    public void detectAbsence() {
+        if (tfod != null) {
+            List<Recognition> updateRecognitions = tfod.getUpdatedRecognitions();
+            if (updateRecognitions != null) {
+                int Stone1X = -1;
+                int Stone2X = -1;
+                for (Recognition recognition : updateRecognitions) {
+                    if (recognition.getLabel().equals(LABEL_FIRST_ELEMENT) && Stone1X == -1) {
+                        Stone1X = (int) recognition.getLeft();
+
+                    } else if (recognition.getLabel().equals(LABEL_FIRST_ELEMENT)) {
+                        Stone2X = (int) recognition.getLeft();
+                    }
+                }
+                if (Stone1X != -1 && Stone2X != -1) {
+                    if (Stone1X <= 852 && Stone2X <= 852) {
+                        pattern = "C";
+                        telemetry.addData("Pattern: ", "C");
+                    } else if (Stone1X >= 426 && Stone2X >= 426){
+                        pattern = "A";
+                        telemetry.addData("Pattern: ", "A");
+                    } else{
+                        pattern = "B";
+                        telemetry.addData("Pattern: ", "B");
+                    }
+
+                }
+            }
+            telemetry.addData("Pattern Variable: ", pattern);
+            telemetry.update();
+        }
+    }
+
+
     /**
      * Acccesses the private variable pattern which is set by determinePattern() function
      *
@@ -254,8 +289,11 @@ public class TensorFlowLite {
         int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
                 "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
+        tfodParameters.minimumConfidence = confidence;
+
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
         //Change these parameters when loading a new model asset for object detection. Set appropriate labels
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
+        tfod.setClippingMargins(0,100,0,100);
     }
 }

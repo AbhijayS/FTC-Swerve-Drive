@@ -9,13 +9,13 @@ import org.firstinspires.ftc.teamcode.RobotModules.TensorFlowLite;
 public class TensorFlowTester extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
-        TensorFlowLite tensorFlowLite = new TensorFlowLite(this);
+        TensorFlowLite tensorFlowLite = new TensorFlowLite(this,.25);
 
         tensorFlowLite.activateTfod();
         waitForStart();
 
         while (opModeIsActive()){
-            tensorFlowLite.updateTensorFlowSingle();
+            tensorFlowLite.determinePattern();
         }
     }
 }
