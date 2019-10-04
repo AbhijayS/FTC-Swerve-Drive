@@ -168,7 +168,7 @@ public class SwerveModule {
 //    }
 
     public double getDisplacement() {
-        return driveMotor.getCurrentPosition() * wheelCircumference * driveGearRatio / ticksPerRevolution;
+        return (driveMotor.getCurrentPosition() * wheelCircumference * driveGearRatio) / ticksPerRevolution;
     }
 
     public Point getPose() {

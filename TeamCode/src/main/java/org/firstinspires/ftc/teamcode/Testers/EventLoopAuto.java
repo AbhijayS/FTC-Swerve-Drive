@@ -1,20 +1,24 @@
 package org.firstinspires.ftc.teamcode.Testers;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.RobotModules.Path;
+import org.firstinspires.ftc.teamcode.RobotModules.Stopwatch;
 import org.firstinspires.ftc.teamcode.RobotModules.SwerveDrive;
 import org.firstinspires.ftc.teamcode.RobotModules.TensorFlowLite;
 import org.firstinspires.ftc.teamcode.RobotModules.UniversalConstants;
 
+@Autonomous(name = "Auto Quarry Side")
 public class EventLoopAuto extends LinearOpMode {
 
     enum AutoStates {
         CASE_A(new double[]{0, 0, 0}, new double[]{0, 0, 0}),
         CASE_B(new double[]{0, 0, 0}, new double[]{0, 0, 0}),
         CASE_C(new double[]{0, 0, 0}, new double[]{0, 0, 0}),
-        PATH_ONE(new double[]{0, 0, 0}, new double[]{0, 0, 0}),
-        PATH_TWO(new double[]{0, 0, 0}, new double[]{0, 0, 0}),
+        CASE_A1(new double[]{0, 0, 0}, new double[]{0, 0, 0}),
+        CASE_B1(new double[]{0, 0, 0}, new double[]{0, 0, 0}),
+        CASE_C1(new double[]{0, 0, 0}, new double[]{0, 0, 0}),
         SCANNING(new double[]{0, 0, 0}, new double[]{0, 0, 0});
 
         public final double[] x;
@@ -34,7 +38,7 @@ public class EventLoopAuto extends LinearOpMode {
         AutoStates autoStates = AutoStates.SCANNING;
         SwerveDrive swerveDrive = new SwerveDrive(this);
         //Path toInterpolate = new Path(this, AutoStates.PATH_ONE.x, AutoStates.PATH_ONE.y);
-        TensorFlowLite tensorFlowLite = new TensorFlowLite(this,.12);
+        TensorFlowLite tensorFlowLite = new TensorFlowLite(this, .12);
         //swerveDrive.setPath(toInterpolate);
         swerveDrive.requestState(UniversalConstants.SwerveState.PATH_FOLLOWING);
         boolean transition = false;
@@ -42,6 +46,8 @@ public class EventLoopAuto extends LinearOpMode {
 
         waitForStart();
 
+        Stopwatch stopwatch = new Stopwatch();
+        stopwatch.start();
         while (opModeIsActive()) {
             switch (autoStates) {
                 case SCANNING:
@@ -57,20 +63,46 @@ public class EventLoopAuto extends LinearOpMode {
                         }
                         transition = true;
                     }
+                    if (stopwatch.seconds() >= 3) {
+                        autoStates = AutoStates.CASE_A;
+                        transition = true;
+                    }
                     break;
+
+
                 case CASE_A:
                     swerveDrive.swerveKinematics.update();
                     swerveDrive.stanleyPursuit();
                     if (!swerveDrive.returnSwerveState().equals(UniversalConstants.SwerveState.PATH_FOLLOWING)) {
-                        autoStates = AutoStates.PATH_ONE;
+                        autoStates = AutoStates.CASE_A1;
+                        transition = true;
+                    }
+                    break;
+
+                case CASE_B:
+                    swerveDrive.swerveKinematics.update();
+                    swerveDrive.stanleyPursuit();
+                    if (!swerveDrive.returnSwerveState().equals(UniversalConstants.SwerveState.PATH_FOLLOWING)) {
+                        autoStates = AutoStates.CASE_B1;
+                        transition = true;
+                    }
+                    break;
+
+                case CASE_C:
+                    swerveDrive.swerveKinematics.update();
+                    swerveDrive.stanleyPursuit();
+                    if (!swerveDrive.returnSwerveState().equals(UniversalConstants.SwerveState.PATH_FOLLOWING)) {
+                        autoStates = AutoStates.CASE_C1;
+                        transition = true;
                     }
                     break;
 
             }
-            if(transition){
+            if (transition) {
                 Path toInterpolate = new Path(this, autoStates.x, autoStates.y);
                 swerveDrive.setPath(toInterpolate);
                 swerveDrive.requestState(UniversalConstants.SwerveState.PATH_FOLLOWING);
+                transition = false;
             }
         }
     }

@@ -38,20 +38,21 @@ public class SwerveDrive {
     public SwerveDrive(LinearOpMode l) {
         linearOpMode = l;
         //this.debugger = debugger;
-        this.swerveKinematics = new SwerveKinematics(l, this);
         this.swerveState = UniversalConstants.SwerveState.HUMAN_INPUT;
         this.motionState = UniversalConstants.MotionState.STOPPED;
 
         // Define and Initialize Swerve Modules
-        module0 = new SwerveModule(l, UniversalConstants.ModuleConfig.MODULE_ZERO.MODULE_ZERO);
+        module0 = new SwerveModule(l, UniversalConstants.ModuleConfig.MODULE_ZERO);
         module1 = new SwerveModule(l, UniversalConstants.ModuleConfig.MODULE_ONE);
         module2 = new SwerveModule(l, UniversalConstants.ModuleConfig.MODULE_TWO);
         module3 = new SwerveModule(l, UniversalConstants.ModuleConfig.MODULE_THREE);
 
         CoM = new Point();
 
-        this.IMU_ZERO = swerveKinematics.getIMU_ZERO();
+
         linearOpMode.telemetry.addLine(String.format("Swerve Drive Calibrated in %s Status", ROBOT_STATUS));
+        this.swerveKinematics = new SwerveKinematics(l, this);
+        this.IMU_ZERO = swerveKinematics.getIMU_ZERO();
     }
 
     public void requestState(UniversalConstants.SwerveState swerveState) {
