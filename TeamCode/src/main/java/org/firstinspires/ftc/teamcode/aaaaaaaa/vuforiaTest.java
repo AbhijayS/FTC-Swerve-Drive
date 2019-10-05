@@ -131,9 +131,9 @@ public class vuforiaTest extends LinearOpMode {
                 if (((VuforiaTrackableDefaultListener)trackable.getListener()).isVisible()) {
 
                     telemetry.addLine("Visible Target");
-//                    VectorF translation = lastLocation.getTranslation();
-//                    telemetry.addData("Pos (in)", "{X, Y, Z} = %.1f, %.1f, %.1f",
-//                            translation.get(0) / mmPerInch, translation.get(1) / mmPerInch, translation.get(2) / mmPerInch);
+                    VectorF translation = lastLocation.getTranslation();
+                   telemetry.addData("Pos (in)", "{X, Y, Z} = %.1f, %.1f, %.1f",
+                            translation.get(0) / mmPerInch, translation.get(1) / mmPerInch, translation.get(2) / mmPerInch);
                     telemetry.update();
                 }
                 else{
