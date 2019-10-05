@@ -38,8 +38,8 @@ public class catapultDrivetrain {
 
         status("Zero Power Behavior Set");
 
-        leftOne.setDirection(DcMotorSimple.Direction.REVERSE);
-        rightOne.setDirection(DcMotorSimple.Direction.FORWARD);
+        leftOne.setDirection(DcMotorSimple.Direction.FORWARD);
+        rightOne.setDirection(DcMotorSimple.Direction.REVERSE);
 
         status("Directions Set");
 
