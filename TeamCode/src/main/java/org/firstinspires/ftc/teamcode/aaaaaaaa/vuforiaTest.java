@@ -37,6 +37,7 @@ public class vuforiaTest extends LinearOpMode {
      * localization engine.
      */
     VuforiaLocalizer vuforia;
+    private Object cameraPoint;
 
     @Override public void runOpMode() {
 
@@ -135,11 +136,9 @@ public class vuforiaTest extends LinearOpMode {
             for (VuforiaTrackable trackable : allTrackables) {
                 if (((VuforiaTrackableDefaultListener)trackable.getListener()).isVisible()) {
 
-<<<<<<< HEAD
+
                     telemetry.addLine("Targets visible");
-=======
                     telemetry.addLine("Visible Target");
->>>>>>> 9610f19efb5c5a81f8dde0e6a831868067f3c5ab
                     telemetry.update();
                 }
                 else{
