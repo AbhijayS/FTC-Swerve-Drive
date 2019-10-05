@@ -21,7 +21,7 @@ public class catapultDrivetrain {
     public void status(String s) {
         telemetry.addLine(s);
         telemetry.update();
-    }
+}
 
     public catapultDrivetrain(LinearOpMode l, DcMotor.ZeroPowerBehavior zeroPowerBehavior) {
         linearOpMode = l;
