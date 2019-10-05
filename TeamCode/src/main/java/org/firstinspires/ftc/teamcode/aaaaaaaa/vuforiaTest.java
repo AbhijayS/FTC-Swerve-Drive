@@ -127,19 +127,10 @@ public class vuforiaTest extends LinearOpMode {
         ssTrackables.activate();
 
         while (opModeIsActive()) {
-            const QCAR::Tracker& tracker = QCAR::Tracker::getInstance();
-            const QCAR::CameraCalibration& cameraCalibration = tracker.getCameraCalibration();
-            QCAR::Vec2F cameraPoint = QCAR::Tool::projectPoint(cameraCalibration,trackable->getPose(), QCAR::Vec3F(0,0,0));
-            QCAR::Vec2F xyPoint = cameraPointToScreenPoint(cameraPoint);
             // check all the trackable targets to see which one (if any) is visible.
             for (VuforiaTrackable trackable : allTrackables) {
                 if (((VuforiaTrackableDefaultListener)trackable.getListener()).isVisible()) {
-
-<<<<<<< HEAD
-                    telemetry.addLine("Targets visible");
-=======
                     telemetry.addLine("Visible Target");
->>>>>>> 9610f19efb5c5a81f8dde0e6a831868067f3c5ab
                     telemetry.update();
                 }
                 else{
