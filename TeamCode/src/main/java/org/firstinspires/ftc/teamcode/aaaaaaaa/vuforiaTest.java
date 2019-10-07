@@ -131,9 +131,6 @@ public class vuforiaTest extends LinearOpMode {
             // check all the trackable targets to see which one (if any) is visible.
             for (VuforiaTrackable trackable : allTrackables) {
                 if (((VuforiaTrackableDefaultListener)trackable.getListener()).isVisible()) {
-
-
-
                     telemetry.addLine("Targets visible");
                     telemetry.addLine("Visible Target");
                     telemetry.update();
