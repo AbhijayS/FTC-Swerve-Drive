@@ -1,10 +1,13 @@
-package org.firstinspires.ftc.teamcode.RobotModules;
+package org.firstinspires.ftc.teamcode.modules.swerve;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import static org.firstinspires.ftc.teamcode.RobotModules.UniversalConstants.ModuleConfig;
-import static org.firstinspires.ftc.teamcode.RobotModules.UniversalConstants.servoDefaultAngle;
+import org.firstinspires.ftc.teamcode.common.utilities.Point;
+import org.firstinspires.ftc.teamcode.common.utilities.Stopwatch;
+
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ModuleConfig;
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.servoDefaultAngle;
 
 public class SwerveKinematics {
     private Stopwatch stopwatch;
@@ -17,12 +20,12 @@ public class SwerveKinematics {
     private Double[] dS;
     private double dT;
     private double velocity;
-    private Debugger debugger;
+    //private Debugger debugger;
     private BNO055IMU imu;
     private double IMU_ZERO;
 
     public SwerveKinematics(LinearOpMode linearOpMode,  SwerveDrive swerveDrive) {
-        UniversalConstants.ModuleConfig[] modulesConfig = UniversalConstants.ModuleConfig.values();
+        ModuleConfig[] modulesConfig = ModuleConfig.values();
         //this.debugger = debugger;
         this.stopwatch = new Stopwatch();
         this.stopwatch.start();

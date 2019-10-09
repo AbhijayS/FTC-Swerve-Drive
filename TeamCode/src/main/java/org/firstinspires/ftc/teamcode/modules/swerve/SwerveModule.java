@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.RobotModules;
+package org.firstinspires.ftc.teamcode.modules.swerve;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -9,18 +9,21 @@ import com.qualcomm.robotcore.hardware.ServoImplEx;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.ServoConfigurationType;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.teamcode.common.utilities.Point;
+
 import java.util.Locale;
 
-import static org.firstinspires.ftc.teamcode.RobotModules.UniversalConstants.MotorDirection;
-import static org.firstinspires.ftc.teamcode.RobotModules.UniversalConstants.ROBOT_MAX_SPEED;
-import static org.firstinspires.ftc.teamcode.RobotModules.UniversalConstants.ROBOT_STATUS;
-import static org.firstinspires.ftc.teamcode.RobotModules.UniversalConstants.clipAngle;
-import static org.firstinspires.ftc.teamcode.RobotModules.UniversalConstants.driveGearRatio;
-import static org.firstinspires.ftc.teamcode.RobotModules.UniversalConstants.pwmRange;
-import static org.firstinspires.ftc.teamcode.RobotModules.UniversalConstants.servoDefaultAngle;
-import static org.firstinspires.ftc.teamcode.RobotModules.UniversalConstants.servoRange;
-import static org.firstinspires.ftc.teamcode.RobotModules.UniversalConstants.ticksPerRevolution;
-import static org.firstinspires.ftc.teamcode.RobotModules.UniversalConstants.wheelCircumference;
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ModuleConfig;
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.MotorDirection;
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ROBOT_MAX_SPEED;
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ROBOT_STATUS;
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.clipAngle;
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.driveGearRatio;
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.pwmRange;
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.servoDefaultAngle;
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.servoRange;
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ticksPerRevolution;
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.wheelCircumference;
 
 public class SwerveModule {
 
@@ -33,7 +36,7 @@ public class SwerveModule {
 
     /* local OpMode members. */
     LinearOpMode linearOpMode;
-    private UniversalConstants.ModuleConfig swerveModule;
+    private ModuleConfig swerveModule;
     private double internalServoPosition; // considers the servo delta
     private double servoPosition; // ignores the servo delta
     private double mileage; // in inches
@@ -42,7 +45,7 @@ public class SwerveModule {
     private Point pose;
 
 
-    public SwerveModule(LinearOpMode l, UniversalConstants.ModuleConfig module) {
+    public SwerveModule(LinearOpMode l, ModuleConfig module) {
         swerveModule = module;
 
         // Save reference to LinearOpMode
@@ -168,7 +171,7 @@ public class SwerveModule {
 //    }
 
     public double getDisplacement() {
-        return (driveMotor.getCurrentPosition() * wheelCircumference * driveGearRatio) / ticksPerRevolution;
+        return driveMotor.getCurrentPosition() * wheelCircumference * driveGearRatio / ticksPerRevolution;
     }
 
     public Point getPose() {

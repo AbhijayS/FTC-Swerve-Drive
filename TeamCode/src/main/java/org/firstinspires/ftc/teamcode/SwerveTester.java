@@ -1,11 +1,11 @@
-package org.firstinspires.ftc.teamcode.Testers;
+package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.RobotModules.Path;
-import org.firstinspires.ftc.teamcode.RobotModules.SwerveDrive;
-import org.firstinspires.ftc.teamcode.RobotModules.UniversalConstants;
+import org.firstinspires.ftc.teamcode.common.states.SwerveState;
+import org.firstinspires.ftc.teamcode.common.utilities.Path;
+import org.firstinspires.ftc.teamcode.modules.swerve.SwerveDrive;
 
 @Autonomous(name = "Swerve Tester")
 public class SwerveTester extends LinearOpMode {
@@ -15,14 +15,14 @@ public class SwerveTester extends LinearOpMode {
         SwerveDrive swerveDrive = new SwerveDrive(this);
 
         double x[] = {
-            0,.5 * 100, 100,
+            0,.5 * 10, 10,
         };
         double y[] = {
                 0,0,0
         };
         Path toInterpolate = new Path(this, x, y);
         swerveDrive.setPath(toInterpolate);
-        swerveDrive.requestState(UniversalConstants.SwerveState.PATH_FOLLOWING);
+        swerveDrive.requestState(SwerveState.PATH_FOLLOWING);
 
         telemetry.update();
         waitForStart();
@@ -30,6 +30,7 @@ public class SwerveTester extends LinearOpMode {
         while(opModeIsActive()){
             swerveDrive.swerveKinematics.update();
             swerveDrive.stanleyPursuit();
+            telemetry.update();
         }
 
 

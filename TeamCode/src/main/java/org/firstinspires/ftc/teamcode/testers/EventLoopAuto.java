@@ -1,13 +1,14 @@
-package org.firstinspires.ftc.teamcode.Testers;
+package org.firstinspires.ftc.teamcode.testers;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.RobotModules.Path;
-import org.firstinspires.ftc.teamcode.RobotModules.Stopwatch;
-import org.firstinspires.ftc.teamcode.RobotModules.SwerveDrive;
-import org.firstinspires.ftc.teamcode.RobotModules.TensorFlowLite;
-import org.firstinspires.ftc.teamcode.RobotModules.UniversalConstants;
+import org.firstinspires.ftc.teamcode.common.UniversalConstants;
+import org.firstinspires.ftc.teamcode.common.states.SwerveState;
+import org.firstinspires.ftc.teamcode.common.utilities.Path;
+import org.firstinspires.ftc.teamcode.common.utilities.Stopwatch;
+import org.firstinspires.ftc.teamcode.modules.TensorFlowLite;
+import org.firstinspires.ftc.teamcode.modules.swerve.SwerveDrive;
 
 @Autonomous(name = "Auto Quarry Side")
 public class EventLoopAuto extends LinearOpMode {
@@ -40,7 +41,7 @@ public class EventLoopAuto extends LinearOpMode {
         //Path toInterpolate = new Path(this, AutoStates.PATH_ONE.x, AutoStates.PATH_ONE.y);
         TensorFlowLite tensorFlowLite = new TensorFlowLite(this, .12);
         //swerveDrive.setPath(toInterpolate);
-        swerveDrive.requestState(UniversalConstants.SwerveState.PATH_FOLLOWING);
+        swerveDrive.requestState(SwerveState.PATH_FOLLOWING);
         boolean transition = false;
         String pattern = "";
 
@@ -101,7 +102,7 @@ public class EventLoopAuto extends LinearOpMode {
             if (transition) {
                 Path toInterpolate = new Path(this, autoStates.x, autoStates.y);
                 swerveDrive.setPath(toInterpolate);
-                swerveDrive.requestState(UniversalConstants.SwerveState.PATH_FOLLOWING);
+                swerveDrive.requestState(SwerveState.PATH_FOLLOWING);
                 transition = false;
             }
         }

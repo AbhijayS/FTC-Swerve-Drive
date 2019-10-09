@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.RobotModules;
+package org.firstinspires.ftc.teamcode.common;
 
 import com.qualcomm.robotcore.hardware.PwmControl;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -121,13 +121,13 @@ public class UniversalConstants {
 
     static final int CYCLE_MS = 50;
     public static final Status ROBOT_STATUS = Status.TESTING;
-    static final double ROBOT_WIDTH = 14.5; // INCHES
-    static final double ROBOT_LENGTH = 15; // INCHES
+    public static final double ROBOT_WIDTH = 14.5; // INCHES
+    public static final double ROBOT_LENGTH = 15; // INCHES
     public static final double ROBOT_MAX_SPEED = 0.05;
     static final double ROBOT_COM_X = 0; // offset from (0,0)
     static final double ROBOT_COM_Y = 0; // offset from (0,0)
     static final double PI = Math.PI;
-    static final double HALF_PI = PI / 2;
+    public static final double HALF_PI = PI / 2;
 
     static final double TURN_FACTOR = 2; // Tune the robot's speed at turns (1 - 5)
     public static final int servoRange = 270;      // 225° to -45° on the Unit Circle

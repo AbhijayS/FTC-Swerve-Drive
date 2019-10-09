@@ -1,7 +1,7 @@
-package org.firstinspires.ftc.teamcode.RobotModules;
+package org.firstinspires.ftc.teamcode.common.utilities;
 
-import static org.firstinspires.ftc.teamcode.RobotModules.UniversalConstants.clipAngle;
-import static org.firstinspires.ftc.teamcode.RobotModules.UniversalConstants.decimalFormat;
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.clipAngle;
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.decimalFormat;
 
 /*
  * TODO This class should be renamed to Pose2D to better describe its purpose
@@ -13,14 +13,14 @@ public class Point {
     // heading is in DEGREES
     // TODO Make an Enum to specify units (DEGREES, RADIANS, STRAIGHT, RIGHT, ETC.)
 
-    Point() {
+    public Point() {
         x = 0;
         y = 0;
         heading = 90;
         originalHeading = 90;
     }
 
-    Point(double x, double y, double heading) {
+    public Point(double x, double y, double heading) {
         this.x = x;
         this.y = y;
         this.heading = heading;
@@ -49,8 +49,8 @@ public class Point {
      * @see #getDegrees()
      */
     public void move(double distance) {
-        x += distance*Math.cos(Math.toRadians(heading));
-        y += distance*Math.sin(Math.toRadians(heading));
+        x += distance* Math.cos(Math.toRadians(heading));
+        y += distance* Math.sin(Math.toRadians(heading));
     }
 
     /**
@@ -62,8 +62,8 @@ public class Point {
      * Moves the point by the specified distance in the specified direction in the global coordinate system
      */
     public void move(double distance, double direction) {
-        x += distance*Math.cos(Math.toRadians(direction));
-        y += distance*Math.sin(Math.toRadians(direction));
+        x += distance* Math.cos(Math.toRadians(direction));
+        y += distance* Math.sin(Math.toRadians(direction));
 
     }
 

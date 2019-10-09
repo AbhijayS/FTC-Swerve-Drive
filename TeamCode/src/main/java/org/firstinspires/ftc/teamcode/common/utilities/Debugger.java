@@ -1,19 +1,23 @@
-package org.firstinspires.ftc.teamcode.RobotModules;
+/*package org.firstinspires.ftc.teamcode.common.utilities;
 
 import android.content.Context;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.sun.tools.javac.util.List;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.common.UniversalConstants;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
-import static org.firstinspires.ftc.teamcode.RobotModules.UniversalConstants.ROBOT_STATUS;
+import static org.firstinspires.ftc.teamcode.UniversalConstants.*;
+import static org.firstinspires.ftc.teamcode.UniversalConstants.ROBOT_STATUS;
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ROBOT_STATUS;
 
 public class Debugger {
     private final String fileExtension = ".csv";
@@ -34,8 +38,8 @@ public class Debugger {
     public Debugger(Context context, LinearOpMode linearOpMode, ArrayList<String> categories) {
         this.context = context;
         this.telemetry = linearOpMode.telemetry;
-        this.buffer = new ArrayList<>();
-        this.categories = new ArrayList<>();
+        this.buffer = new ArrayList<>(List.of(new Object()));
+        this.categories = new ArrayList<>(List.of("Timestamp"));
 
         for (String category : categories) {
 
@@ -125,4 +129,4 @@ public class Debugger {
 
         stopwatch.stop();
     }
-}
+}*/
