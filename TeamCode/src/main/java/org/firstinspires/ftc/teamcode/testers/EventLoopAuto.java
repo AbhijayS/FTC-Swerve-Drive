@@ -1,13 +1,11 @@
-package org.firstinspires.ftc.teamcode.Testers;
+package org.firstinspires.ftc.teamcode.testers;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.RobotModules.Path;
-import org.firstinspires.ftc.teamcode.RobotModules.Stopwatch;
-import org.firstinspires.ftc.teamcode.RobotModules.SwerveDrive;
-import org.firstinspires.ftc.teamcode.RobotModules.TensorFlowLite;
-import org.firstinspires.ftc.teamcode.RobotModules.UniversalConstants;
+import org.firstinspires.ftc.teamcode.common.utilities.Stopwatch;
+import org.firstinspires.ftc.teamcode.modules.TensorFlowLite;
+import org.firstinspires.ftc.teamcode.common.UniversalConstants;
 
 @Autonomous(name = "Auto Quarry Side")
 public class EventLoopAuto extends LinearOpMode {
