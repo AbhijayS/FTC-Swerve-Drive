@@ -226,6 +226,10 @@ public class SwerveDrive {
         */
     }
 
+    public SwerveState returnSwerveState(){
+        return swerveState;
+    }
+
     public void setPower(double power) {
         power = Range.clip(power, 0, ROBOT_MAX_SPEED);
         module0.setPower(power);
