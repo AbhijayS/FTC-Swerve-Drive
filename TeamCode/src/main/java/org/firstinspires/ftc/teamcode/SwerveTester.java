@@ -32,7 +32,5 @@ public class SwerveTester extends LinearOpMode {
             swerveDrive.stanleyPursuit();
             telemetry.update();
         }
-
-
     }
 }
