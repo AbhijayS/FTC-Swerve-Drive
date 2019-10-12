@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 
 @TeleOp(name="arm_test")
-class arm_test extends LinearOpMode {
-    public void runOpMode() {
+public class arm_test extends LinearOpMode {
+    public void runOpMode() throws InterruptedException {
         Servo arm_servo = hardwareMap.servo.get("s1");
         Servo grabber_servo = hardwareMap.servo.get("s2");
         double arm_position = 1;
@@ -19,9 +19,14 @@ class arm_test extends LinearOpMode {
             if (gamepad1.x){
                 if (arm_position==0.16) {
                     arm_position = 0;
-                }
-                if (arm_position == 1) {
+                } else if (arm_position == 1) {
                     arm_position = 0.16;
+                } else {
+                    arm_position = 1;
+                }
+                //waits until you release x
+                while (gamepad1.x) {
+                    wait(1);
                 }
             }
 
