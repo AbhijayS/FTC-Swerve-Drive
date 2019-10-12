@@ -6,10 +6,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 
-@TeleOp(name="collins_drivetrain")
+@TeleOp(name="arm_test")
 class arm_test extends LinearOpMode {
     public void runOpMode() {
-//        catapultDrivetrain drivetrain = new catapultDrivetrain(this, DcMotor.ZeroPowerBehavior.BRAKE);
         Servo arm_servo = hardwareMap.servo.get("s1");
         Servo grabber_servo = hardwareMap.servo.get("s2");
         double arm_position = 1;
