@@ -33,7 +33,7 @@ public class arm_calibrate extends LinearOpMode {
                 position = position + 0.0005;
             }
             if (gamepad1.b) {
-                position = position - 0.0005;
+                grabber_position = grabber_position - 0.0005;
             }
             lift_servo.setPosition(position);
             telemetry.addData("lift_Servo Position", position);
