@@ -1,48 +1,63 @@
 package org.firstinspires.ftc.teamcode.modules.swerve;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.teamcode.common.states.MotionState;
-import org.firstinspires.ftc.teamcode.common.states.SwerveState;
+import org.firstinspires.ftc.teamcode.common.utilities.Debugger;
+import org.firstinspires.ftc.teamcode.common.utilities.Direction;
+import org.firstinspires.ftc.teamcode.common.utilities.Gamepad;
 import org.firstinspires.ftc.teamcode.common.utilities.Path;
 import org.firstinspires.ftc.teamcode.common.utilities.Point;
+import org.firstinspires.ftc.teamcode.common.states.MotionState;
+import org.firstinspires.ftc.teamcode.common.states.SwerveState;
 
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.clipAngle;
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.kP;
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.tolerance;
+import static org.firstinspires.ftc.teamcode.common.states.SwerveState.HUMAN_INPUT;
+import static org.firstinspires.ftc.teamcode.common.states.SwerveState.PATH_FOLLOWING;
+import static org.firstinspires.ftc.teamcode.common.states.SwerveState.PATH_FOLLOWING_COMPLETE;
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.Debugging.CORRECTION;
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.Debugging.ERROR;
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.Debugging.PATH;
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.Debugging.PX;
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.Debugging.PY;
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.Debugging.VELOCITY;
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.Debugging.WA;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.HALF_PI;
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.kS;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ModuleConfig;
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.Status.RELEASE;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ROBOT_LENGTH;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ROBOT_MAX_SPEED;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ROBOT_STATUS;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ROBOT_WIDTH;
-import static org.firstinspires.ftc.teamcode.common.UniversalConstants.Status.RELEASE;
-import static org.firstinspires.ftc.teamcode.common.UniversalConstants.kS;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.roundTo2DecimalPlaces;
-import static org.firstinspires.ftc.teamcode.common.states.SwerveState.HUMAN_INPUT;
-import static org.firstinspires.ftc.teamcode.common.states.SwerveState.PATH_FOLLOWING;
-import static org.firstinspires.ftc.teamcode.common.states.SwerveState.PATH_FOLLOWING_COMPLETE;
 
 public class SwerveDrive {
 
     /* Private OpMode members. */
-    SwerveModule module0;
-    SwerveModule module1;
-    SwerveModule module2;
-    SwerveModule module3;
+    public SwerveModule module0;
+    public SwerveModule module1;
+    public SwerveModule module2;
+    public SwerveModule module3;
     private LinearOpMode linearOpMode;
     private Path path = null;
     private double IMU_ZERO;
     private Point CoM;
     private Point trackingPoint; // Point on the path to be tracked
     private int splineSegment;
-    //private Debugger debugger;
+    private Debugger debugger;
     private SwerveState swerveState;
     private MotionState motionState;
     public SwerveKinematics swerveKinematics;
+    private Point kinematicsDelta;
+    private double headingGoal;
+    private boolean headingGoalSet;
 
-    public SwerveDrive(LinearOpMode l) {
+    public SwerveDrive(LinearOpMode l, Debugger debugger) {
         linearOpMode = l;
-        //this.debugger = debugger;
+        this.debugger = debugger;
         this.swerveState = HUMAN_INPUT;
         this.motionState = MotionState.STOPPED;
 
@@ -54,8 +69,11 @@ public class SwerveDrive {
 
         CoM = new Point();
 
-        this.swerveKinematics = new SwerveKinematics(l, this);
+        this.swerveKinematics = new SwerveKinematics(l, debugger, this);
+        this.kinematicsDelta = new Point(0,0,0);
         this.IMU_ZERO = swerveKinematics.getIMU_ZERO();
+        this.headingGoal = 90;
+        this.headingGoalSet = true;
 
         linearOpMode.telemetry.addLine(String.format("Swerve Drive Calibrated in %s Status", ROBOT_STATUS));
     }
@@ -64,7 +82,7 @@ public class SwerveDrive {
         this.swerveState = swerveState;
     }
 
-    public void turnDrive(Gamepad g) {
+    public void fod(Gamepad g) {
 
         // TODO: Simplify code
 
@@ -72,10 +90,40 @@ public class SwerveDrive {
             return;
         }
 
-        double x_left = g.left_stick_x;
-        double y_left = -g.left_stick_y;
+        double x_left = g.x;
+        double y_left = g.y;
 
-        double OMEGA = Range.scale(g.right_stick_x, 0, 1, 0, ROBOT_MAX_SPEED); // Rotational speed: Clockwise is positive and Anti-Clockwise is negative
+        double OMEGA = Range.scale(g.z, 0, 1, 0, ROBOT_MAX_SPEED); // Rotational speed: Clockwise is positive and Anti-Clockwise is negative
+        if (Double.compare(OMEGA, 0.0) == 0) {
+            if (!headingGoalSet) {
+                headingGoal = roundTo2DecimalPlaces(swerveKinematics.getCenterOfMass().getDegrees());
+                headingGoalSet = true;
+            }
+            OMEGA = turnPID(headingGoal);
+        } else {
+            headingGoalSet = false;
+        }
+
+        if (g.heading) {
+            if (g._45)
+                headingGoal = 45;
+            else if (g._135)
+                headingGoal = 135;
+            else if (g._225)
+                headingGoal = 225;
+            else if (g._315)
+                headingGoal = 315;
+            else if (g._0)
+                headingGoal = 0;
+            else if (g._90)
+                headingGoal = 90;
+            else if (g._180)
+                headingGoal = 180;
+            else if (g._270)
+                headingGoal = 270;
+            headingGoalSet = true;
+        }
+
         double STR = Range.scale(Math.abs(Math.hypot(x_left, y_left)), 0, 1, 0, ROBOT_MAX_SPEED); // Strafing speed
         double STR_ANGLE = Math.toDegrees(Math.atan2(y_left, x_left)); // Strafing angle
         double corner0 = Math.atan2(ROBOT_LENGTH / 2, ROBOT_WIDTH / 2);
@@ -127,7 +175,7 @@ public class SwerveDrive {
         setPower(speed0, speed1, speed2, speed3);
     }
 
-    private void turnDrive(double strafe_angle, double strafe_power, double turn_power, double yaw) {
+    public void fod(double strafe_angle, double strafe_power, double turn_power, double yaw) {
 
         double OMEGA = turn_power; // Rotational speed: Clockwise is positive and Anti-Clockwise is negative
         double STR = strafe_power; // Strafing speed
@@ -173,6 +221,15 @@ public class SwerveDrive {
         setPower(speed0, speed1, speed2, speed3);
     }
 
+    private double turnPID(double targetAngle) {
+        double heading = roundTo2DecimalPlaces(swerveKinematics.getCenterOfMass().getDegrees());
+        double setAngle = roundTo2DecimalPlaces(clipAngle(targetAngle));
+        double err = roundTo2DecimalPlaces(heading - setAngle);
+        err += (err> 180) ? -360 : (err < -180) ? 360 : 0;
+        double power = Math.abs(err) <= tolerance ? 0 : err * kP;
+        return power;
+    }
+
     public void swivel(double toAngle) {
         module0.swivel(toAngle);
         module1.swivel(toAngle);
@@ -180,24 +237,24 @@ public class SwerveDrive {
         module3.swivel(toAngle);
 
 
-        /*
-        double[] distances = new double[4];
-        distances[0] = module0.swivel(toAngle);
-        distances[1] = module1.swivel(toAngle);
-        distances[2] = module2.swivel(toAngle);
-        distances[3] = module3.swivel(toAngle);
-        Arrays.sort(distances);
 
-        long wait = Math.round(servoSpeed * distances[0] * 1000);
+//        double[] distances = new double[4];
+//        distances[0] = module0.swivel(toAngle);
+//        distances[1] = module1.swivel(toAngle);
+//        distances[2] = module2.swivel(toAngle);
+//        distances[3] = module3.swivel(toAngle);
+//        Arrays.sort(distances);
+//
+//        long wait = Math.round(servoSpeed * distances[0] * 1000);
+//
+//        if (wait >= CYCLE_MS * 2) {
+//            setPower(0);
+//            linearOpMode.sleep(wait);
+//        }
+//
+//        if (!ROBOT_STATUS.equals(RELEASE))
+//            linearOpMode.telemetry.addLine("Sleep: " + wait);
 
-        if (wait >= CYCLE_MS * 2) {
-            setPower(0);
-            linearOpMode.sleep(wait);
-        }
-
-        if (!ROBOT_STATUS.equals(RELEASE))
-            linearOpMode.telemetry.addLine("Sleep: " + wait);
-        */
     }
 
     public void swivel(double angle0, double angle1, double angle2, double angle3) {
@@ -226,10 +283,6 @@ public class SwerveDrive {
         */
     }
 
-    public SwerveState returnSwerveState(){
-        return swerveState;
-    }
-
     public void setPower(double power) {
         power = Range.clip(power, 0, ROBOT_MAX_SPEED);
         module0.setPower(power);
@@ -252,8 +305,13 @@ public class SwerveDrive {
 
     public void setPath(Path path) {
         this.path = path;
-        trackingPoint = new Point(0, 0, path.heading(0));
-        splineSegment = 1;
+        this.CoM.setCoordinates(path.getStartLocation().getX(), path.getStartLocation().getY());
+        this.kinematicsDelta.setCoordinates(
+                path.getStartLocation().getX() - swerveKinematics.getCenterOfMass().getX(),
+                path.getStartLocation().getY() - swerveKinematics.getCenterOfMass().getY()
+        );
+        this.trackingPoint = new Point(0, 0, path.heading(0));
+        this.splineSegment = 1;
     }
 
     /*
@@ -271,13 +329,14 @@ public class SwerveDrive {
         // Update robot pose
         double yaw = roundTo2DecimalPlaces(swerveKinematics.getYaw());
         double velocity = roundTo2DecimalPlaces(swerveKinematics.getVelocity());
-        double roundedComX = roundTo2DecimalPlaces(swerveKinematics.getCenterOfMass().getX());
-        double roundedComY = roundTo2DecimalPlaces(swerveKinematics.getCenterOfMass().getY());
+        double roundedComX = roundTo2DecimalPlaces(swerveKinematics.getCenterOfMass().getX() + kinematicsDelta.getX());
+        double roundedComY = roundTo2DecimalPlaces(swerveKinematics.getCenterOfMass().getY() + kinematicsDelta.getY());
 
         CoM.setCoordinates(roundedComX, roundedComY);
 
         path.pathFollowing(CoM);
-        //debugger.addData("Path State", path.getPathState().name());
+        debugger.addData("Path State", path.getPathState().name());
+
         switch (path.getPathState()) {
             case END:
                 swerveState = PATH_FOLLOWING_COMPLETE;
@@ -294,24 +353,34 @@ public class SwerveDrive {
 
             default:
                 // Calculate cross-track error
-                double distance = Math.hypot(path.getTrackingPoint().getX() - CoM.getX(), path.getTrackingPoint().getY() - CoM.getY());
-                distance = Math.copySign(distance, path.getTrackingPoint().getY() - CoM.getY());
-                double crossTrackAngle = Math.toDegrees(Math.atan2(distance, path.getDirection().assignDirection(velocity / kS)));
+                Point trackingPoint = path.getTrackingPoint();
+                double distance = Math.hypot(trackingPoint.getX() - CoM.getX(), trackingPoint.getY() - CoM.getY());
+                double crossTrackAngle;
 
-                turnDrive(crossTrackAngle, .05,0, yaw);
+                if (path.getDirection() == Direction.LEFT || path.getDirection() == Direction.RIGHT) {
+                    distance = Math.copySign(distance, trackingPoint.getY() - CoM.getY());
+                    crossTrackAngle = Math.toDegrees(Math.atan2(distance, path.getDirection().assignDirection(velocity / kS)));
+                } else {
+                    distance = Math.copySign(distance, trackingPoint.getX() - CoM.getX());
+                    crossTrackAngle = Math.toDegrees(Math.atan2(path.getDirection().assignDirection(velocity / kS), distance));
+                }
 
+                if (!Double.isNaN(trackingPoint.getDegrees()))
+                    headingGoal = trackingPoint.getDegrees();
+
+                fod(crossTrackAngle,0.1,turnPID(headingGoal), yaw);
 
                 if (!ROBOT_STATUS.equals(RELEASE)) {
-//                    debugger.addData("Yaw", Double.toString(yaw));
-//                    debugger.addData(PATH.toString(), path.toString());
-//                    debugger.addData(PX.toString(), Double.toString(path.getTrackingPoint().getX()));
-//                    debugger.addData(PY.toString(), Double.toString(path.getTrackingPoint().getY()));
-//                    debugger.addData(ERROR.toString(), Double.toString(distance));
-//                    debugger.addData(CORRECTION.toString(), Double.toString(crossTrackAngle));
-//                    debugger.addData(VELOCITY.toString(), Double.toString(velocity));
-//                    debugger.addData(PATH.toString(), path.toString());
-//                    debugger.addData(WA.toString(), Double.toString(module0.getServoPosition()));
-//                    debugger.addData(VELOCITY.toString(), Double.toString(velocity));
+                    debugger.addData("Yaw", Double.toString(yaw));
+                    debugger.addData(PATH.toString(), path.toString());
+                    debugger.addData(PX.toString(), Double.toString(path.getTrackingPoint().getX()));
+                    debugger.addData(PY.toString(), Double.toString(path.getTrackingPoint().getY()));
+                    debugger.addData(ERROR.toString(), Double.toString(distance));
+                    debugger.addData(CORRECTION.toString(), Double.toString(crossTrackAngle));
+                    debugger.addData(VELOCITY.toString(), Double.toString(velocity));
+                    debugger.addData(PATH.toString(), path.toString());
+                    debugger.addData(WA.toString(), Double.toString(module0.getServoPosition()));
+                    debugger.addData(VELOCITY.toString(), Double.toString(velocity));
                 }
         }
     }

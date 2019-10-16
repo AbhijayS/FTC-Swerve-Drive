@@ -49,8 +49,8 @@ public class Point {
      * @see #getDegrees()
      */
     public void move(double distance) {
-        x += distance* Math.cos(Math.toRadians(heading));
-        y += distance* Math.sin(Math.toRadians(heading));
+        x += distance*Math.cos(Math.toRadians(heading));
+        y += distance*Math.sin(Math.toRadians(heading));
     }
 
     /**
@@ -62,8 +62,8 @@ public class Point {
      * Moves the point by the specified distance in the specified direction in the global coordinate system
      */
     public void move(double distance, double direction) {
-        x += distance* Math.cos(Math.toRadians(direction));
-        y += distance* Math.sin(Math.toRadians(direction));
+        x += distance*Math.cos(Math.toRadians(direction));
+        y += distance*Math.sin(Math.toRadians(direction));
 
     }
 
