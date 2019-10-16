@@ -2,12 +2,11 @@ package org.firstinspires.ftc.teamcode.arm_test;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 
-@TeleOp(name="arm_test")
-public class arm_test extends LinearOpMode {
+@TeleOp(name="arm_test_")
+public class arm_test_ extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         Servo arm_servo = hardwareMap.servo.get("s1");
         Servo grabber_servo = hardwareMap.servo.get("s2");
@@ -27,7 +26,7 @@ public class arm_test extends LinearOpMode {
                 //waits until you release x
                 while (gamepad1.x) {
                     wait(1);
-                }  
+                }
             }
 
             if (gamepad1.y) {
@@ -36,9 +35,6 @@ public class arm_test extends LinearOpMode {
                 }
                 if (grabber_position == 0) {
                     grabber_position = 0.5;
-                }
-                while (gamepad1.y) {
-                    wait(1);
                 }
             }
         }
