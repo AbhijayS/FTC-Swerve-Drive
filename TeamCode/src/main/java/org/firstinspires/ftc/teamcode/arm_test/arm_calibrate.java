@@ -16,7 +16,7 @@ public class arm_calibrate extends LinearOpMode {
     public void runOpMode() {
         Servo lift_servo = hardwareMap.get(Servo.class, "s1");
         Servo grab_servo = hardwareMap.get(Servo.class, "s2");
-        double position = 0.5;
+        double arm_position = 0.5;
         double grabber_position = 0.5;
         waitForStart();
         // run until the end of the match (driver presses STOP)
@@ -24,20 +24,21 @@ public class arm_calibrate extends LinearOpMode {
         while (opModeIsActive()) {
 
             if (gamepad1.y) {
-                position = position + 0.0005;
+                arm_position = arm_position + 0.0005;
             }
             if (gamepad1.x) {
-                position = position - 0.0005;
+                arm_position = arm_position - 0.0005;
             }
             if (gamepad1.a) {
-                position = position + 0.0005;
+                grabber_position = grabber_position + 0.0005;
             }
             if (gamepad1.b) {
                 grabber_position = grabber_position - 0.0005;
             }
-            lift_servo.setPosition(position);
-            telemetry.addData("lift_Servo Position", position);
-//            telemetry.addData("Grab_Servo position", position);
+            lift_servo.setPosition(arm_position);
+            lift_servo.setPosition(grabber_position);
+            telemetry.addData("lift_Servo Position", arm_position);
+            telemetry.addData("Grab_Servo position", grabber_position);
             telemetry.addLine("Status: Running");
             telemetry.update();
 
