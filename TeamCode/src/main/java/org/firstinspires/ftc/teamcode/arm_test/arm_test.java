@@ -27,7 +27,7 @@ public class arm_test extends LinearOpMode {
                 //waits until you release x
                 while (gamepad1.x) {
                     wait(1);
-                }
+                }  
             }
 
             if (gamepad1.y) {
@@ -36,6 +36,9 @@ public class arm_test extends LinearOpMode {
                 }
                 if (grabber_position == 0) {
                     grabber_position = 0.5;
+                }
+                while (gamepad1.y) {
+                    wait(1);
                 }
             }
         }
