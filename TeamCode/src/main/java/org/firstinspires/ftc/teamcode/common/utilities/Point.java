@@ -43,27 +43,24 @@ public class Point {
     }
 
     /**
-     *
-     * @param distance
-     * Moves the point by the specified distance in the current direction in the global coordinate system
+     * @param distance Moves the point by the specified distance in the current direction in the global coordinate system
      * @see #getDegrees()
      */
     public void move(double distance) {
-        x += distance*Math.cos(Math.toRadians(heading));
-        y += distance*Math.sin(Math.toRadians(heading));
+        x += distance * Math.cos(Math.toRadians(heading));
+        y += distance * Math.sin(Math.toRadians(heading));
     }
 
     /**
-     *
-     * @param distance Self-explanatory
+     * @param distance  Self-explanatory
      * @param direction Self-explanatory
      *                  IMPORTANT this method will NOT update the heading of this point
-     *
-     * Moves the point by the specified distance in the specified direction in the global coordinate system
+     *                  <p>
+     *                  Moves the point by the specified distance in the specified direction in the global coordinate system
      */
     public void move(double distance, double direction) {
-        x += distance*Math.cos(Math.toRadians(direction));
-        y += distance*Math.sin(Math.toRadians(direction));
+        x += distance * Math.cos(Math.toRadians(direction));
+        y += distance * Math.sin(Math.toRadians(direction));
 
     }
 
@@ -95,6 +92,6 @@ public class Point {
     @Override
     public String toString() {
 
-        return "("+decimalFormat.format(x)+", "+decimalFormat.format(y)+")";
+        return "(" + decimalFormat.format(x) + ", " + decimalFormat.format(y) + ")";
     }
 }

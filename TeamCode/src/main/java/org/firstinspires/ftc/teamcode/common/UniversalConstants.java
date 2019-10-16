@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.common;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.PwmControl;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -9,12 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UniversalConstants {
-
     /*
      * Work Flow:
      * TESTING => DEBUGGING => TESTING => DEBUGGING => ...
      * TESTING => RELEASE
      */
+    public static final String vuforiaLicenceKey = "AfWYo6H/////AAABmQhOGpga9kzugmfBYrjJDQs2b+vIsT5Pjplu+VgGrxevhveFPbYqHKZeHrJKY1bhrSNzeogphVwdC2ndsu9sn9WZ/yOrOhQ9s8egFXfDzkPN6uhzqVo5A3qGAPK8CPqAcdraaJxMKINGPo+aBqbzELtMl+kX1BkUfbapRDYIBRS+oySt71kDzykpd0Iy7NgJGU5xfsEm8fJm9xWVTFV7IsChCAKeo7bmBUtcpIVR6smjqRT9noJcmWv2aP9J1C2CcW766ptLy0lKIl08M+S2uY8XYHjK2kBpOnHvkSrzsnrROgE/g7V4xDiFCEFBjk1w4qAcO5veTVzbhqxxSmWMQkb7JiORCUCZ+Dz5F8bYW5zY";
     public enum Status {
         DEBUGGING, TESTING, RELEASE
     }
@@ -125,6 +124,7 @@ public class UniversalConstants {
         }
 
     }
+
     public static final int     CYCLE_MS            =   50;
     public static final Status  ROBOT_STATUS        =   Status.TESTING;
     public static final double  ROBOT_WIDTH         =   14.5; // INCHES
@@ -160,20 +160,16 @@ public class UniversalConstants {
      */
 
     /**
-     *
      * @param a - any angle in degrees in the range (-infinity to infinity)
      * @return Normalizes the angle in the range (-180 to 180)
      */
     public static double clipAngle(double a) {
         return Math.toDegrees(Math.atan2(Math.sin(Math.toRadians(a)), Math.cos(Math.toRadians(a))));
     }
-
     public static boolean oppositeSigns(double a, double b) {
         return a*b < 0;
     }
-
     public static double roundTo2DecimalPlaces(double a) {
         return Math.round(a * 100.0) / 100.0;
     }
-
 }

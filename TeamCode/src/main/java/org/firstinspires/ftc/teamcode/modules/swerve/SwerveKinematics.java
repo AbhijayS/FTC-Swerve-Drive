@@ -42,7 +42,7 @@ public class SwerveKinematics {
                 swerveModules[2].getDisplacement(),
                 swerveModules[3].getDisplacement()
         };
-        this.modulesPose = new Point[] {
+        this.modulesPose = new Point[]{
                 new Point(modulesConfig[0].x, modulesConfig[0].y, servoDefaultAngle),
                 new Point(modulesConfig[1].x, modulesConfig[1].y, servoDefaultAngle),
                 new Point(modulesConfig[2].x, modulesConfig[2].y, servoDefaultAngle),
@@ -58,7 +58,6 @@ public class SwerveKinematics {
                 0.0,
                 0.0
         };
-
         // Define and Initialize REV IMU sensor
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
 
@@ -82,7 +81,6 @@ public class SwerveKinematics {
         this.yawStamp = yaw();
         this.centerOfMass = new Point(0, 0, 90 + this.yawStamp);
         this.velocity = 0;
-
         linearOpMode.telemetry.addLine("Swerve Kinematics Calibrated!");
     }
 
@@ -95,9 +93,8 @@ public class SwerveKinematics {
 
         double currentYaw = yaw();
         double angularDeltaDegrees = currentYaw - yawStamp;
-        angularDeltaDegrees += (angularDeltaDegrees> 180) ? -360 : (angularDeltaDegrees < -180) ? 360 : 0;
+        angularDeltaDegrees += (angularDeltaDegrees > 180) ? -360 : (angularDeltaDegrees < -180) ? 360 : 0;
         double angularDeltaRadians = Math.toRadians(angularDeltaDegrees);
-
         // Update Module pose 1 of 3
         // Module pose at the beginning of the last control signal
         // @see Update Module pose 3 of 3

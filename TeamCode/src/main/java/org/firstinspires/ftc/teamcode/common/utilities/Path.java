@@ -20,7 +20,7 @@ public class Path {
     private SplineInterpolator splineInterpolator;
     private LinkedHashMap<LinkedHashMap<Double, Double>, Direction> paths;
     private LinkedList<LinkedHashMap<Double, Double>> segments;
-    private double z[];
+    private double[] z;
     private LinearOpMode linearOpMode;
     private Direction direction;
     private int splineSegment;
@@ -105,7 +105,7 @@ public class Path {
             }
         }
         splineInterpolator = new SplineInterpolator();
-        spline = splineInterpolator.interpolate(new double[]{0,1,2}, new double[]{0,0,0});
+        spline = splineInterpolator.interpolate(new double[]{0, 1, 2}, new double[]{0, 0, 0});
         direction = Direction.UNKOWN;
         splineSegment = 1;
         pathSegment = 1;
@@ -174,7 +174,7 @@ public class Path {
                 spline = splineInterpolator.interpolate(x, y);
                 double TPX = findTrackingPointRight(CoM);
                 double TPY = spline.value(TPX);
-                zIndex = Range.clip(zIndex, 0, z.length-1);
+                zIndex = Range.clip(zIndex, 0, z.length - 1);
                 trackingPoint.setPose(TPX, TPY, z[zIndex]);
                 pathState = PathState.FOLLOW;
                 break;
@@ -214,7 +214,7 @@ public class Path {
                 spline = splineInterpolator.interpolate(x, y);
                 double TPX = findTrackingPointLeft(CoM);
                 double TPY = spline.value(TPX);
-                zIndex = Range.clip(zIndex, 0, z.length-1);
+                zIndex = Range.clip(zIndex, 0, z.length - 1);
                 trackingPoint.setPose(TPX, TPY, z[zIndex]);
                 pathState = PathState.FOLLOW;
                 break;
@@ -242,7 +242,7 @@ public class Path {
                     splineSegment = 1;
                     pathState = PathState.SUSTAIN;
                 }
-                zIndex = Range.clip(zIndex, 0, z.length-1);
+                zIndex = Range.clip(zIndex, 0, z.length - 1);
                 trackingPoint.setPose(keys.getFirst(), CoM.getY(), z[zIndex]);
                 pathState = PathState.FOLLOW;
                 break;
@@ -268,7 +268,7 @@ public class Path {
                     splineSegment = 1;
                     pathState = PathState.SUSTAIN;
                 }
-                zIndex = Range.clip(zIndex, 0, z.length-1);
+                zIndex = Range.clip(zIndex, 0, z.length - 1);
                 trackingPoint.setPose(keys.getFirst(), CoM.getY(), z[zIndex]);
                 pathState = PathState.FOLLOW;
                 break;
@@ -291,11 +291,11 @@ public class Path {
         if (currentSegment > spline.getN())
             return trackingPoint.getX();
 
-        double dTrackingPoint = Math.hypot(CoM.getX()-trackingPoint.getX(), CoM.getY()-trackingPoint.getY());
+        double dTrackingPoint = Math.hypot(CoM.getX() - trackingPoint.getX(), CoM.getY() - trackingPoint.getY());
         Double knotA = spline.getKnots()[currentSegment - 1];
         Double knotB = spline.getKnots()[currentSegment];
         Double shift = -knotA;
-        Double dKnotB = Math.hypot(CoM.getX()-knotB, CoM.getY()-spline.value(knotB));
+        Double dKnotB = Math.hypot(CoM.getX() - knotB, CoM.getY() - spline.value(knotB));
 
         LaguerreSolver ls = new LaguerreSolver();
         PolynomialFunction ry = new PolynomialFunction(new double[]{CoM.getY()});
@@ -314,7 +314,7 @@ public class Path {
                 double r = c.getReal() - shift;
                 if (r > trackingPoint.getX() && r < knotB) {
                     real.add(r);
-                    realDistances.add(Math.hypot(CoM.getX()-r, CoM.getY()-spline.value(r)));
+                    realDistances.add(Math.hypot(CoM.getX() - r, CoM.getY() - spline.value(r)));
                 }
             }
         }
@@ -346,11 +346,11 @@ public class Path {
         if (currentSegment > spline.getN())
             return trackingPoint.getX();
 
-        double dTrackingPoint = Math.hypot(CoM.getX()-trackingPoint.getX(), CoM.getY()-trackingPoint.getY());
+        double dTrackingPoint = Math.hypot(CoM.getX() - trackingPoint.getX(), CoM.getY() - trackingPoint.getY());
         Double knotB = spline.getKnots()[currentSegment - 1];
         Double knotA = spline.getKnots()[currentSegment];
         Double shift = -knotB;
-        Double dKnotB = Math.hypot(CoM.getX()-knotB, CoM.getY()-spline.value(knotB));
+        Double dKnotB = Math.hypot(CoM.getX() - knotB, CoM.getY() - spline.value(knotB));
 
         LaguerreSolver ls = new LaguerreSolver();
         PolynomialFunction ry = new PolynomialFunction(new double[]{CoM.getY()});
@@ -369,7 +369,7 @@ public class Path {
                 double r = c.getReal() - shift;
                 if (r < trackingPoint.getX() && r > knotB) {
                     real.add(r);
-                    realDistances.add(Math.hypot(CoM.getX()-r, CoM.getY()-spline.value(r)));
+                    realDistances.add(Math.hypot(CoM.getX() - r, CoM.getY() - spline.value(r)));
                 }
             }
         }
@@ -402,7 +402,7 @@ public class Path {
         LinkedHashMap<Double, Double> currentSegment = segments.get(0);
         LinkedList<Double> keys = new LinkedList<>(currentSegment.keySet());
         LinkedList<Double> values = new LinkedList<>(currentSegment.values());
-        return new Point(keys.getFirst(), values.getFirst(),0);
+        return new Point(keys.getFirst(), values.getFirst(), 0);
     }
 
     public PathState getPathState() {

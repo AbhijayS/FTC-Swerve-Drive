@@ -3,20 +3,14 @@ package org.firstinspires.ftc.teamcode.modules.swerve;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.teamcode.common.states.MotionState;
+import org.firstinspires.ftc.teamcode.common.states.SwerveState;
 import org.firstinspires.ftc.teamcode.common.utilities.Debugger;
 import org.firstinspires.ftc.teamcode.common.utilities.Direction;
 import org.firstinspires.ftc.teamcode.common.utilities.Gamepad;
 import org.firstinspires.ftc.teamcode.common.utilities.Path;
 import org.firstinspires.ftc.teamcode.common.utilities.Point;
-import org.firstinspires.ftc.teamcode.common.states.MotionState;
-import org.firstinspires.ftc.teamcode.common.states.SwerveState;
 
-import static org.firstinspires.ftc.teamcode.common.UniversalConstants.clipAngle;
-import static org.firstinspires.ftc.teamcode.common.UniversalConstants.kP;
-import static org.firstinspires.ftc.teamcode.common.UniversalConstants.tolerance;
-import static org.firstinspires.ftc.teamcode.common.states.SwerveState.HUMAN_INPUT;
-import static org.firstinspires.ftc.teamcode.common.states.SwerveState.PATH_FOLLOWING;
-import static org.firstinspires.ftc.teamcode.common.states.SwerveState.PATH_FOLLOWING_COMPLETE;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.Debugging.CORRECTION;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.Debugging.ERROR;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.Debugging.PATH;
@@ -25,14 +19,20 @@ import static org.firstinspires.ftc.teamcode.common.UniversalConstants.Debugging
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.Debugging.VELOCITY;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.Debugging.WA;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.HALF_PI;
-import static org.firstinspires.ftc.teamcode.common.UniversalConstants.kS;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ModuleConfig;
-import static org.firstinspires.ftc.teamcode.common.UniversalConstants.Status.RELEASE;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ROBOT_LENGTH;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ROBOT_MAX_SPEED;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ROBOT_STATUS;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ROBOT_WIDTH;
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.Status.RELEASE;
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.clipAngle;
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.kP;
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.kS;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.roundTo2DecimalPlaces;
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.tolerance;
+import static org.firstinspires.ftc.teamcode.common.states.SwerveState.HUMAN_INPUT;
+import static org.firstinspires.ftc.teamcode.common.states.SwerveState.PATH_FOLLOWING;
+import static org.firstinspires.ftc.teamcode.common.states.SwerveState.PATH_FOLLOWING_COMPLETE;
 
 public class SwerveDrive {
 
@@ -41,6 +41,7 @@ public class SwerveDrive {
     public SwerveModule module1;
     public SwerveModule module2;
     public SwerveModule module3;
+    public SwerveKinematics swerveKinematics;
     private LinearOpMode linearOpMode;
     private Path path = null;
     private double IMU_ZERO;
@@ -50,7 +51,6 @@ public class SwerveDrive {
     private Debugger debugger;
     private SwerveState swerveState;
     private MotionState motionState;
-    public SwerveKinematics swerveKinematics;
     private Point kinematicsDelta;
     private double headingGoal;
     private boolean headingGoalSet;
@@ -70,11 +70,10 @@ public class SwerveDrive {
         CoM = new Point();
 
         this.swerveKinematics = new SwerveKinematics(l, debugger, this);
-        this.kinematicsDelta = new Point(0,0,0);
+        this.kinematicsDelta = new Point(0, 0, 0);
         this.IMU_ZERO = swerveKinematics.getIMU_ZERO();
         this.headingGoal = 90;
         this.headingGoalSet = true;
-
         linearOpMode.telemetry.addLine(String.format("Swerve Drive Calibrated in %s Status", ROBOT_STATUS));
     }
 
@@ -123,7 +122,6 @@ public class SwerveDrive {
                 headingGoal = 270;
             headingGoalSet = true;
         }
-
         double STR = Range.scale(Math.abs(Math.hypot(x_left, y_left)), 0, 1, 0, ROBOT_MAX_SPEED); // Strafing speed
         double STR_ANGLE = Math.toDegrees(Math.atan2(y_left, x_left)); // Strafing angle
         double corner0 = Math.atan2(ROBOT_LENGTH / 2, ROBOT_WIDTH / 2);
@@ -177,6 +175,7 @@ public class SwerveDrive {
 
     public void fod(double strafe_angle, double strafe_power, double turn_power, double yaw) {
 
+
         double OMEGA = turn_power; // Rotational speed: Clockwise is positive and Anti-Clockwise is negative
         double STR = strafe_power; // Strafing speed
         double STR_ANGLE = strafe_angle; // Strafing angle
@@ -225,7 +224,7 @@ public class SwerveDrive {
         double heading = roundTo2DecimalPlaces(swerveKinematics.getCenterOfMass().getDegrees());
         double setAngle = roundTo2DecimalPlaces(clipAngle(targetAngle));
         double err = roundTo2DecimalPlaces(heading - setAngle);
-        err += (err> 180) ? -360 : (err < -180) ? 360 : 0;
+        err += (err > 180) ? -360 : (err < -180) ? 360 : 0;
         double power = Math.abs(err) <= tolerance ? 0 : err * kP;
         return power;
     }
@@ -235,7 +234,6 @@ public class SwerveDrive {
         module1.swivel(toAngle);
         module2.swivel(toAngle);
         module3.swivel(toAngle);
-
 
 
 //        double[] distances = new double[4];
@@ -283,6 +281,7 @@ public class SwerveDrive {
         */
     }
 
+
     public void setPower(double power) {
         power = Range.clip(power, 0, ROBOT_MAX_SPEED);
         module0.setPower(power);
@@ -312,6 +311,7 @@ public class SwerveDrive {
         );
         this.trackingPoint = new Point(0, 0, path.heading(0));
         this.splineSegment = 1;
+
     }
 
     /*
@@ -332,10 +332,12 @@ public class SwerveDrive {
         double roundedComX = roundTo2DecimalPlaces(swerveKinematics.getCenterOfMass().getX() + kinematicsDelta.getX());
         double roundedComY = roundTo2DecimalPlaces(swerveKinematics.getCenterOfMass().getY() + kinematicsDelta.getY());
 
+
         CoM.setCoordinates(roundedComX, roundedComY);
 
         path.pathFollowing(CoM);
         debugger.addData("Path State", path.getPathState().name());
+
 
         switch (path.getPathState()) {
             case END:
@@ -368,7 +370,7 @@ public class SwerveDrive {
                 if (!Double.isNaN(trackingPoint.getDegrees()))
                     headingGoal = trackingPoint.getDegrees();
 
-                fod(crossTrackAngle,0.1,turnPID(headingGoal), yaw);
+                fod(crossTrackAngle, 0.1, turnPID(headingGoal), yaw);
 
                 if (!ROBOT_STATUS.equals(RELEASE)) {
                     debugger.addData("Yaw", Double.toString(yaw));
@@ -381,6 +383,7 @@ public class SwerveDrive {
                     debugger.addData(PATH.toString(), path.toString());
                     debugger.addData(WA.toString(), Double.toString(module0.getServoPosition()));
                     debugger.addData(VELOCITY.toString(), Double.toString(velocity));
+
                 }
         }
     }

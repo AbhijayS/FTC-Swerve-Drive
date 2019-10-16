@@ -7,7 +7,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -61,7 +60,6 @@ public class Debugger {
 
     public void addData(String category, String data) {
         int index = categories.indexOf(category);
-
         if (ROBOT_STATUS != Status.RELEASE)
             telemetry.addData(category, data);
 
