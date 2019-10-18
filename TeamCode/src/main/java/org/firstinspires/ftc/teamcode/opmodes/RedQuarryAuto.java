@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.testers;
+package org.firstinspires.ftc.teamcode.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.modules.TensorFlowLite;
 import org.firstinspires.ftc.teamcode.modules.swerve.SwerveDrive;
 
 @Autonomous(name = "Auto Quarry Side")
-public class EventLoopAuto extends LinearOpMode {
+public class RedQuarryAuto extends LinearOpMode {
 
     enum AutoStates {
         CASE_A(new double[]{0, 0, 0}, new double[]{0, 0, 0}),

@@ -47,7 +47,7 @@ public class TensorFlowLite {
         pattern = "Unknown";
         this.confidence = confidence;
 
-        initVuforia();
+        initVuforiaWebCam();
 
         status("Vuforia has been initialized.");
 
@@ -279,7 +279,7 @@ public class TensorFlowLite {
         //  Instantiate the Vuforia engine
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
 
-        // Loading trackables is not necessary for the Tensor Flow Object Detection engine.
+        // Loading trackables is not necessary for the TensorFlow Object Detection engine.
     }
 
 
