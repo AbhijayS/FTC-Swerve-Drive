@@ -36,8 +36,8 @@ public class Debugger {
         this.telemetry = linearOpMode.telemetry;
         this.buffer = new ArrayList<>();
         this.categories = new ArrayList<>();
-        buffer.add(new Object());
-        categories.add("Timestamp");
+        this.buffer.add(new Object());
+        this.categories.add("Timestamp");
 
         for (String category : categories) {
 
