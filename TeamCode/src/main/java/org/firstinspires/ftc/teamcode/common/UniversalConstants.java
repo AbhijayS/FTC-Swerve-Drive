@@ -141,7 +141,8 @@ public class UniversalConstants {
     public static final double kP =   0; // Proportional gain
     public static final double kI =   0; // Integral gain
     public static final double kD =   0; // Derivative gain
-
+    public static final String foundMoveLeft = "fml";
+    public static final String foundMoveRight = "fmr";
 
     public static final PwmControl.PwmRange pwmRange = new PwmControl.PwmRange(500, 2500);
 
