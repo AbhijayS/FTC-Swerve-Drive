@@ -19,9 +19,13 @@ public class FoundationMover {
     public void clamp() {
         this.left.setPosition(0.7);
         this.right.setPosition(0.7);
+        telemetry.addline("clamped");
+        telemetry.update();
     }
     public void unclamp() {
         this.left.setPosition(0);
         this.right.setPosition(0);
+        telemetry.addLine("unclamped");
+        telemetry.update();
     }
 }
