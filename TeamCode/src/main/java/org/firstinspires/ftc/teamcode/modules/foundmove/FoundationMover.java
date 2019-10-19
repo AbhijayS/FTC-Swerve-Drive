@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.modules.foundmove;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Servo;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.foundMoveLeft;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.foundMoveRight;
@@ -19,13 +20,13 @@ public class FoundationMover {
     public void clamp() {
         this.left.setPosition(0.7);
         this.right.setPosition(0.7);
-        telemetry.addline("clamped");
-        telemetry.update();
+        //telemetry.addline("clamped");
+        //telemetry.update();
     }
     public void unclamp() {
         this.left.setPosition(0);
         this.right.setPosition(0);
-        telemetry.addLine("unclamped");
-        telemetry.update();
+        //telemetry.addLine("unclamped");
+        //telemetry.update();
     }
 }

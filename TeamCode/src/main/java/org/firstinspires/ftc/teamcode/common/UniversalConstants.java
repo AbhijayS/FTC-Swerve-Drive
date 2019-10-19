@@ -1,5 +1,12 @@
 package org.firstinspires.ftc.teamcode.common;
 
+import com.qualcomm.robotcore.hardware.PwmControl;
+import com.qualcomm.robotcore.hardware.Servo;
+
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
+
 public class UniversalConstants {
     public static final String rightFront = "rf";
     public static final String rightRear = "rr";
@@ -228,7 +235,5 @@ public class UniversalConstants {
             return Math.copySign(value, sign);
         }
     }
-
-    public static double joystickDeadzone;
 
 }

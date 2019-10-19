@@ -6,23 +6,21 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp(name="jewelSwatter")
 
-public class jewelSwatter {
+public class jewelSwatter extends LinearOpMode{
 
-    Servo top_left;
-    Servo bottom_left;
+    Servo top_left = hardwareMap.servo.get("s1");
+    Servo bottom_left = hardwareMap.servo.get("s2");
     double bottom_left_start = 0;
     double top_left_start = 0;
     double goto_top_left = top_left_start;
     double goto_bottom_left = bottom_left_start;
 
-    public class extends jewelSwatter extends LinearOpMode {
-
-        this.bottom_left = linearOpMode.hardwareMap.get(Servo.class, bottom_left);
-        this.top_left = linearOpMode.hardwareMap.get(Servo.class, top_left);
-
+    public void runOpMode() throws InterruptedException{
         waitForStart();
+
         bottom_left.setPosition(bottom_left_start);
         top_left.setPosition(top_left_start);
+
 
         while (opModeIsActive()) {
 
