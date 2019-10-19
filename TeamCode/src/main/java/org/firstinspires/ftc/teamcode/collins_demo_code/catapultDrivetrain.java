@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.aaaaaaaa;
+package org.firstinspires.ftc.teamcode.collins_demo_code;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.hardware.PIDCoefficients;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.RobotModules.UniversalConstants;
 
-public class CatapultDrivetrain {
+public class catapultDrivetrain {
     private LinearOpMode linearOpMode;
     private Telemetry telemetry;
     private DcMotorEx leftOne, rightOne;
@@ -21,9 +21,9 @@ public class CatapultDrivetrain {
     public void status(String s) {
         telemetry.addLine(s);
         telemetry.update();
-    }
+}
 
-    public CatapultDrivetrain(LinearOpMode l, DcMotor.ZeroPowerBehavior zeroPowerBehavior) {
+    public catapultDrivetrain(LinearOpMode l, DcMotor.ZeroPowerBehavior zeroPowerBehavior) {
         linearOpMode = l;
         telemetry = l.telemetry;
         HardwareMap hardwareMap = l.hardwareMap;
@@ -38,8 +38,8 @@ public class CatapultDrivetrain {
 
         status("Zero Power Behavior Set");
 
-        leftOne.setDirection(DcMotorSimple.Direction.REVERSE);
-        rightOne.setDirection(DcMotorSimple.Direction.FORWARD);
+        leftOne.setDirection(DcMotorSimple.Direction.FORWARD);
+        rightOne.setDirection(DcMotorSimple.Direction.REVERSE);
 
         status("Directions Set");
 
