@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.testers;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -15,7 +15,7 @@ public class SwerveTester extends LinearOpMode {
         SwerveDrive swerveDrive = new SwerveDrive(this);
 
         double x[] = {
-            0,.5 * 10, 10,
+                0,.5 * 10, 10,
         };
         double y[] = {
                 0,0,0
