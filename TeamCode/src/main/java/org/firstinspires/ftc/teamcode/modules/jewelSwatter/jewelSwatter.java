@@ -10,6 +10,7 @@ public class jewelSwatter extends LinearOpMode{
 
     Servo top_left = hardwareMap.servo.get("s1");
     Servo bottom_left = hardwareMap.servo.get("s2");
+
     double bottom_left_start = 0;
     double top_left_start = 0;
     double goto_top_left = top_left_start;
@@ -33,6 +34,9 @@ public class jewelSwatter extends LinearOpMode{
                 } else if (goto_bottom_left == 0) {
                     goto_bottom_left = 0.751;
                 }
+                while (gamepad2.x) {
+                    //hi
+                }
             }
             if (gamepad2.y) {
                 if (goto_top_left == 0) {
@@ -41,8 +45,10 @@ public class jewelSwatter extends LinearOpMode{
                 if (goto_top_left == 0.343) {
                     goto_top_left = 0;
                 }
+                while (gamepad2.y) {
+                    //hi
+                }
             }
         }
     }
-
 }
