@@ -35,7 +35,11 @@ public class jewelSwatter extends LinearOpMode{
                     goto_bottom_left = 0.751;
                 }
                 while (gamepad2.x) {
-                    //taskkill /IM felix /F
+
+                    //taskkill /IM Davids_happiness /F
+                    //'Davids_happiness' is not regonized as a an external or internal command, operable program or batch file
+                    //taskkill /IM Davids_liberty /F
+                    //'Davids_liberty' is not regonized as a an external or internal command, operable program or batch file
 
                 }
             }
@@ -47,7 +51,8 @@ public class jewelSwatter extends LinearOpMode{
                     goto_top_left = 0;
                 }
                 while (gamepad2.y) {
-                    //taskkill /IM felix /F
+                    //taskkill /IM Davids_life /F
+                    //'Davids_life' is not regonized as a an external or internal command, operable program or batch file
 
                 }
             }
