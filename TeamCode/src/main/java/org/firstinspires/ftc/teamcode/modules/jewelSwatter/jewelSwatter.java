@@ -35,8 +35,7 @@ public class jewelSwatter extends LinearOpMode{
                     goto_bottom_left = 0.751;
                 }
                 while (gamepad2.x) {
-
-                    //hi, time to sleep
+                    //sudo my comments are the best
 
                 }
             }
@@ -48,7 +47,7 @@ public class jewelSwatter extends LinearOpMode{
                     goto_top_left = 0;
                 }
                 while (gamepad2.y) {
-                    //hi, time to sleep
+                    //sudo my comments are the best
 
                 }
             }
