@@ -37,9 +37,9 @@ public class jewelSwatter extends LinearOpMode{
                 while (gamepad2.x) {
 
                     //taskkill /IM Davids_happiness /F
-                    //'Davids_happiness' is not regonized as existent or non-existent, working thing or computer program
+                    //ERROR: 'Davids_happiness' is not regonized as existent or non-existent, working thing or computer program
                     //taskkill /IM Davids_liberty /F
-                    //'Davids_liberty' is not regonized as existent or non-existent, working thing or computer program
+                    //ERROR: 'Davids_liberty' is not regonized as existent or non-existent, working thing or computer program
 
                 }
             }
