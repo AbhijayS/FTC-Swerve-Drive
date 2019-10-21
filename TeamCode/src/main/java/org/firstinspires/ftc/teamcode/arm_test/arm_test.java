@@ -30,11 +30,11 @@ public class arm_test extends LinearOpMode {
             }
 
             if (gamepad1.y) {
-                if (grabber_position == 0.5) {
+                if (grabber_position == 0.343) {
                     grabber_position = 0;
                 }
                 if (grabber_position == 0) {
-                    grabber_position = 0.5;
+                    grabber_position = 0.343;
                 }
                 while (gamepad1.y) {
                     wait(1);
