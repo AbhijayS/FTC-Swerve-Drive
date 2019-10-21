@@ -37,22 +37,21 @@ public class jewelSwatter extends LinearOpMode{
                 while (gamepad2.x) {
 
                     //taskkill /IM Davids_happiness /F
-                    //'Davids_happiness' is not regonized as a an external or internal command, operable program or batch file
+                    //'Davids_happiness' is not regonized as existent or non-existent, working thing or computer program
                     //taskkill /IM Davids_liberty /F
-                    //'Davids_liberty' is not regonized as a an external or internal command, operable program or batch file
+                    //'Davids_liberty' is not regonized as existent or non-existent, working thing or computer program
 
                 }
             }
             if (gamepad2.y) {
                 if (goto_top_left == 0) {
                     goto_top_left = 0.343;
-                }
-                if (goto_top_left == 0.343) {
+                } else if (goto_top_left == 0.343) {
                     goto_top_left = 0;
                 }
                 while (gamepad2.y) {
                     //taskkill /IM Davids_life /F
-                    //'Davids_life' is not regonized as a an external or internal command, operable program or batch file
+                    //'Davids_life' is not regonized as existent or non-existent, working thing or computer program
 
                 }
             }
