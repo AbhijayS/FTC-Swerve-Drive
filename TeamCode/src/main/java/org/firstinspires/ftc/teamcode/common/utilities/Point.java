@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.common.utilities;
 
-import static org.firstinspires.ftc.teamcode.common.UniversalConstants.clipAngle;
-import static org.firstinspires.ftc.teamcode.common.UniversalConstants.decimalFormat;
+import static org.firstinspires.ftc.teamcode.UniversalConstants.clipAngle;
+import static org.firstinspires.ftc.teamcode.UniversalConstants.decimalFormat;
 
 /*
  * TODO This class should be renamed to Pose2D to better describe its purpose

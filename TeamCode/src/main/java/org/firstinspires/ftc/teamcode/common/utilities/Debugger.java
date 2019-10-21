@@ -8,7 +8,7 @@ import com.sun.tools.javac.util.List;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.common.UniversalConstants;
+import org.firstinspires.ftc.teamcode.UniversalConstants;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 import static org.firstinspires.ftc.teamcode.UniversalConstants.*;
 import static org.firstinspires.ftc.teamcode.UniversalConstants.ROBOT_STATUS;
-import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ROBOT_STATUS;
+import static org.firstinspires.ftc.teamcode.UniversalConstants.ROBOT_STATUS;
 
 public class Debugger {
     private final String fileExtension = ".csv";

@@ -13,17 +13,17 @@ import org.firstinspires.ftc.teamcode.common.utilities.Point;
 
 import java.util.Locale;
 
-import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ModuleConfig;
-import static org.firstinspires.ftc.teamcode.common.UniversalConstants.MotorDirection;
-import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ROBOT_MAX_SPEED;
-import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ROBOT_STATUS;
-import static org.firstinspires.ftc.teamcode.common.UniversalConstants.clipAngle;
-import static org.firstinspires.ftc.teamcode.common.UniversalConstants.driveGearRatio;
-import static org.firstinspires.ftc.teamcode.common.UniversalConstants.pwmRange;
-import static org.firstinspires.ftc.teamcode.common.UniversalConstants.servoDefaultAngle;
-import static org.firstinspires.ftc.teamcode.common.UniversalConstants.servoRange;
-import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ticksPerRevolution;
-import static org.firstinspires.ftc.teamcode.common.UniversalConstants.wheelCircumference;
+import static org.firstinspires.ftc.teamcode.UniversalConstants.ModuleConfig;
+import static org.firstinspires.ftc.teamcode.UniversalConstants.MotorDirection;
+import static org.firstinspires.ftc.teamcode.UniversalConstants.ROBOT_MAX_SPEED;
+import static org.firstinspires.ftc.teamcode.UniversalConstants.ROBOT_STATUS;
+import static org.firstinspires.ftc.teamcode.UniversalConstants.clipAngle;
+import static org.firstinspires.ftc.teamcode.UniversalConstants.driveGearRatio;
+import static org.firstinspires.ftc.teamcode.UniversalConstants.pwmRange;
+import static org.firstinspires.ftc.teamcode.UniversalConstants.servoDefaultAngle;
+import static org.firstinspires.ftc.teamcode.UniversalConstants.servoRange;
+import static org.firstinspires.ftc.teamcode.UniversalConstants.ticksPerRevolution;
+import static org.firstinspires.ftc.teamcode.UniversalConstants.wheelCircumference;
 
 public class SwerveModule {
 

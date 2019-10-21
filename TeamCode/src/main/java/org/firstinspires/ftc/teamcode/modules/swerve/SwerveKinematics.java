@@ -6,8 +6,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.common.utilities.Point;
 import org.firstinspires.ftc.teamcode.common.utilities.Stopwatch;
 
-import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ModuleConfig;
-import static org.firstinspires.ftc.teamcode.common.UniversalConstants.servoDefaultAngle;
+import static org.firstinspires.ftc.teamcode.UniversalConstants.ModuleConfig;
+import static org.firstinspires.ftc.teamcode.UniversalConstants.servoDefaultAngle;
 
 public class SwerveKinematics {
     private Stopwatch stopwatch;
