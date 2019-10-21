@@ -36,11 +36,7 @@ public class jewelSwatter extends LinearOpMode{
                 }
                 while (gamepad2.x) {
 
-                    //taskkill /IM Davids_happiness /F
-                    //ERROR: 'Davids_happiness' is not regonized as existent or non-existent, working thing or computer program
-                    //taskkill /IM Davids_liberty /F
-                    //ERROR: 'Davids_liberty' is not regonized as existent or non-existent, working thing or computer program
-
+                    //how about we stop commenting
                 }
             }
             if (gamepad2.y) {
@@ -50,8 +46,7 @@ public class jewelSwatter extends LinearOpMode{
                     goto_top_left = 0;
                 }
                 while (gamepad2.y) {
-                    //taskkill /IM Davids_life /F
-                    //'Davids_life' is not regonized as existent or non-existent, working thing or computer program
+                    //how about we stop commenting
 
                 }
             }
