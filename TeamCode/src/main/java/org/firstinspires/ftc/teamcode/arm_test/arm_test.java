@@ -11,7 +11,7 @@ public class arm_test extends LinearOpMode {
         Servo arm_servo = hardwareMap.servo.get("s1");
         Servo grabber_servo = hardwareMap.servo.get("s2");
         double arm_position = 0.751;
-        double grabber_position = 0.5;
+        double grabber_position = 0.343;
         waitForStart();
         while (opModeIsActive()){
             arm_servo.setPosition(arm_position);
