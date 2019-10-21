@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.PIDCoefficients;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.RobotModules.UniversalConstants;
+import org.firstinspires.ftc.teamcode.common.UniversalConstants;
 
 public class catapultDrivetrain {
     private LinearOpMode linearOpMode;
