@@ -7,10 +7,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.PIDCoefficients;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.common.UniversalConstants;
 
 public class catapultDrivetrain {
     private LinearOpMode linearOpMode;
@@ -21,15 +19,15 @@ public class catapultDrivetrain {
     public void status(String s) {
         telemetry.addLine(s);
         telemetry.update();
-}
+    }
 
     public catapultDrivetrain(LinearOpMode l, DcMotor.ZeroPowerBehavior zeroPowerBehavior) {
         linearOpMode = l;
         telemetry = l.telemetry;
         HardwareMap hardwareMap = l.hardwareMap;
         status("Initialized Globals");
-        leftOne = (DcMotorEx) hardwareMap.dcMotor.get(UniversalConstants.leftFront);
-        rightOne = (DcMotorEx) hardwareMap.dcMotor.get(UniversalConstants.rightFront);
+//        leftOne = (DcMotorEx) hardwareMap.dcMotor.get(UniversalConstants.leftFront);
+//        rightOne = (DcMotorEx) hardwareMap.dcMotor.get(UniversalConstants.rightFront);
 
         status("Initialized Motors");
 
@@ -65,22 +63,24 @@ public class catapultDrivetrain {
     }
 
     public void updateByGamepad() {
-        leftOne.setPower(ScaledPower(linearOpMode.gamepad1.left_stick_y,.75));
-        rightOne.setPower(ScaledPower(linearOpMode.gamepad1.right_stick_y,.75));
+        leftOne.setPower(ScaledPower(linearOpMode.gamepad1.left_stick_y, .75));
+        rightOne.setPower(ScaledPower(linearOpMode.gamepad1.right_stick_y, .75));
     }
 
     public double ScaledPower(double power, double speed) {
         if (power == 0) {
             return 0;
         }
-        double maxValueOfScaled = (Math.cbrt(1 - UniversalConstants.joystickDeadzone));
+//        double maxValueOfScaled = (Math.cbrt(1 - UniversalConstants.joystickDeadzone));
 
         if (power > 0) {
-            return speed * Math.cbrt(power - UniversalConstants.joystickDeadzone) /
-                    maxValueOfScaled;
+//            return speed * Math.cbrt(power - UniversalConstants.joystickDeadzone) /
+//                    maxValueOfScaled;
         } else {
-            return speed * Math.cbrt(power + UniversalConstants.joystickDeadzone) /
-                    maxValueOfScaled;
+//            return speed * Math.cbrt(power + UniversalConstants.joystickDeadzone) /
+//                    maxValueOfScaled;
         }
+        return power;
     }
-}
+    }
+

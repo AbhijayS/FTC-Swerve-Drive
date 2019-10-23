@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.PIDCoefficients;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.common.UniversalConstants;
+//import org.firstinspires.ftc.teamcode.common.UniversalConstants;
 
 public class SwereveDrive {
     private LinearOpMode linearOpMode;
@@ -38,10 +38,10 @@ public class SwereveDrive {
 
         status("Globals Initialized");
 
-        leftFront = (DcMotorEx) hardwareMap.dcMotor.get(UniversalConstants.leftFront);
-        rightFront = (DcMotorEx) hardwareMap.dcMotor.get(UniversalConstants.rightFront);
-        leftRear = (DcMotorEx) hardwareMap.dcMotor.get(UniversalConstants.leftRear);
-        rightRear = (DcMotorEx) hardwareMap.dcMotor.get(UniversalConstants.rightRear);
+//        leftFront = (DcMotorEx) hardwareMap.dcMotor.get(UniversalConstants.leftFront);
+//        rightFront = (DcMotorEx) hardwareMap.dcMotor.get(UniversalConstants.rightFront);
+//        leftRear = (DcMotorEx) hardwareMap.dcMotor.get(UniversalConstants.leftRear);
+//        rightRear = (DcMotorEx) hardwareMap.dcMotor.get(UniversalConstants.rightRear);
 
         status("Initialized Motors");
 
