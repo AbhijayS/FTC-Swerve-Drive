@@ -35,4 +35,10 @@ public class Coordinate {
     public double getY(){
         return this.y;
     }
+
+    public Coordinate getDifference(Coordinate a){
+       Coordinate difference = new Coordinate(0,0);
+       difference.setXY(a.getX()-this.x,a.getY()-this.y);
+       return difference;
+    }
 }
