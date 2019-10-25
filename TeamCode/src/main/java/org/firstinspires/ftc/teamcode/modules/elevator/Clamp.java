@@ -31,7 +31,8 @@ public class Clamp {
     public void moveClamp(double degrees) {
         double servodeg = convertDegrees(degrees);
         double position = servodeg * (1.0/180);
-        top.setPosition(position);
+        double posMod = position - (20/180.0);
+        top.setPosition(posMod);
         bottom.setPosition(position);
     }
 

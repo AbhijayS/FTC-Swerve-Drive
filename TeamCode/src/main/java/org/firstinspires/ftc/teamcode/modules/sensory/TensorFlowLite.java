@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.modules;
+package org.firstinspires.ftc.teamcode.modules.sensory;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -295,6 +295,7 @@ public class TensorFlowLite {
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
         //Change these parameters when loading a new model asset for object detection. Set appropriate labels
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
-        tfod.setClippingMargins(0,100,0,100);
+        //allows you to crop the image view in the camera
+        tfod.setClippingMargins(0,0,0,0);
     }
 }

@@ -7,7 +7,7 @@ import org.firstinspires.ftc.teamcode.common.UniversalConstants;
 import org.firstinspires.ftc.teamcode.common.states.SwerveState;
 import org.firstinspires.ftc.teamcode.common.utilities.Path;
 import org.firstinspires.ftc.teamcode.common.utilities.Stopwatch;
-import org.firstinspires.ftc.teamcode.modules.TensorFlowLite;
+import org.firstinspires.ftc.teamcode.modules.sensory.TensorFlowLite;
 import org.firstinspires.ftc.teamcode.modules.swerve.SwerveDrive;
 
 @Autonomous(name = "Auto Quarry Side")
