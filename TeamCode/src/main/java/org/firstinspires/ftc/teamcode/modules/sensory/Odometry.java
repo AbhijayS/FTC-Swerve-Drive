@@ -13,8 +13,9 @@ public class Odometry {
     private Telemetry telemetry;
     private DcMotor Xencoder, Yencoder;
     private Coordinate origin;
-    private double encoderXZero, encoderYZero;
+    private double XencoderZero, YencoderZero;
     private ArrayList<Coordinate> snapshot = new ArrayList<Coordinate>(); // This array List will be a snapshot of the last ten seconds of match position
+    private Coordinate current;
 
 
     public Odometry(LinearOpMode l){
@@ -25,10 +26,15 @@ public class Odometry {
         Yencoder = hardwareMap.dcMotor.get("Yencode");
         Xencoder.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         Yencoder.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        encoderXZero = (double) Xencoder.getCurrentPosition();
-        encoderYZero = (double) Yencoder.getCurrentPosition();
-        origin = new Coordinate(encoderXZero,encoderYZero);
+        XencoderZero = (double) Xencoder.getCurrentPosition();
+        YencoderZero = (double) Yencoder.getCurrentPosition();
+        telemetry.addData("X Origin: ", XencoderZero);
+        telemetry.addData("Y Origin: ", YencoderZero);
+        origin = new Coordinate(XencoderZero, YencoderZero);
+        current = origin;
     }
+
+
 
 
 
