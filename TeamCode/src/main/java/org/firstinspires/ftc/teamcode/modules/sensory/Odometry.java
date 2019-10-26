@@ -16,6 +16,8 @@ public class Odometry {
     private double XencoderZero, YencoderZero;
     private ArrayList<Coordinate> snapshot = new ArrayList<Coordinate>(); // This array List will be a snapshot of the last ten seconds of match position
     private Coordinate current;
+    private final double CPR = 512;
+    private final double wheel = 1.1811; // inches
 
 
     public Odometry(LinearOpMode l){
@@ -33,6 +35,8 @@ public class Odometry {
         origin = new Coordinate(XencoderZero, YencoderZero);
         current = origin;
     }
+
+
 
 
 
