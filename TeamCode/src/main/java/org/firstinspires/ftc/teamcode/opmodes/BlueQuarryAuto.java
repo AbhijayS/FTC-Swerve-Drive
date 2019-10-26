@@ -9,6 +9,8 @@ import org.firstinspires.ftc.teamcode.common.utilities.Stopwatch;
 import org.firstinspires.ftc.teamcode.modules.sensory.TensorFlowLite;
 import org.firstinspires.ftc.teamcode.modules.swerve.SwerveDrive;
 
+import java.nio.file.Path;
+
 public class BlueQuarryAuto extends LinearOpMode {
     enum AutoStates {
         CASE_A(new double[]{0, 0, 0}, new double[]{0, 0, 0}),
@@ -38,7 +40,7 @@ public class BlueQuarryAuto extends LinearOpMode {
         //Path toInterpolate = new Path(this, AutoStates.PATH_ONE.x, AutoStates.PATH_ONE.y);
         TensorFlowLite tensorFlowLite = new TensorFlowLite(this, .12);
         //swerveDrive.setPath(toInterpolate);
-        swerveDrive.requestState(SwerveState.PATH_FOLLOWING);
+        swerveDrive.requestState(UniversalConstants.SwerveState.PATH_FOLLOWING);
         boolean transition = false;
         String pattern = "";
 
@@ -99,9 +101,12 @@ public class BlueQuarryAuto extends LinearOpMode {
             if (transition) {
                 Path toInterpolate = new Path(this, autoStates.x, autoStates.y);
                 swerveDrive.setPath(toInterpolate);
-                swerveDrive.requestState(SwerveState.PATH_FOLLOWING);
+                swerveDrive.requestState(UniversalConstants.SwerveState.PATH_FOLLOWING);
                 transition = false;
             }
         }
+    }
+
+    private class SwerveDrive {
     }
 }
