@@ -4,12 +4,14 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.PIDCoefficients;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.common.states.PositionalStates;
+import org.firstinspires.ftc.teamcode.common.utilities.Gamepad;
 
 public class LiftModule {
     //REV Orbital 20
@@ -113,9 +115,10 @@ public class LiftModule {
         return false;
     }
 
-    public void updateByGamepad() {
+    public void updateByGamepad(Gamepad g) {
+
         // This sets the joystick to control the power with a cubic root function and capps the value at the max power of 1
-        double power = Range.clip(linearOpMode.gamepad2.left_stick_y * (1 / Math.abs(linearOpMode.gamepad2.left_stick_y)) * Math.cbrt(linearOpMode.gamepad2.left_stick_y), -1, 1);
+        double power = Range.clip(g.ly * (1 / Math.abs(g.ly)) * Math.cbrt(g.ly), -1, 1);
         if (liftOne.getCurrentPosition() <= convertToTicks(42) && liftTwo.getCurrentPosition() <= convertToTicks(42) && power > 0) {
             liftOne.setPower(power);
             liftTwo.setPower(power);
@@ -128,22 +131,22 @@ public class LiftModule {
             liftOne.setPower(power);
             liftTwo.setPower(power);
         }
-        if (linearOpMode.gamepad2.dpad_up) {
+        if (g.Ou) {
             telemetry.addLine("FULL HEIGHT");
             state = PositionalStates.FULL;
             runPosition = true;
         }
-        if (linearOpMode.gamepad2.dpad_down) {
+        if (g.Od) {
             telemetry.addLine("QUARTER HEIGHT");
             state = PositionalStates.QUARTER;
             runPosition = true;
         }
-        if (linearOpMode.gamepad2.dpad_left) {
+        if (g.Ol) {
             telemetry.addLine("HALF HEIGHT");
             state = PositionalStates.HALF;
             runPosition = true;
         }
-        if (linearOpMode.gamepad2.dpad_right) {
+        if (g.Or) {
             telemetry.addLine("THREE_QUARTER HEIGHT");
             state = PositionalStates.THREE_QUARTERS;
             runPosition = true;
