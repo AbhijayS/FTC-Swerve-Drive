@@ -142,14 +142,18 @@ public class UniversalConstants {
     public static final int     ticksPerRevolution  = 560;
     public static final int     wheelDiameter       = 3; //inches
     public static final double  wheelCircumference  = wheelDiameter*Math.PI; //inches
-
     public static final double  driveGearRatio      = 24.0/18.0; // Output rate : Input rate
+
+    public static final String jewelSwatterRightAxis1 = "JSRA1";
+    public static final String jewelSwatterRightAxis2 = "JSRA2";
+    public static final String jewelSwatterLeftAxis1 = "JSLA1";
+    public static final String jewelSwatterLeftAxis2 = "JSLA2";
+
     public static final double kS =   5; // Steering gain (path following only)
     public static final double kP =   0.2/90; // Proportional gain
     public static final double kI =   0; // Integral gain
     public static final double kD =   0; // Derivative gain
     public static final double tolerance = 0.5; // degrees
-
 
     public static final PwmControl.PwmRange pwmRange = new PwmControl.PwmRange(500, 2500);
 
