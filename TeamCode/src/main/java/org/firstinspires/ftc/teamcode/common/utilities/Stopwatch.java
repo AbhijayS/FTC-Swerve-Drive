@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.common.utilities;
 
-
 public class Stopwatch {
     private double currentTime;
     private double timestamp;
@@ -63,4 +62,3 @@ public class Stopwatch {
      *      Clear the laps once stopwatch is stopped
      */
 }
-

@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.modules.swerve;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.teamcode.common.utilities.Debugger;
 import org.firstinspires.ftc.teamcode.common.utilities.Point;
 import org.firstinspires.ftc.teamcode.common.utilities.Stopwatch;
 
@@ -20,13 +21,13 @@ public class SwerveKinematics {
     private Double[] dS;
     private double dT;
     private double velocity;
-    //private Debugger debugger;
+    private Debugger debugger;
     private BNO055IMU imu;
     private double IMU_ZERO;
 
-    public SwerveKinematics(LinearOpMode linearOpMode,  SwerveDrive swerveDrive) {
+    public SwerveKinematics(LinearOpMode linearOpMode, Debugger debugger, SwerveDrive swerveDrive) {
         ModuleConfig[] modulesConfig = ModuleConfig.values();
-        //this.debugger = debugger;
+        this.debugger = debugger;
         this.stopwatch = new Stopwatch();
         this.stopwatch.start();
         this.swerveDrive = swerveDrive;
@@ -41,7 +42,7 @@ public class SwerveKinematics {
                 swerveModules[2].getDisplacement(),
                 swerveModules[3].getDisplacement()
         };
-        this.modulesPose = new Point[] {
+        this.modulesPose = new Point[]{
                 new Point(modulesConfig[0].x, modulesConfig[0].y, servoDefaultAngle),
                 new Point(modulesConfig[1].x, modulesConfig[1].y, servoDefaultAngle),
                 new Point(modulesConfig[2].x, modulesConfig[2].y, servoDefaultAngle),
@@ -57,10 +58,6 @@ public class SwerveKinematics {
                 0.0,
                 0.0
         };
-        this.yawStamp = getYaw();
-        this.centerOfMass = new Point(0, 0, 90 + this.yawStamp);
-        this.velocity = 0;
-
         // Define and Initialize REV IMU sensor
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
 
@@ -80,22 +77,24 @@ public class SwerveKinematics {
         }
         // save IMU "zero" value in case it's non-zero after calibration
         IMU_ZERO = imu.getAngularOrientation().firstAngle;
+
+        this.yawStamp = yaw();
+        this.centerOfMass = new Point(0, 0, 90 + this.yawStamp);
+        this.velocity = 0;
         linearOpMode.telemetry.addLine("Swerve Kinematics Calibrated!");
     }
 
 
     // measure -> control -> measure -> control -> ...
     public void update() {
-
         stopwatch.stop();
         dT = stopwatch.seconds();
         stopwatch.start();
 
         double currentYaw = yaw();
-        double angularDelta = currentYaw - yawStamp;
-        angularDelta += (angularDelta > 180) ? -360 : (angularDelta < -180) ? 360 : 0;
-        angularDelta = Math.toRadians(angularDelta);
-
+        double angularDeltaDegrees = currentYaw - yawStamp;
+        angularDeltaDegrees += (angularDeltaDegrees > 180) ? -360 : (angularDeltaDegrees < -180) ? 360 : 0;
+        double angularDeltaRadians = Math.toRadians(angularDeltaDegrees);
         // Update Module pose 1 of 3
         // Module pose at the beginning of the last control signal
         // @see Update Module pose 3 of 3
@@ -117,10 +116,10 @@ public class SwerveKinematics {
                 (temp[3] - wheelStamps[3]) * swerveModules[3].getMotorDirection().getSign()
         };
         Double[] k = {
-                angularDelta / dS[0],
-                angularDelta / dS[1],
-                angularDelta / dS[2],
-                angularDelta / dS[3]
+                angularDeltaRadians / dS[0],
+                angularDeltaRadians / dS[1],
+                angularDeltaRadians / dS[2],
+                angularDeltaRadians / dS[3]
         };
 
         // update module pose
@@ -182,6 +181,7 @@ public class SwerveKinematics {
 
         // update center of mass coordinates
         centerOfMass.setCoordinates(comX, comY);
+        centerOfMass.setPose(comX, comY, centerOfMass.getDegrees() + angularDeltaDegrees);
 
         // re-calculate module pose using the averaged CoM coordinates
         for (int i = 0; i < modulesPose.length; i++) {
@@ -201,7 +201,7 @@ public class SwerveKinematics {
             modulesPose[i].setPose(
                     x,
                     y,
-                    modulesPose[i].getDegrees() + angularDelta
+                    modulesPose[i].getDegrees() + angularDeltaRadians
             );
         }
 

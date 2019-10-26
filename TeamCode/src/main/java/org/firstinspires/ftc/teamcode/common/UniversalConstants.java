@@ -9,28 +9,20 @@ import java.util.List;
 
 public class UniversalConstants {
 
-    public static final String vuforiaLicenceKey = "AfWYo6H/////AAABmQhOGpga9kzugmfBYrjJDQs2b+vIsT5Pjplu+VgGrxevhveFPbYqHKZeHrJKY1bhrSNzeogphVwdC2ndsu9sn9WZ/yOrOhQ9s8egFXfDzkPN6uhzqVo5A3qGAPK8CPqAcdraaJxMKINGPo+aBqbzELtMl+kX1BkUfbapRDYIBRS+oySt71kDzykpd0Iy7NgJGU5xfsEm8fJm9xWVTFV7IsChCAKeo7bmBUtcpIVR6smjqRT9noJcmWv2aP9J1C2CcW766ptLy0lKIl08M+S2uY8XYHjK2kBpOnHvkSrzsnrROgE/g7V4xDiFCEFBjk1w4qAcO5veTVzbhqxxSmWMQkb7JiORCUCZ+Dz5F8bYW5zY";
 
+
+    /*
+     * Work Flow:
+     * TESTING => DEBUGGING => TESTING => DEBUGGING => ...
+     * TESTING => RELEASE
+     */
+
+    public static final String vuforiaLicenceKey = "AfWYo6H/////AAABmQhOGpga9kzugmfBYrjJDQs2b+vIsT5Pjplu+VgGrxevhveFPbYqHKZeHrJKY1bhrSNzeogphVwdC2ndsu9sn9WZ/yOrOhQ9s8egFXfDzkPN6uhzqVo5A3qGAPK8CPqAcdraaJxMKINGPo+aBqbzELtMl+kX1BkUfbapRDYIBRS+oySt71kDzykpd0Iy7NgJGU5xfsEm8fJm9xWVTFV7IsChCAKeo7bmBUtcpIVR6smjqRT9noJcmWv2aP9J1C2CcW766ptLy0lKIl08M+S2uY8XYHjK2kBpOnHvkSrzsnrROgE/g7V4xDiFCEFBjk1w4qAcO5veTVzbhqxxSmWMQkb7JiORCUCZ+Dz5F8bYW5zY";
     public enum Status {
         DEBUGGING, TESTING, RELEASE
     }
 
-    public enum SwerveState {
-        PATH_FOLLOWING,
-        PATH_FOLLOWING_COMPLETE,
-        HUMAN_INPUT
-    }
-
-    public static double roundTo2DecimalPlaces(double a) {
-        return Math.round(a * 100.0) / 100.0;
-    }
-
-    public enum MotionState {
-        STOPPED,
-        IN_MOTION,
-        ACCELERATING,
-        DECELERATING;
-    }
+    public static final DecimalFormat decimalFormat = new DecimalFormat("#.##");
 
     public enum Debugging {
         RX("Robot X"),
@@ -48,7 +40,6 @@ public class UniversalConstants {
         PATH("Path");
 
         private final String name;
-
         Debugging(String name) {
             this.name = name;
         }
@@ -68,12 +59,9 @@ public class UniversalConstants {
 
     }
 
-    public static final DecimalFormat decimalFormat = new DecimalFormat("#.##");
-
-
     public enum MotorDirection {
-        FORWARD(1.0f, "Forward"),
-        REVERSE(-1.0f, "Reverse");
+        FORWARD(1.0f,"Forward"),
+        REVERSE(-1.0f,"Reverse");
 
         private final float sign;
         private final String name;
@@ -83,7 +71,7 @@ public class UniversalConstants {
             this.sign = sign;
             this.name = name;
             if (name.length() > 0)
-                abbreviation = name.substring(0, 1);
+                abbreviation = name.substring(0,1);
             else
                 abbreviation = "";
         }
@@ -112,40 +100,11 @@ public class UniversalConstants {
         }
     }
 
-    static final int CYCLE_MS = 50;
-    public static final Status ROBOT_STATUS = Status.TESTING;
-    public static final double ROBOT_WIDTH = 14.5; // INCHES
-    public static final double ROBOT_LENGTH = 15; // INCHES
-    public static final double ROBOT_MAX_SPEED = 0.05;
-    static final double ROBOT_COM_X = 0; // offset from (0,0)
-    static final double ROBOT_COM_Y = 0; // offset from (0,0)
-    static final double PI = Math.PI;
-    public static final double HALF_PI = PI / 2;
-
-    static final double TURN_FACTOR = 2; // Tune the robot's speed at turns (1 - 5)
-    public static final int servoRange = 270;      // 225° to -45° on the Unit Circle
-    public static final double servoSpeed = 0.16 / 60;  // sec/1° @ 5V TODO: Update speed for 6V input from the servo power module
-    public static final int servoDefaultAngle = 90;
-    public static final int ticksPerRevolution = 560;
-    public static final int wheelDiameter = 3; //inches
-    public static final double wheelCircumference = wheelDiameter * Math.PI; //inches
-
-    public static final double driveGearRatio = 24.0 / 18.0; // Output rate : Input rate
-    public static final double kS =   5; // Steering gain (path following only)
-    public static final double kP =   0; // Proportional gain
-    public static final double kI =   0; // Integral gain
-    public static final double kD =   0; // Derivative gain
-
-
-    public static final PwmControl.PwmRange pwmRange = new PwmControl.PwmRange(500, 2500);
-
-
-
     public enum ModuleConfig {
-        MODULE_ZERO     ("Module ZERO",     (-ROBOT_WIDTH/2)-ROBOT_COM_X,(ROBOT_LENGTH/2)-ROBOT_COM_Y,     false,  "FLS",    0        ,  Servo.Direction.REVERSE,    "FLM",  MotorDirection.REVERSE)  ,
-        MODULE_ONE      ("Module ONE",      (ROBOT_WIDTH/2)-ROBOT_COM_X,(ROBOT_LENGTH/2)-ROBOT_COM_Y,      false,  "FRS",   -3.07    ,  Servo.Direction.FORWARD,    "FRM", MotorDirection.FORWARD)  ,
-        MODULE_TWO      ("Module TWO",      (ROBOT_WIDTH/2)-ROBOT_COM_X,(-ROBOT_LENGTH/2)-ROBOT_COM_Y,     false,  "RRS",    2.92     ,  Servo.Direction.FORWARD,    "RRM",  MotorDirection.FORWARD)  ,
-        MODULE_THREE    ("Module THREE",    (-ROBOT_WIDTH/2)-ROBOT_COM_X,(-ROBOT_LENGTH/2)-ROBOT_COM_Y,    false,  "RLS",     -4.43    ,  Servo.Direction.FORWARD,    "RLM",   MotorDirection.REVERSE)  ;
+        MODULE_ZERO     ("Module ZERO",     (-ROBOT_WIDTH/2)-ROBOT_COM_X,(ROBOT_LENGTH/2)-ROBOT_COM_Y,     false,  "front_left_servo",    0        ,  Servo.Direction.REVERSE,    "front_left_motor",  MotorDirection.REVERSE)  ,
+        MODULE_ONE      ("Module ONE",      (ROBOT_WIDTH/2)-ROBOT_COM_X,(ROBOT_LENGTH/2)-ROBOT_COM_Y,      false,  "front_right_servo",   -3.07    ,  Servo.Direction.FORWARD,    "front_right_motor", MotorDirection.FORWARD)  ,
+        MODULE_TWO      ("Module TWO",      (ROBOT_WIDTH/2)-ROBOT_COM_X,(-ROBOT_LENGTH/2)-ROBOT_COM_Y,     false,  "rear_right_servo",    2.92     ,  Servo.Direction.FORWARD,    "rear_right_motor",  MotorDirection.FORWARD)  ,
+        MODULE_THREE    ("Module THREE",    (-ROBOT_WIDTH/2)-ROBOT_COM_X,(-ROBOT_LENGTH/2)-ROBOT_COM_Y,    false,  "rear_left_servo",     -4.43    ,  Servo.Direction.FORWARD,    "rear_left_motor",   MotorDirection.REVERSE)  ;
 
         public final String                     moduleName;
         public final String                     servoID;
@@ -170,6 +129,44 @@ public class UniversalConstants {
 
     }
 
+    public static final int     CYCLE_MS            =   50;
+    public static final Status  ROBOT_STATUS        =   Status.TESTING;
+    public static final double  ROBOT_WIDTH         =   14.5; // INCHES
+    public static final double  ROBOT_LENGTH        =   15; // INCHES
+    public static final double  ROBOT_MAX_SPEED     =   0.25;
+    public static final double  ROBOT_COM_X         =   0; // offset from (0,0)
+    public static final double  ROBOT_COM_Y         =   0; // offset from (0,0)
+    public static final double  PI                  =   Math.PI;
+    public static final double  HALF_PI             =   PI/2;
+
+    public static final double  TURN_FACTOR         =   2; // Tune the robot's speed at turns (1 - 5)
+    public static final int     servoRange          = 270;      // 225° to -45° on the Unit Circle
+    public static final double  servoSpeed          = 0.2/60;  // sec/1° @ 5V TODO: Update speed for 6V input from the servo power module
+    public static final int     servoDefaultAngle   = 90;
+    public static final int     ticksPerRevolution  = 560;
+    public static final int     wheelDiameter       = 3; //inches
+    public static final double  wheelCircumference  = wheelDiameter*Math.PI; //inches
+    public static final double  driveGearRatio      = 24.0/18.0; // Output rate : Input rate
+
+    public static final String jewelSwatterRightAxis1 = "JSRA1";
+    public static final String jewelSwatterRightAxis2 = "JSRA2";
+    public static final String jewelSwatterLeftAxis1 = "JSLA1";
+    public static final String jewelSwatterLeftAxis2 = "JSLA2";
+
+    public static final double kS =   5; // Steering gain (path following only)
+    public static final double kP =   0.2/90; // Proportional gain
+    public static final double kI =   0; // Integral gain
+    public static final double kD =   0; // Derivative gain
+    public static final double tolerance = 0.5; // degrees
+
+    public static final PwmControl.PwmRange pwmRange = new PwmControl.PwmRange(500, 2500);
+
+
+
+    /*
+    Other Helpful mathematical functions
+     */
+
     /**
      * @param a - any angle in degrees in the range (-infinity to infinity)
      * @return Normalizes the angle in the range (-180 to 180)
@@ -177,55 +174,10 @@ public class UniversalConstants {
     public static double clipAngle(double a) {
         return Math.toDegrees(Math.atan2(Math.sin(Math.toRadians(a)), Math.cos(Math.toRadians(a))));
     }
-
-    public enum Direction {
-        FORWARD(1.0f,"Forward"),
-        REVERSE(-1.0f,"Reverse"),
-        RIGHT(1.0f, "Right"),
-        LEFT(-1.0f, "Left"),
-        UNKOWN(0.0f, "Unknown");
-
-        private final float sign;
-        private final String name;
-        private final String abbreviation;
-
-        Direction(float sign, String name) {
-            this.sign = sign;
-            this.name = name;
-            if (name.length() > 0)
-                abbreviation = name.substring(0,1);
-            else
-                abbreviation = "";
-        }
-
-        @Override
-        public String toString() {
-            return name;
-        }
-
-        public String getAbbreviation() {
-            return abbreviation;
-        }
-
-        public float getSign() {
-            return sign;
-        }
-
-        public Direction getOpposite() {
-            switch (this) {
-                case LEFT:
-                    return RIGHT;
-                case RIGHT:
-                    return LEFT;
-                case FORWARD:
-                    return REVERSE;
-                default:
-                    return FORWARD;
-            }
-        }
-
-        public double assignDirection(double value) {
-            return Math.copySign(value, sign);
-        }
+    public static boolean oppositeSigns(double a, double b) {
+        return a*b < 0;
+    }
+    public static double roundTo2DecimalPlaces(double a) {
+        return Math.round(a * 100.0) / 100.0;
     }
 }
