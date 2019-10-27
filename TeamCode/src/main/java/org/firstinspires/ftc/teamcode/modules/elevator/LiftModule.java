@@ -50,8 +50,8 @@ public class LiftModule {
 
         status("Zero Power Behavior Set");
 
-        liftOne.setDirection(DcMotorSimple.Direction.REVERSE);
-        liftTwo.setDirection(DcMotorSimple.Direction.REVERSE);
+        liftOne.setDirection(DcMotorSimple.Direction.FORWARD);
+        liftTwo.setDirection(DcMotorSimple.Direction.FORWARD);
         pidCoefficients = new PIDCoefficients(0, 0, 0);
         liftOne.setPIDCoefficients(DcMotor.RunMode.RUN_TO_POSITION, pidCoefficients);
         liftTwo.setPIDCoefficients(DcMotor.RunMode.RUN_TO_POSITION, pidCoefficients);

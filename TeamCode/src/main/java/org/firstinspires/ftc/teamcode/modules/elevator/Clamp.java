@@ -10,6 +10,7 @@ public class Clamp {
     private LinearOpMode linearOpMode;
     private Telemetry telemetry;
     private Servo bottom, top;
+    private double degreeVal = 134;
 
 
     public Clamp(LinearOpMode l) {
@@ -36,12 +37,16 @@ public class Clamp {
     }
 
     public void updateByGamepad() {
+
         if (linearOpMode.gamepad2.a) {
-            moveClamp(134); //Increasing makes servo go out with config
+           // moveClamp(134); //Increasing makes servo go out with config
             //.3722
+            degreeVal = 134;
         } else if (linearOpMode.gamepad2.b) {
-            moveClamp(215);//position .60001
+            //moveClamp(215);//position .60001
+            degreeVal = 215;
         }
+        moveClamp(degreeVal);
         telemetry.addData("Top Position: ", top.getPosition());
         telemetry.addData("Bottom Pos: ",bottom.getPosition());
     }
