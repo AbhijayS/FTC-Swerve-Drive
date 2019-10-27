@@ -20,7 +20,6 @@ public class Clamp {
         bottom = hardwareMap.servo.get("b");
         top.setDirection(Servo.Direction.FORWARD);
         bottom.setDirection(Servo.Direction.FORWARD);
-
     }
 
     public double convertDegrees(Double deg2conv) {
@@ -45,6 +44,5 @@ public class Clamp {
         }
         telemetry.addData("Top Position: ", top.getPosition());
         telemetry.addData("Bottom Pos: ",bottom.getPosition());
-
     }
 }
