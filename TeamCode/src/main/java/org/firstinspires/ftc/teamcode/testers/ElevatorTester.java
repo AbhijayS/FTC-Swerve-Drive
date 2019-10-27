@@ -11,6 +11,7 @@ public class ElevatorTester extends LinearOpMode {
 
     public void runOpMode() throws InterruptedException{
         Elevator elevator = new Elevator(this);
+
         //Gamepad gamepad = new Gamepad(this);
         waitForStart();
         while (opModeIsActive()){

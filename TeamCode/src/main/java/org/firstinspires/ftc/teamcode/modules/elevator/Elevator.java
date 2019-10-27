@@ -4,8 +4,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 public class Elevator {
     private LinearOpMode linearOpMode;
-    Clamp clamp;
-    LiftModule liftModule;
+    public Clamp clamp;
+    public LiftModule liftModule;
 
     public Elevator(LinearOpMode l){
         linearOpMode = l;
