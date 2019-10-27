@@ -11,7 +11,7 @@ public class Clamp {
     private Telemetry telemetry;
     private Servo bottom, top;
     public double degreeVal = 225;
-    public boolean toggled = true;
+    
 
 
     public Clamp(LinearOpMode l) {
@@ -38,15 +38,14 @@ public class Clamp {
     }
 
     public void updateByGamepad() {
-        if (linearOpMode.gamepad2.a || toggled) {
+        if (linearOpMode.gamepad2.a) {
            // moveClamp(134); //Increasing makes servo go out with config
             //.3722
             degreeVal = 124;//closing state
-            toggled = false;
-        } else if (linearOpMode.gamepad2.b || !toggled) {
+        } else if (linearOpMode.gamepad2.b) {
             //moveClamp(215);//position .60001
             degreeVal = 225;
-            toggled = true;
+
         }
         moveClamp(degreeVal);
 
