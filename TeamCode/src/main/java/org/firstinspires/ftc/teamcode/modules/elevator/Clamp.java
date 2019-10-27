@@ -41,7 +41,7 @@ public class Clamp {
         if (linearOpMode.gamepad2.a) {
            // moveClamp(134); //Increasing makes servo go out with config
             //.3722
-            degreeVal = 134;
+            degreeVal = 124;//closing state
         } else if (linearOpMode.gamepad2.b) {
             //moveClamp(215);//position .60001
             degreeVal = 225;
