@@ -11,12 +11,12 @@ public class Elevator {
 
     public Elevator(LinearOpMode l){
         linearOpMode = l;
-        //clamp = new Clamp(l);
+        clamp = new Clamp(l);
         liftModule = new LiftModule(l);
     }
 
     public void updateByGamepad(Gamepad g){
-        //clamp.updateByGamepad();
+        clamp.updateByGamepad(g);
         liftModule.updateByGamepad(g);
         linearOpMode.telemetry.update();
     }
