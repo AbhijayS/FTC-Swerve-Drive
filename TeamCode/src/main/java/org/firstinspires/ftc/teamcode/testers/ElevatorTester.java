@@ -16,6 +16,7 @@ public class ElevatorTester extends LinearOpMode {
         waitForStart();
         while (opModeIsActive()){
             elevator.updateByGamepad(gamepad);
+            gamepad.update();
         }
     }
 
