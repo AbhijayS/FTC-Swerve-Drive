@@ -44,7 +44,7 @@ public class Clamp {
             degreeVal = 134;
         } else if (linearOpMode.gamepad2.b) {
             //moveClamp(215);//position .60001
-            degreeVal = 215;
+            degreeVal = 225;
         }
         moveClamp(degreeVal);
         telemetry.addData("Top Position: ", top.getPosition());
