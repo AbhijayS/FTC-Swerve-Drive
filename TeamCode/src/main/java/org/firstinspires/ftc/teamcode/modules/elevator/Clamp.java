@@ -5,7 +5,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.common.utilities.Gamepad;
 
 public class Clamp {
     private LinearOpMode linearOpMode;
@@ -37,11 +36,11 @@ public class Clamp {
         bottom.setPosition(position);
     }
 
-    public void updateByGamepad(Gamepad g) {
-        if (g.Oa) {
+    public void updateByGamepad() {
+        if (linearOpMode.gamepad2.a) {
             moveClamp(134); //Increasing makes servo go out with config
             //.3722
-        } else if (g.Ob) {
+        } else if (linearOpMode.gamepad2.b) {
             moveClamp(215);//position .60001
         }
         telemetry.addData("Top Position: ", top.getPosition());

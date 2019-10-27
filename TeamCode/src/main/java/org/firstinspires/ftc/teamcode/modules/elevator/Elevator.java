@@ -2,8 +2,6 @@ package org.firstinspires.ftc.teamcode.modules.elevator;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.common.utilities.Gamepad;
-
 public class Elevator {
     private LinearOpMode linearOpMode;
     Clamp clamp;
@@ -15,9 +13,9 @@ public class Elevator {
         liftModule = new LiftModule(l);
     }
 
-    public void updateByGamepad(Gamepad g){
-        clamp.updateByGamepad(g);
-        liftModule.updateByGamepad(g);
+    public void updateByGamepad(){
+        clamp.updateByGamepad();
+        liftModule.updateByGamepad();
         linearOpMode.telemetry.update();
     }
 }
