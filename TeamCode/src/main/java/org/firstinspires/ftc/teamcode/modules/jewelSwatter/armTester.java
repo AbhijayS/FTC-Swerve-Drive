@@ -14,7 +14,7 @@ public class armTester extends LinearOpMode {
         while (opModeIsActive()) {
             //sets the positions if you press x
             if (gamepad2.x) {
-                arm1.setPositions(180, 90);
+                arm1.setPositions(180, 0);
                 arm1.updateTelemetry();
             }
             //sets the positions if you press y
