@@ -8,7 +8,7 @@ public class Gamepad {
     private com.qualcomm.robotcore.hardware.Gamepad operator;
 
     private LinearOpMode linearOpMode;
-    public boolean _0, _45, _90, _135, _180, _225, _270, _315, heading, Oa, Ob, Ou, Ol, Or, Od;
+    public boolean _0, _45, _90, _135, _180, _225, _270, _315, heading, Ou, Ol, Or, Od;
 
     public double x, y, z, lx, ly, rx, ry;
 
@@ -18,7 +18,7 @@ public class Gamepad {
     public Gamepad(LinearOpMode linearOpMode) {
         this.linearOpMode = linearOpMode;
         this.driver = linearOpMode.gamepad1;
-        //this.operator = linearOpMode.gamepad2;
+        this.operator = linearOpMode.gamepad2;
         this.counter = 0;
         update();
     }
@@ -47,6 +47,8 @@ public class Gamepad {
         z = driver.right_stick_x;
         lx = operator.left_stick_x;
         ly = operator.left_stick_y;
+        rx = operator.right_stick_x;
+        ry = operator.right_stick_y;
 
 
 
