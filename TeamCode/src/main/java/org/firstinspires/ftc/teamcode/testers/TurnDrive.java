@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.common.utilities.Debugger;
 
 import java.util.ArrayList;
 
-@TeleOp(name = "TestOp: FullTeleOp")
+@TeleOp(name = "TestOp: TeleOp")
 public class TurnDrive extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
