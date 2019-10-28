@@ -1,7 +1,9 @@
-package org.firstinspires.ftc.teamcode.modules.jewelSwatter;
+package org.firstinspires.ftc.teamcode.testers;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+
+import org.firstinspires.ftc.teamcode.modules.jewelSwatter.arm;
 
 @TeleOp (name = "armTester")
 
@@ -33,10 +35,6 @@ public class armTester extends LinearOpMode {
                 claw_pos = 180;
                 arm_pos = 0;
                 arm1.setPositions(arm_pos, claw_pos);
-                if (hi == false) {
-                    hi = true;
-                    arm1.setPositions();
-                }
                 arm1.updateTelemetry();
             }
         }
