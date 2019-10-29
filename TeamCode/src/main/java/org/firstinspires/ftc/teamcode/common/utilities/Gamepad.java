@@ -18,7 +18,7 @@ public class Gamepad {
     public Gamepad(LinearOpMode linearOpMode) {
         this.linearOpMode = linearOpMode;
         this.driver = linearOpMode.gamepad1;
-        //this.operator = linearOpMode.gamepad2;
+        this.operator = linearOpMode.gamepad2;
         this.counter = 0;
         update();
     }
@@ -30,10 +30,10 @@ public class Gamepad {
         _270 = driver.dpad_down;
         //Oa = operator.a;
         //Ob = operator.b;
-        //Ou = operator.dpad_up;
-        //Od = operator.dpad_down;
-        //Ol = operator.dpad_left;
-        //Or = operator.dpad_right;
+        Ou = operator.dpad_up;
+        Od = operator.dpad_down;
+        Ol = operator.dpad_left;
+        Or = operator.dpad_right;
 
         heading = (_0 || _90 || _180 || _270) && !(_0 && _90 && _180 && _270);
 
@@ -47,7 +47,8 @@ public class Gamepad {
         z = driver.right_stick_x;
         lx = operator.left_stick_x;
         ly = operator.left_stick_y;
-
+        ry = operator.right_stick_y;
+        rx = operator.right_stick_x;
 
 
 

@@ -19,7 +19,7 @@ public class FullTeleOp extends LinearOpMode {
         while (opModeIsActive()){
             swerveDrive.swerveKinematics.update();
             swerveDrive.fod(gamepad);
-            elevator.updateByGamepad();
+            elevator.updateByGamepad(gamepad);
             gamepad.update();
 
         }

@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.common.states.PositionalStates;
+import org.firstinspires.ftc.teamcode.common.utilities.Gamepad;
 
 public class LiftModule {
     //REV Orbital 20
@@ -113,13 +114,13 @@ public class LiftModule {
         return false;
     }
 
-    public void updateByGamepad() {
+    public void updateByGamepad(Gamepad g) {
 
         // This sets the joystick to control the power with a cubic root function and caps the value at the max power of 1
         double power = Range.clip(linearOpMode.gamepad2.left_stick_y * (1 / Math.abs(linearOpMode.gamepad2.left_stick_y)) * Math.abs(Math.cbrt(linearOpMode.gamepad2.left_stick_y)), -1, 1);
         liftOne.setPower(power);
         liftTwo.setPower(power);
-        /*if (liftOne.getCurrentPosition() <= convertToTicks(42) && liftTwo.getCurrentPosition() <= convertToTicks(42) && power > 0) {
+        if (liftOne.getCurrentPosition() <= convertToTicks(42) && liftTwo.getCurrentPosition() <= convertToTicks(42) && power > 0) {
             liftOne.setPower(power);
             liftTwo.setPower(power);
         }
@@ -153,7 +154,7 @@ public class LiftModule {
         }
         if (moveToState() && runPosition) {
             telemetry.update();
-        }*/
+        }
 
 
     }
