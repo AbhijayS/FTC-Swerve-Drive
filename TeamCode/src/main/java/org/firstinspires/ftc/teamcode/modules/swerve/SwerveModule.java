@@ -149,27 +149,6 @@ public class SwerveModule {
         }
     }
 
-//    /**
-//     * @return Returns the distance the Drive Wheel has moved since initialization
-//     */
-//    @Deprecated
-//    public double getMileage() {
-////        double currentPosition = driveMotor.getCurrentPosition();
-////        double delta = Math.abs(currentPosition - encoderPosition);
-////        encoderPosition = currentPosition;
-////        return delta*wheelCircumference*driveGearRatio/ticksPerRevolution;
-//        updateMileage();
-//        return mileage;
-//    }
-
-//    @Deprecated
-//    private void updateMileage() {
-//        double lastPosition = wheelDisplacement;
-//        double currentPosition = getWheelDisplacement();
-//        double delta = Math.abs(currentPosition - lastPosition);
-//        mileage += delta;
-//    }
-
     public double getDisplacement() {
         return driveMotor.getCurrentPosition() * wheelCircumference * driveGearRatio / ticksPerRevolution;
     }

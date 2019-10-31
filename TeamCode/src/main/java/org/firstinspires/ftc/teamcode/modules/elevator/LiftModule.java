@@ -117,7 +117,7 @@ public class LiftModule {
     public void updateByGamepad(Gamepad g) {
 
         // This sets the joystick to control the power with a cubic root function and caps the value at the max power of 1
-        double power = Range.clip(linearOpMode.gamepad2.left_stick_y * (1 / Math.abs(linearOpMode.gamepad2.left_stick_y)) * Math.abs(Math.cbrt(linearOpMode.gamepad2.left_stick_y)), -1, 1);
+        double power = Range.clip(g.ly * (1 / Math.abs(g.ly)) * Math.abs(Math.cbrt(g.ly)), -1, 1);
         liftOne.setPower(power);
         liftTwo.setPower(power);
         if (liftOne.getCurrentPosition() <= convertToTicks(42) && liftTwo.getCurrentPosition() <= convertToTicks(42) && power > 0) {

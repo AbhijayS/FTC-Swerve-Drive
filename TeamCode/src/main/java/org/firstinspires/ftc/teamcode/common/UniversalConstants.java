@@ -103,8 +103,8 @@ public class UniversalConstants {
     public enum ModuleConfig {
         MODULE_ZERO     ("Module ZERO",     (-ROBOT_WIDTH/2)-ROBOT_COM_X,(ROBOT_LENGTH/2)-ROBOT_COM_Y,     false,  "fls",    0        ,  Servo.Direction.REVERSE,    "flm",  MotorDirection.REVERSE)  ,
         MODULE_ONE      ("Module ONE",      (ROBOT_WIDTH/2)-ROBOT_COM_X,(ROBOT_LENGTH/2)-ROBOT_COM_Y,      false,  "frs",   -3.07    ,  Servo.Direction.FORWARD,    "frm", MotorDirection.FORWARD)  ,
-        MODULE_TWO      ("Module TWO",      (ROBOT_WIDTH/2)-ROBOT_COM_X,(-ROBOT_LENGTH/2)-ROBOT_COM_Y,     false,  "rrs",    2.92     ,  Servo.Direction.FORWARD,    "rrm",  MotorDirection.FORWARD)  ,
-        MODULE_THREE    ("Module THREE",    (-ROBOT_WIDTH/2)-ROBOT_COM_X,(-ROBOT_LENGTH/2)-ROBOT_COM_Y,    false,  "rls",     -4.43    ,  Servo.Direction.FORWARD,    "rlm",   MotorDirection.REVERSE)  ;
+        MODULE_TWO      ("Module TWO",      (ROBOT_WIDTH/2)-ROBOT_COM_X,(-ROBOT_LENGTH/2)-ROBOT_COM_Y,     false,  "rrs",    -7     ,  Servo.Direction.REVERSE,    "rrm",  MotorDirection.FORWARD)  ,
+        MODULE_THREE    ("Module THREE",    (-ROBOT_WIDTH/2)-ROBOT_COM_X,(-ROBOT_LENGTH/2)-ROBOT_COM_Y,    false,  "rls",     4.57    ,  Servo.Direction.FORWARD,    "rlm",   MotorDirection.REVERSE)  ;
 
         public final String                     moduleName;
         public final String                     servoID;
@@ -131,9 +131,9 @@ public class UniversalConstants {
 
     public static final int     CYCLE_MS            =   50;
     public static final Status  ROBOT_STATUS        =   Status.TESTING;
-    public static final double  ROBOT_WIDTH         =   14.5; // INCHES
-    public static final double  ROBOT_LENGTH        =   15; // INCHES
-    public static final double  ROBOT_MAX_SPEED     =   0.25;
+    public static final double  ROBOT_WIDTH         =   14.75; // INCHES
+    public static final double  ROBOT_LENGTH        =   11.8; // INCHES
+    public static final double  ROBOT_MAX_SPEED     =   0.5;
     public static final double  ROBOT_COM_X         =   0; // offset from (0,0)
     public static final double  ROBOT_COM_Y         =   0; // offset from (0,0)
     public static final double  PI                  =   Math.PI;
@@ -152,6 +152,9 @@ public class UniversalConstants {
     public static final String jewelSwatterRightAxis2 = "JSRA2";
     public static final String jewelSwatterLeftAxis1 = "JSLA1";
     public static final String jewelSwatterLeftAxis2 = "JSLA2";
+    public static final String clampServoTop = "CST";
+    public static final String clampServoBottom = "CSB";
+    public static final String clampServo = "CS";
 
     public static final double kS =   5; // Steering gain (path following only)
     public static final double kP =   0.2/90; // Proportional gain

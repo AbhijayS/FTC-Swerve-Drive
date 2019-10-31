@@ -8,18 +8,20 @@ public class Gamepad {
     private com.qualcomm.robotcore.hardware.Gamepad operator;
 
     private LinearOpMode linearOpMode;
+    // driver controls
     public boolean _0, _45, _90, _135, _180, _225, _270, _315, heading, Oa, Ob, Ou, Ol, Or, Od;
 
-    public double x, y, z, lx, ly, rx, ry;
+    // operator controls
+    public boolean clamp;
+    public boolean unclamp;
+    public double lift;
 
-    private final int leeway = 10;
-    private int counter;
+    public double x, y, z, lx, ly, rx, ry;
 
     public Gamepad(LinearOpMode linearOpMode) {
         this.linearOpMode = linearOpMode;
         this.driver = linearOpMode.gamepad1;
         this.operator = linearOpMode.gamepad2;
-        this.counter = 0;
         update();
     }
 
@@ -28,8 +30,8 @@ public class Gamepad {
         _90 = driver.dpad_up;
         _180 = driver.dpad_left;
         _270 = driver.dpad_down;
-        //Oa = operator.a;
-        //Ob = operator.b;
+        Oa = operator.a;
+        Ob = operator.b;
         Ou = operator.dpad_up;
         Od = operator.dpad_down;
         Ol = operator.dpad_left;
@@ -50,12 +52,9 @@ public class Gamepad {
         ry = operator.right_stick_y;
         rx = operator.right_stick_x;
 
-
-
-        linearOpMode.telemetry.addData("0", _0);
-        linearOpMode.telemetry.addData("90", _90);
-        linearOpMode.telemetry.addData("180", _180);
-        linearOpMode.telemetry.addData("270", _270);
+        lift = -operator.left_stick_y;
+        clamp = operator.right_bumper;
+        unclamp = operator.left_bumper;
     }
 
 }
