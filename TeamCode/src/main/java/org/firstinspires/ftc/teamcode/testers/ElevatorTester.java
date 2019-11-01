@@ -14,6 +14,8 @@ public class ElevatorTester extends LinearOpMode {
         Elevator elevator = new Elevator(this);
         Clamp clamp = new Clamp(this);
         Gamepad gamepad = new Gamepad(this);
+        double liftPower = 0;
+
 
         /*DcMotor liftOne = (DcMotorEx) hardwareMap.dcMotor.get("L1");
         DcMotor liftTwo = (DcMotorEx) hardwareMap.dcMotor.get("L2");
@@ -26,12 +28,13 @@ public class ElevatorTester extends LinearOpMode {
 
         waitForStart();
         while (opModeIsActive()) {
-            elevator.updateByGamepad(gamepad, gamepad.lift);
+            elevator.updateByGamepad(gamepad, liftPower);
             telemetry.addData("Clamp Status", clamp.getStatus());
             /*double power = Range.scale(gamepad.lift, -1, 1, -0.25, 0.25);
             liftOne.setPower(power);
             liftTwo.setPower(power);*/
             gamepad.update();
+            liftPower = gamepad.lift;
             telemetry.update();
         }
     }

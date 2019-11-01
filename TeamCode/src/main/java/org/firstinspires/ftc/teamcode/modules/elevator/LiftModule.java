@@ -120,15 +120,15 @@ public class LiftModule {
         double power = Range.clip(stick * (1 / Math.abs(stick)) * Math.abs(Math.cbrt(stick)), -1, 1);
         liftOne.setPower(power);
         liftTwo.setPower(power);
-        if (liftOne.getCurrentPosition() <= convertToTicks(42) && liftTwo.getCurrentPosition() <= convertToTicks(42) && power > 0) {
+        /*if (liftOne.getCurrentPosition() <= convertToTicks(42) && liftTwo.getCurrentPosition() <= convertToTicks(42) && power > 0) {
             liftOne.setPower(power);
             liftTwo.setPower(power);
         }
         if (liftOne.getCurrentPosition() <= convertToTicks(0) && liftTwo.getCurrentPosition() <= convertToTicks(0) && power < 0) {
             liftOne.setPower(power);
             liftTwo.setPower(power);
-        }
-        if (power == 0) {
+        }*/
+        /*if (power == 0) {
             liftOne.setPower(power);
             liftTwo.setPower(power);
         }
@@ -154,7 +154,8 @@ public class LiftModule {
         }
         if (moveToState() && runPosition) {
             telemetry.update();
-        }
+        }*/
+        telemetry.addData("power: ",power);
 
 
     }
