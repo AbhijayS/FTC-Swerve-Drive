@@ -136,7 +136,7 @@ public class LiftModule {
             liftTwo.setPower(power);
         }*/
 
-        if (g.Ou) {
+        /*if (g.Ou) {
             telemetry.addLine("FULL HEIGHT");
             state = PositionalStates.FULL;
             runPosition = true;
@@ -158,7 +158,7 @@ public class LiftModule {
         }
         if (moveToState() && runPosition) {
             telemetry.update();
-        }
+        }*/
         telemetry.addData("power: ", power);
 
 
