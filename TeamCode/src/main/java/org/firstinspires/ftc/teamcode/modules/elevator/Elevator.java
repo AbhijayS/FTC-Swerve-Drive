@@ -15,9 +15,9 @@ public class Elevator {
         liftModule = new LiftModule(l);
     }
 
-    public void updateByGamepad(Gamepad g){
+    public void updateByGamepad(Gamepad g, double leftStick){
         clamp.updateByGamepad(g);
-        liftModule.updateByGamepad(g);
+        liftModule.updateByGamepad(g,leftStick);
         linearOpMode.telemetry.update();
     }
 }
