@@ -58,7 +58,7 @@ public class LiftModule {
         liftTwo.setPIDCoefficients(DcMotor.RunMode.RUN_TO_POSITION, pidCoefficients);
 
         status("Directions Set");
-
+        liftTwo.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         setRunMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
     }
