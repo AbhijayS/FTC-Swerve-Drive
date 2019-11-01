@@ -160,6 +160,7 @@ public class LiftModule {
             telemetry.update();
         }*/
         telemetry.addData("power: ", power);
+        telemetry.addData("position: ", liftOne.getCurrentPosition());
 
 
     }
