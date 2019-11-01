@@ -35,7 +35,7 @@ public class ElevatorTester extends LinearOpMode {
             liftTwo.setPower(power);*/
             gamepad.update();
             liftPower = gamepad.lift;
-            telemetry.update();
+            //telemetry.update();
         }
     }
 

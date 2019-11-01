@@ -118,7 +118,7 @@ public class LiftModule {
 
         // This sets the joystick to control the power with a cubic root function and caps the value at the max power of 1
         double power = Range.clip(Math.cbrt(stick), -1, 1);
-        if (liftTwo.getCurrentPosition() <= convertToTicks(42) && liftTwo.getCurrentPosition() <= convertToTicks(0)) {
+        if (liftTwo.getCurrentPosition() <= convertToTicks(42)+10 && liftTwo.getCurrentPosition() >= convertToTicks(0) - 10) {
             liftOne.setPower(power);
             liftTwo.setPower(power);
         }
@@ -163,6 +163,7 @@ public class LiftModule {
         telemetry.addData("power: ", power);
         telemetry.addData("position: ", liftTwo.getCurrentPosition());
         telemetry.addData("max position: ", convertToTicks(42));
+        telemetry.addData("stick value: ", stick);
 
 
     }
