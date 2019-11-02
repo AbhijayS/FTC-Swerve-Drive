@@ -56,7 +56,7 @@ public class RedDeadPartner extends LinearOpMode {
         Thread.sleep(500);
 
         x = new double[]{0, 0, 0};
-        y = new double[]{-24, -20, -17};
+        y = new double[]{-24, -20, -14};
         z = new double[]{90, 90, 90};
 
         interpolant = new Path(this, x, y, z);
@@ -76,7 +76,7 @@ public class RedDeadPartner extends LinearOpMode {
         }
 
         x = new double[]{0, 60, 80};
-        y = new double[]{-17, -24, -27};
+        y = new double[]{-14, -24, -27};
         z = new double[]{90, 90, 90};
 
         interpolant = new Path(this, x, y, z);
