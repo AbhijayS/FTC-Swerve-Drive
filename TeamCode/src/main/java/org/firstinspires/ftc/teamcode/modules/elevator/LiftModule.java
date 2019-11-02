@@ -175,6 +175,7 @@ public class LiftModule {
 
         if (moveHeight((incremHeight * increment),.5) && runPosition) {
             telemetry.addLine("moving to position");
+            telemetry.addLine("h");
         }
         /*if (!moveHeight(convertToInches(liftTwo.getCurrentPosition()), .25) && holdPosition) ;
         {
