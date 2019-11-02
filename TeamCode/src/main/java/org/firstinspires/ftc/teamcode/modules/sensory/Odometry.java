@@ -36,6 +36,16 @@ public class Odometry {
         current = origin;
     }
 
+    public double inchToTick(double inch){
+        double rotation = inch/(wheel * Math.PI);
+        return (rotation * CPR);
+    }
+
+    public double tickToInch(double tick){
+        double rotation = tick/CPR;
+        return (rotation * (wheel * Math.PI));
+    }
+
 
 
 

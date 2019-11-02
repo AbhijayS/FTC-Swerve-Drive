@@ -21,6 +21,8 @@ public class LiftModule {
     private PIDCoefficients pidCoefficients;
     private boolean runPosition = false;
     private boolean holdPosition = true;
+    private double incremHeight = 5;
+    private int increment = 0;
 
 
     public void status(String s) {
@@ -130,11 +132,11 @@ public class LiftModule {
             liftOne.setPower(power);
             liftTwo.setPower(power);
         }*/
-        if (stick == 0) {
+        /*if (stick == 0) {
             holdPosition = true;
         } else if (stick != 0) {
             holdPosition = false;
-        }
+        }*/
 
 
         if (liftTwo.getCurrentPosition() >= convertToTicks(42) && power > 0) {
@@ -150,31 +152,34 @@ public class LiftModule {
         liftTwo.setPower(power);
 
         if (g.Ou) {
-            telemetry.addLine("FULL HEIGHT");
-            state = PositionalStates.FULL;
+            //telemetry.addLine("FULL HEIGHT");
+            //state = PositionalStates.FULL;
+            increment++;
             runPosition = true;
         } else if (g.Od) {
-            telemetry.addLine("QUARTER HEIGHT");
-            state = PositionalStates.QUARTER;
+            //telemetry.addLine("QUARTER HEIGHT");
+            //state = PositionalStates.QUARTER;
+            increment--;
             runPosition = true;
         } else if (g.Ol) {
-            telemetry.addLine("HALF HEIGHT");
-            state = PositionalStates.HALF;
+            //telemetry.addLine("HALF HEIGHT");
+            //state = PositionalStates.HALF;
             runPosition = true;
         } else if (g.Or) {
-            telemetry.addLine("THREE_QUARTER HEIGHT");
-            state = PositionalStates.THREE_QUARTERS;
+            //telemetry.addLine("THREE_QUARTER HEIGHT");
+            //state = PositionalStates.THREE_QUARTERS;
+            increment = 0;
             runPosition = true;
         }
 
 
-        if (moveToState() && runPosition) {
+        if (moveHeight((incremHeight * increment),.5) && runPosition) {
             telemetry.addLine("moving to position");
         }
-        if (!moveHeight(convertToInches(liftTwo.getCurrentPosition()), .25) && holdPosition) ;
+        /*if (!moveHeight(convertToInches(liftTwo.getCurrentPosition()), .25) && holdPosition) ;
         {
             telemetry.addLine("holding");
-        }
+        }*/
         telemetry.addData("power: ", power);
         telemetry.addData("position: ", liftTwo.getCurrentPosition());
         telemetry.addData("max position: ", convertToTicks(42));
