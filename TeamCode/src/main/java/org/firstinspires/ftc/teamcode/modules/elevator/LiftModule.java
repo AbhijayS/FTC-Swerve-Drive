@@ -87,9 +87,13 @@ public class LiftModule {
 
     public void moveHeight(double height, double power) {
         if (height <= 42) {
+            double p = power;
             //setRunMode(DcMotor.RunMode.RUN_TO_POSITION);
-            liftOne.setPower(power);
-            liftTwo.setPower(power);
+            if(((int)convertToTicks(height))<liftTwo.getCurrentPosition()){
+                p = -p;
+            }
+            liftOne.setPower(p);
+            liftTwo.setPower(p);
             liftOne.setTargetPosition((int) convertToTicks(height));
             liftTwo.setTargetPosition((int) convertToTicks(height));
             telemetry.addData("Height: ", height);
