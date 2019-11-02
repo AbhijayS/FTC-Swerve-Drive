@@ -20,6 +20,7 @@ public class LiftModule {
     public PositionalStates state;
     private PIDCoefficients pidCoefficients;
     private boolean runPosition = false;
+    private boolean holdPosition = true;
 
 
     public void status(String s) {
@@ -75,11 +76,11 @@ public class LiftModule {
         return tickValue;
     }
 
-    public double convertToInches(double Tics){
+    public double convertToInches(double Tics) {
         double height = 0;
         double linear_conversion = Tics / ((1.0 / (2.3 * Math.PI)) * 62 * (38.0 / 62.0) * (1.0 / 38.0) * 560.0);
         height = 4 * linear_conversion;
-        return  height;
+        return height;
     }
 
     public boolean moveHeight(double height, double power) {
@@ -125,54 +126,52 @@ public class LiftModule {
 
         // This sets the joystick to control the power with a cubic root function and caps the value at the max power of 1
         double power = Range.clip(Math.cbrt(stick), -.25, .5);
-        if (liftTwo.getCurrentPosition() <= convertToTicks(42)+10 && liftTwo.getCurrentPosition() >= convertToTicks(0) - 10) {
+        /*if (liftTwo.getCurrentPosition() <= convertToTicks(42)+10 && liftTwo.getCurrentPosition() >= convertToTicks(0) - 10) {
             liftOne.setPower(power);
             liftTwo.setPower(power);
-        }
-        if(stick == 0){
-            runPosition = true;
-        }else if(stick != 0){
-            runPosition = true;
+        }*/
+        if (stick == 0) {
+            holdPosition = true;
+        } else if (stick != 0) {
+            holdPosition = false;
         }
 
 
-        /*if (liftOne.getCurrentPosition() <= convertToTicks(42) && liftTwo.getCurrentPosition() <= convertToTicks(42) && power > 0) {
+        if (liftTwo.getCurrentPosition() <= convertToTicks(42) && power > 0) {
+            liftOne.setPower(power);
+            liftTwo.setPower(power);
+        } else if (liftTwo.getCurrentPosition() >= convertToTicks(0) && power < 0) {
             liftOne.setPower(power);
             liftTwo.setPower(power);
         }
-        if (liftOne.getCurrentPosition() <= convertToTicks(0) && liftTwo.getCurrentPosition() <= convertToTicks(0) && power < 0) {
-            liftOne.setPower(power);
-            liftTwo.setPower(power);
-        }
-        if (power == 0) {
+        /*if (power == 0) {
             liftOne.setPower(power);
             liftTwo.setPower(power);
         }*/
 
-        /*if (g.Ou) {
+        if (g.Ou) {
             telemetry.addLine("FULL HEIGHT");
             state = PositionalStates.FULL;
             runPosition = true;
-        }
-        if (g.Od) {
+        } else if (g.Od) {
             telemetry.addLine("QUARTER HEIGHT");
             state = PositionalStates.QUARTER;
             runPosition = true;
-        }
-        if (g.Ol) {
+        } else if (g.Ol) {
             telemetry.addLine("HALF HEIGHT");
             state = PositionalStates.HALF;
             runPosition = true;
-        }
-        if (g.Or) {
+        } else if (g.Or) {
             telemetry.addLine("THREE_QUARTER HEIGHT");
             state = PositionalStates.THREE_QUARTERS;
             runPosition = true;
         }
+
+
         if (moveToState() && runPosition) {
-            telemetry.update();
-        }*/
-        if(!moveHeight(convertToInches(liftTwo.getCurrentPosition()),.25) && runPosition);
+            telemetry.addLine("moving to position");
+        }
+        if (!moveHeight(convertToInches(liftTwo.getCurrentPosition()), .25) && holdPosition) ;
         {
             telemetry.addLine("holding");
         }
