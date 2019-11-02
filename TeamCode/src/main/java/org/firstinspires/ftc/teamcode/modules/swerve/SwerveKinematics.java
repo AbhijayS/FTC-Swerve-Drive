@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.modules.swerve;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.teamcode.common.UniversalConstants;
 import org.firstinspires.ftc.teamcode.common.utilities.Debugger;
 import org.firstinspires.ftc.teamcode.common.utilities.Point;
 import org.firstinspires.ftc.teamcode.common.utilities.Stopwatch;
@@ -13,9 +14,9 @@ import static org.firstinspires.ftc.teamcode.common.UniversalConstants.servoDefa
 public class SwerveKinematics {
     private Stopwatch stopwatch;
     private SwerveDrive swerveDrive;
-    private SwerveModule[] swerveModules;
+    public SwerveModule[] swerveModules;
     private Point centerOfMass;
-    private Point[] modulesPose; // Describes pose (position & direction) of each module in the global reference frame
+    public Point[] modulesPose; // Describes pose (position & direction) of each module in the global reference frame
     private Double[] wheelStamps; // Save the position of each module wheel for later calculations
     private double yawStamp; // Save the drivetrain's yaw
     private Double[] dS;
@@ -212,6 +213,10 @@ public class SwerveKinematics {
                 temp[2],
                 temp[3]
         };
+
+        debugger.addData(UniversalConstants.Debugging.RX.toString(), Double.toString(centerOfMass.getX()));
+        debugger.addData(UniversalConstants.Debugging.RY.toString(), Double.toString(centerOfMass.getY()));
+        debugger.addData(UniversalConstants.Debugging.HEADING.toString(), Double.toString(centerOfMass.getDegrees()));
     }
 
     public double getVelocity() {

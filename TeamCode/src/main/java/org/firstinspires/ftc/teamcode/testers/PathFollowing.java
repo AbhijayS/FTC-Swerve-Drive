@@ -17,35 +17,14 @@ public class PathFollowing extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-//        Debugger robotDebugger = new Debugger(Util.getContext(), this, (ArrayList<String>) UniversalConstants.Debugging.getDebuggingMarkers());
-//        robotDebugger.initialize("stanley_kin");
+        Debugger robotDebugger = new Debugger(Util.getContext(), this, (ArrayList<String>) UniversalConstants.Debugging.getDebuggingMarkers());
+        robotDebugger.initialize("stanley_kin");
 
-        SwerveDrive swerveDrive = new SwerveDrive(this, null);
+        SwerveDrive swerveDrive = new SwerveDrive(this, robotDebugger);
 
-        double x[] = {
-                0,
-                15,
-                30,
-                45,
-                30,
-                0
-        };
-        double y[] = {
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-        };
-        double z[] = {
-                0,
-                90,
-                0,
-                90,
-                45,
-                0
-        };
+        double x[] = {0, 0, 0};
+        double y[] = {0, -5, -10};
+        double z[] = {90,90,90};
 
         Path toInterpolate = new Path(this, x, y, z);
         swerveDrive.setPath(toInterpolate);
@@ -57,9 +36,9 @@ public class PathFollowing extends LinearOpMode {
         while (opModeIsActive()) {
             swerveDrive.swerveKinematics.update();
             swerveDrive.stanleyPursuit();
-//            robotDebugger.log();
+            robotDebugger.log();
         }
 
-//        robotDebugger.stopLogging();
+        robotDebugger.stopLogging();
     }
 }

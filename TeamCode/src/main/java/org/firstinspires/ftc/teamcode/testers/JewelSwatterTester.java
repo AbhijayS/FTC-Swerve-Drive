@@ -9,38 +9,33 @@ import org.firstinspires.ftc.teamcode.modules.jewelswatter.JewelSwatter;
 public class JewelSwatterTester extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
-        JewelSwatter jewelSwatter = new JewelSwatter(this);
+        JewelSwatter jewelSwatter = new JewelSwatter(this.hardwareMap);
+
         waitForStart();
+
         while (opModeIsActive()) {
             //sets the positions if you press x
             if (gamepad2.x) {
-                telemetry.addData("Status", "Pre-Clamp");
-                jewelSwatter.preclampRight();
-                jewelSwatter.preclampLeft();
+                jewelSwatter.requestState(JewelSwatter.JewelSwatterState.DOCK_LEFT);
             }
             //sets the positions if you press y
             if (gamepad2.y) {
-                telemetry.addData("Status", "Clamp");
-                jewelSwatter.clampRight();
-                jewelSwatter.clampLeft();
+                jewelSwatter.requestState(JewelSwatter.JewelSwatterState.POSSESS_LEFT);
             }
             if (gamepad2.a) {
-                telemetry.addData("Status", "Stow");
-                jewelSwatter.stowRight();
-                jewelSwatter.stowLeft();
-            }
-
-            if (gamepad2.b) {
-                telemetry.addData("Status", "Travelling High");
-                jewelSwatter.travellingLeftHigh();
-                jewelSwatter.travellingRightHigh();
+                jewelSwatter.requestState(JewelSwatter.JewelSwatterState.STOW_ALL);
             }
 
             if (gamepad2.dpad_up){
-                telemetry.addData("Status", "Travelling Low");
-                jewelSwatter.travellingLeftLow();
-                jewelSwatter.travellingRightLow();
+                jewelSwatter.requestState(JewelSwatter.JewelSwatterState.RIDE_HIGH_LEFT);
             }
+
+            if (gamepad2.dpad_down){
+                jewelSwatter.requestState(JewelSwatter.JewelSwatterState.RIDE_LOW_LEFT);
+            }
+
+            telemetry.addData("STATUS", jewelSwatter.getStatus());
+            jewelSwatter.update();
             telemetry.update();
         }
     }

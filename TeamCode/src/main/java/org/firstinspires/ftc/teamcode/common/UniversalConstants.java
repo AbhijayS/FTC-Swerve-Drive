@@ -129,6 +129,23 @@ public class UniversalConstants {
 
     }
 
+    public enum JewelSwatterConfig {
+        LEFT("JSLA1", "JSLA2", Servo.Direction.REVERSE, Servo.Direction.REVERSE, 0),
+        RIGHT("JSRA1", "JSRA2", Servo.Direction.FORWARD, Servo.Direction.FORWARD, 0);
+
+        public String nameAxis1, nameAxis2;
+        public double delta;
+        public Servo.Direction directionAxis1, directionAxis2;
+
+        JewelSwatterConfig(String axis1, String axis2, Servo.Direction directionAxis1, Servo.Direction directionAxis2, double delta) {
+            this.nameAxis1 = axis1;
+            this.nameAxis2 = axis2;
+            this.directionAxis1 = directionAxis1;
+            this.directionAxis2 = directionAxis2;
+            this.delta = delta;
+        }
+    }
+
     public static final int     CYCLE_MS            =   50;
     public static final Status  ROBOT_STATUS        =   Status.TESTING;
     public static final double  ROBOT_WIDTH         =   14.75; // INCHES
@@ -148,10 +165,6 @@ public class UniversalConstants {
     public static final double  wheelCircumference  = wheelDiameter*Math.PI; //inches
     public static final double  driveGearRatio      = 24.0/18.0; // Output rate : Input rate
 
-    public static final String jewelSwatterRightAxis1 = "JSRA1";
-    public static final String jewelSwatterRightAxis2 = "JSRA2";
-    public static final String jewelSwatterLeftAxis1 = "JSLA1";
-    public static final String jewelSwatterLeftAxis2 = "JSLA2";
     public static final String clampServoTop = "CST";
     public static final String clampServoBottom = "CSB";
     public static final String clampServo = "CS";
