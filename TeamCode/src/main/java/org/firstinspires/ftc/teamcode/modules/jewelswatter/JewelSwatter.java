@@ -8,17 +8,36 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.common.UniversalConstants;
 
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.jewelSwatterLeftAxis1;
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.jewelSwatterLeftAxis2;
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.jewelSwatterRightAxis1;
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.jewelSwatterRightAxis2;
+
 public class JewelSwatter {
     private LinearOpMode linearOpMode;
     private Telemetry telemetry;
-    private JewelSwatterArm left, right;
+
+    private enum JewelArmConfig {
+        LEFT(jewelSwatterLeftAxis1, jewelSwatterLeftAxis2, Servo.Direction.REVERSE, Servo.Direction.REVERSE, 0),
+        RIGHT(jewelSwatterRightAxis1, jewelSwatterRightAxis2, Servo.Direction.FORWARD, Servo.Direction.FORWARD, 0);
+
+        private Servo.Direction directionAxis1, directionAxis2;
+        private double delta;
+        public double STOWED_AXIS_1, STOWED_AXIS_2, DOCK_AXIS_1, DOCK_AXIS_2, LOW_AXIS_1, HIGH_AXIS_1;
+
+        JewelArmConfig(String nameAxis1, String nameAxis2, Servo.Direction directionAxis1, Servo.Direction directionAxis2, double delta) {
+            this.directionAxis1 = directionAxis1;
+            this.directionAxis2 = directionAxis2;
+            this.delta = delta;
+        }
+    }
 
     public JewelSwatter(LinearOpMode l) {
         linearOpMode = l;
         telemetry = l.telemetry;
         HardwareMap hardwareMap = l.hardwareMap;
-        right = new JewelSwatterArm(l, UniversalConstants.jewelSwatterRightAxis1, UniversalConstants.jewelSwatterRightAxis2, Servo.Direction.FORWARD);
-        left = new JewelSwatterArm(l, UniversalConstants.jewelSwatterLeftAxis1, UniversalConstants.jewelSwatterLeftAxis2, Servo.Direction.REVERSE);
+        right = new JewelSwatterArm(l, jewelSwatterRightAxis1, jewelSwatterRightAxis2, Servo.Direction.FORWARD);
+        left = new JewelSwatterArm(l, jewelSwatterLeftAxis1, jewelSwatterLeftAxis2, Servo.Direction.REVERSE);
 
     }
 
