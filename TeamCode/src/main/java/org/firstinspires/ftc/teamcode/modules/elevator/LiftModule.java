@@ -183,7 +183,7 @@ public class LiftModule {
 
 
         if (runPosition) {
-            moveHeight(Range.clip((incremHeight * increment),0,42),.5);
+            moveHeight(Range.clip((incremHeight * increment),0,42),.8);
             telemetry.addLine("moving to position");
         }
         /*if (!moveHeight(convertToInches(liftTwo.getCurrentPosition()), .25) && holdPosition) ;
