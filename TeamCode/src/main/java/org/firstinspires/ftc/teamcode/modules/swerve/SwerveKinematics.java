@@ -36,7 +36,7 @@ public class SwerveKinematics {
         this.swerveModules[1] = swerveDrive.module1;
         this.swerveModules[2] = swerveDrive.module2;
         this.swerveModules[3] = swerveDrive.module3;
-        this.wheelStamps = new Double[]{
+        this.wheelStamps = new Double[] {
                 swerveModules[0].getDisplacement(),
                 swerveModules[1].getDisplacement(),
                 swerveModules[2].getDisplacement(),

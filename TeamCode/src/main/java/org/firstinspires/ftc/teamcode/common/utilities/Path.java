@@ -35,7 +35,7 @@ public class Path {
         if (x.length < 3)
             throw new RuntimeException("Path must include at least 3 points!");
 
-        if (x.length != y.length || x.length != z.length)
+        if (x.length != y.length)
             throw new RuntimeException("Invalid arguments to the path!");
 
         this.z = z;
@@ -154,17 +154,18 @@ public class Path {
                     return;
                 }
 
-                if (trackingPoint.getX() < keys.getFirst()) {
-                    if (pathSegment == 1) {
-                        pathState = PathState.BEGIN;
-                        return;
-                    }
-                    pathSegment--;
-                    zIndex--;
-                    splineSegment = 1;
-                    pathState = PathState.SUSTAIN;
-                    return;
-                }
+//                if (trackingPoint.getX() < keys.getFirst()) {
+//                    if (pathSegment == 1) {
+//                        pathState = PathState.BEGIN;
+//                        return;
+//                    }
+//                    pathSegment--;
+//                    zIndex--;
+//                    splineSegment = 1;
+//                    pathState = PathState.SUSTAIN;
+//                    return;
+//                }
+
                 double[] x = new double[keys.size()];
                 double[] y = new double[keys.size()];
                 for (int i = 0; i < currentSegment.size(); i++) {
@@ -192,17 +193,17 @@ public class Path {
                     return;
                 }
 
-                if (trackingPoint.getX() > keys.getFirst()) {
-                    if (pathSegment == 1) {
-                        pathState = PathState.BEGIN;
-                        return;
-                    }
-                    pathSegment--;
-                    zIndex--;
-                    splineSegment = 1;
-                    pathState = PathState.SUSTAIN;
-                    return;
-                }
+//                if (trackingPoint.getX() > keys.getFirst()) {
+//                    if (pathSegment == 1) {
+//                        pathState = PathState.BEGIN;
+//                        return;
+//                    }
+//                    pathSegment--;
+//                    zIndex--;
+//                    splineSegment = 1;
+//                    pathState = PathState.SUSTAIN;
+//                    return;
+//                }
                 Collections.reverse(keys);
                 Collections.reverse(values);
                 double[] x = new double[keys.size()];
@@ -233,15 +234,15 @@ public class Path {
                     pathState = PathState.SUSTAIN;
                 }
 
-                if (trackingPoint.getY() < prevValues.getLast()) {
-                    if (pathSegment == 1) {
-                        pathState = PathState.BEGIN;
-                    }
-                    pathSegment--;
-                    zIndex++;
-                    splineSegment = 1;
-                    pathState = PathState.SUSTAIN;
-                }
+//                if (trackingPoint.getY() < prevValues.getLast()) {
+//                    if (pathSegment == 1) {
+//                        pathState = PathState.BEGIN;
+//                    }
+//                    pathSegment--;
+//                    zIndex++;
+//                    splineSegment = 1;
+//                    pathState = PathState.SUSTAIN;
+//                }
                 zIndex = Range.clip(zIndex, 0, z.length - 1);
                 trackingPoint.setPose(keys.getFirst(), CoM.getY(), z[zIndex]);
                 pathState = PathState.FOLLOW;
@@ -260,14 +261,14 @@ public class Path {
                     pathState = PathState.SUSTAIN;
                 }
 
-                if (trackingPoint.getY() > prevValues.getLast()) {
-                    if (pathSegment == 1)
-                        pathState = PathState.BEGIN;
-                    pathSegment--;
-                    zIndex--;
-                    splineSegment = 1;
-                    pathState = PathState.SUSTAIN;
-                }
+//                if (trackingPoint.getY() > prevValues.getLast()) {
+//                    if (pathSegment == 1)
+//                        pathState = PathState.BEGIN;
+//                    pathSegment--;
+//                    zIndex--;
+//                    splineSegment = 1;
+//                    pathState = PathState.SUSTAIN;
+//                }
                 zIndex = Range.clip(zIndex, 0, z.length - 1);
                 trackingPoint.setPose(keys.getFirst(), CoM.getY(), z[zIndex]);
                 pathState = PathState.FOLLOW;

@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.common.utilities.Direction;
 import org.firstinspires.ftc.teamcode.common.utilities.Gamepad;
 
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.clampServo;
@@ -36,6 +37,21 @@ public class Clamp {
             this.enable = 0;
         }
 
+        servo.setPower(enable * maxPower);
+    }
+
+    public void clamp() {
+        this.enable = 1;
+        servo.setPower(enable * maxPower);
+    }
+
+    public void stow() {
+        this.enable = -1;
+        servo.setPower(enable * maxPower);
+    }
+
+    public void noPower() {
+        this.enable = 0;
         servo.setPower(enable * maxPower);
     }
 

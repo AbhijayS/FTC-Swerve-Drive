@@ -81,6 +81,10 @@ public class SwerveDrive {
         this.swerveState = swerveState;
     }
 
+    public SwerveState getState() {
+        return swerveState;
+    }
+
     public void fod(Gamepad g) {
 
         // TODO: Simplify code
@@ -371,7 +375,7 @@ public class SwerveDrive {
                 if (!Double.isNaN(trackingPoint.getDegrees()))
                     headingGoal = trackingPoint.getDegrees();
 
-                fod(crossTrackAngle, 0.1, turnPID(headingGoal), yaw);
+                fod(crossTrackAngle, 0.2, turnPID(headingGoal), yaw);
 
                 if (!ROBOT_STATUS.equals(RELEASE)) {
                     debugger.addData("Yaw", Double.toString(yaw));
