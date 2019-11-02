@@ -67,7 +67,7 @@ public class LiftModule {
     }
 
     public void setRunMode(DcMotor.RunMode runMode) {
-        liftOne.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        liftOne.setMode(runMode);
         liftTwo.setMode(runMode);
     }
 
@@ -90,11 +90,11 @@ public class LiftModule {
             //setRunMode(DcMotor.RunMode.RUN_TO_POSITION);
             liftOne.setPower(power);
             liftTwo.setPower(power);
-            //liftOne.setTargetPosition((int) convertToTicks(height));
+            liftOne.setTargetPosition((int) convertToTicks(height));
             liftTwo.setTargetPosition((int) convertToTicks(height));
             telemetry.addData("Height: ", height);
             telemetry.addData("Height Conversion: ", (int) convertToTicks(height));
-            //telemetry.addData("LiftOne Pos: ", liftOne.getCurrentPosition());
+            telemetry.addData("LiftOne Pos: ", liftOne.getCurrentPosition());
             telemetry.addData("Target Position: ", liftTwo.getTargetPosition());
             telemetry.addData("LiftTwo Pos: ", liftTwo.getCurrentPosition());
         }
