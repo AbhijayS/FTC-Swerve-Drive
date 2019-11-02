@@ -14,6 +14,8 @@ import org.firstinspires.ftc.teamcode.modules.swerve.SwerveDrive;
 
 import java.util.ArrayList;
 
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.roundTo2DecimalPlaces;
+
 @TeleOp(name = "TestOp: Red Dead Partner")
 public class RedDeadPartner extends LinearOpMode {
     @Override
@@ -52,7 +54,7 @@ public class RedDeadPartner extends LinearOpMode {
         Thread.sleep(500);
 
         x = new double[]{0, 0, 0};
-        y = new double[]{-24, -23, -20};
+        y = new double[]{-24, -23, -21};
         z = new double[]{90, 90, 90};
 
         interpolant = new Path(this, x, y, z);
@@ -70,7 +72,7 @@ public class RedDeadPartner extends LinearOpMode {
         }
 
         x = new double[]{0, 60, 80};
-        y = new double[]{-20, -24, -25};
+        y = new double[]{-21, -24, -27};
         z = new double[]{90, 0, 90};
 
         interpolant = new Path(this, x, y, z);
@@ -91,7 +93,7 @@ public class RedDeadPartner extends LinearOpMode {
         Thread.sleep(500);
 
         x = new double[]{80,60,0};
-        y = new double[]{-25,-25,-25};
+        y = new double[]{-27,-27,-27};
         z = new double[]{90,0,90};
 
         interpolant = new Path(this, x, y, z);
@@ -108,8 +110,8 @@ public class RedDeadPartner extends LinearOpMode {
             robotDebugger.log();
         }
 
-        x = new double[]{0,-5,-14, -14};
-        y = new double[]{-24,-24,-24, -25};
+        x = new double[]{0,-5,-14, -15};
+        y = new double[]{-27,-27,-27, -28};
         z = new double[]{90,90,90};
 
         interpolant = new Path(this, x, y, z);
@@ -126,23 +128,44 @@ public class RedDeadPartner extends LinearOpMode {
             robotDebugger.log();
         }
 
+        while (opModeIsActive()) {
+            double yaw = roundTo2DecimalPlaces(swerveDrive.swerveKinematics.getYaw());
+            if (Math.abs(yaw) <= 2) {
+                break;
+            }
+            swerveDrive.fod(90,0,swerveDrive.turnPID(90),roundTo2DecimalPlaces(swerveDrive.swerveKinematics.getYaw()));
+            swerveDrive.swerveKinematics.update();
+            telemetry.update();
+        }
+
         // Clamp the stone
         jewelSwatter.requestState(JewelSwatter.JewelSwatterState.DOCK_LEFT);
         Thread.sleep(500);
 
-//        x = new double[]{0,-5,-12, -12};
-//        y = new double[]{-24,-24,-24, -25};
-//        z = new double[]{90,90,90, 90};
-//
-//        interpolant = new Path(this, x, y, z);
-//        swerveDrive.setPath(interpolant);
-//        swerveDrive.requestState(SwerveState.PATH_FOLLOWING);
+        x = new double[]{-15,-16,-17};
+        y = new double[]{-28,-31,-33};
+        z = new double[]{90,90,90};
+
+        interpolant = new Path(this, x, y, z);
+        swerveDrive.setPath(interpolant);
+        swerveDrive.requestState(SwerveState.PATH_FOLLOWING);
 
         while (opModeIsActive()) {
-//            if (swerveDrive.getState() == SwerveState.PATH_FOLLOWING_COMPLETE) {
-//                break;
-//            }
-            jewelSwatter.requestState(JewelSwatter.JewelSwatterState.POSSESS_LEFT);
+            if (swerveDrive.getState() == SwerveState.PATH_FOLLOWING_COMPLETE) {
+                break;
+            }
+            jewelSwatter.requestState(JewelSwatter.JewelSwatterState.DOCK_LEFT);
+            swerveDrive.swerveKinematics.update();
+            swerveDrive.stanleyPursuit();
+            robotDebugger.log();
+        }
+
+        // Clamp the stone
+        jewelSwatter.requestState(JewelSwatter.JewelSwatterState.POSSESS_LEFT);
+        Thread.sleep(500);
+
+        while (opModeIsActive()) {
+
         }
 
         robotDebugger.stopLogging();

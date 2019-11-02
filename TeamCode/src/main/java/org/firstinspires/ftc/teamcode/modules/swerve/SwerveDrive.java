@@ -230,7 +230,7 @@ public class SwerveDrive {
         setPower(speed0, speed1, speed2, speed3);
     }
 
-    private double turnPID(double targetAngle) {
+    public double turnPID(double targetAngle) {
         double heading = roundTo2DecimalPlaces(swerveKinematics.getCenterOfMass().getDegrees());
         double setAngle = roundTo2DecimalPlaces(clipAngle(targetAngle));
         double err = roundTo2DecimalPlaces(heading - setAngle);
@@ -380,7 +380,7 @@ public class SwerveDrive {
                 if (!Double.isNaN(trackingPoint.getDegrees()))
                     headingGoal = trackingPoint.getDegrees();
 
-                fod(crossTrackAngle, 0.25, turnPID(headingGoal), yaw);
+                fod(crossTrackAngle, 1, turnPID(headingGoal), yaw);
 
                 if (!ROBOT_STATUS.equals(RELEASE)) {
                     debugger.addData("Yaw", Double.toString(yaw));
