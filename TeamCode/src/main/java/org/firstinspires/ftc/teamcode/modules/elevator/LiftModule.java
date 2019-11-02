@@ -88,11 +88,11 @@ public class LiftModule {
             setRunMode(DcMotor.RunMode.RUN_TO_POSITION);
             liftOne.setPower(power);
             liftTwo.setPower(power);
-            liftOne.setTargetPosition((int) convertToTicks(height));
+            //liftOne.setTargetPosition((int) convertToTicks(height));
             liftTwo.setTargetPosition((int) convertToTicks(height));
             telemetry.addData("Height: ", height);
             telemetry.addData("Height Conversion: ", (int) convertToTicks(height));
-            telemetry.addData("LiftOne Pos: ", liftOne.getCurrentPosition());
+            //telemetry.addData("LiftOne Pos: ", liftOne.getCurrentPosition());
             telemetry.addData("LiftTwo Pos: ", liftTwo.getCurrentPosition());
         }
         //double averagePosition = (liftOne.getCurrentPosition() + liftTwo.getTargetPosition()) / 2.0;
@@ -107,11 +107,11 @@ public class LiftModule {
             setRunMode(DcMotor.RunMode.RUN_TO_POSITION);
             liftOne.setPower(state.runPower);
             liftTwo.setPower(state.runPower);
-            liftOne.setTargetPosition((int) convertToTicks(state.height));
+            //liftOne.setTargetPosition((int) convertToTicks(state.height));
             liftTwo.setTargetPosition((int) convertToTicks(state.height));
             telemetry.addData("Height: ", state.height);
             telemetry.addData("Height Conversion: ", (int) convertToTicks(state.height));
-            telemetry.addData("LiftOne Pos: ", liftOne.getCurrentPosition());
+            //telemetry.addData("LiftOne Pos: ", liftOne.getCurrentPosition());
             telemetry.addData("LiftTwo Pos: ", liftTwo.getCurrentPosition());
         }
         //double averagePosition = (liftOne.getCurrentPosition() + liftTwo.getTargetPosition()) / 2.0;
