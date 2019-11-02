@@ -130,7 +130,9 @@ public class LiftModule {
             liftTwo.setPower(power);
         }
         if(stick == 0){
-            moveHeight(convertToInches(liftTwo.getCurrentPosition()), .25);
+            runPosition = true;
+        }else if(stick != 0){
+            runPosition = false;
         }
 
 
@@ -170,6 +172,10 @@ public class LiftModule {
         if (moveToState() && runPosition) {
             telemetry.update();
         }*/
+        if(!moveHeight(convertToInches(liftTwo.getCurrentPosition()),.25));
+        {
+            telemetry.addLine("holding");
+        }
         telemetry.addData("power: ", power);
         telemetry.addData("position: ", liftTwo.getCurrentPosition());
         telemetry.addData("max position: ", convertToTicks(42));
