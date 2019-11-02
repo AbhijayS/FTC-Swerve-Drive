@@ -132,7 +132,7 @@ public class LiftModule {
         if(stick == 0){
             runPosition = true;
         }else if(stick != 0){
-            runPosition = false;
+            runPosition = true;
         }
 
 
@@ -172,7 +172,7 @@ public class LiftModule {
         if (moveToState() && runPosition) {
             telemetry.update();
         }*/
-        if(!moveHeight(convertToInches(liftTwo.getCurrentPosition()),.25));
+        if(!moveHeight(convertToInches(liftTwo.getCurrentPosition()),.25) && runPosition);
         {
             telemetry.addLine("holding");
         }
