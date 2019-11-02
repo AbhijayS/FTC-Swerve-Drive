@@ -163,7 +163,27 @@ public class RedDeadPartner extends LinearOpMode {
         // Clamp the stone
         jewelSwatter.requestState(JewelSwatter.JewelSwatterState.POSSESS_LEFT);
         Thread.sleep(500);
+
+        //Raise the stone
         jewelSwatter.requestState(JewelSwatter.JewelSwatterState.RIDE_LOW_LEFT);
+        Thread.sleep(500);
+
+//        x = new double[]{-17};
+//        y = new double[]{-33};
+//        z = new double[]{90,90,90};
+//
+//        interpolant = new Path(this, x, y, z);
+//        swerveDrive.setPath(interpolant);
+//        swerveDrive.requestState(SwerveState.PATH_FOLLOWING);
+//
+//        while (opModeIsActive()) {
+//            if (swerveDrive.getState() == SwerveState.PATH_FOLLOWING_COMPLETE) {
+//                break;
+//            }
+//            swerveDrive.swerveKinematics.update();
+//            swerveDrive.stanleyPursuit();
+//            robotDebugger.log();
+//        }
 
         while (opModeIsActive()) {
 
