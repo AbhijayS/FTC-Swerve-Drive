@@ -56,9 +56,9 @@ public class LiftModule {
 
         liftOne.setDirection(DcMotorSimple.Direction.FORWARD);
         liftTwo.setDirection(DcMotorSimple.Direction.FORWARD);
-        pidCoefficients = new PIDCoefficients(0, 0, 0);
-        liftOne.setPIDCoefficients(DcMotor.RunMode.RUN_TO_POSITION, pidCoefficients);
-        liftTwo.setPIDCoefficients(DcMotor.RunMode.RUN_TO_POSITION, pidCoefficients);
+        //pidCoefficients = new PIDCoefficients(0, 0, 0);
+        //liftOne.setPIDCoefficients(DcMotor.RunMode.RUN_TO_POSITION, pidCoefficients);
+        //liftTwo.setPIDCoefficients(DcMotor.RunMode.RUN_TO_POSITION, pidCoefficients);
 
         status("Directions Set");
         liftTwo.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -99,7 +99,9 @@ public class LiftModule {
         }
         //double averagePosition = (liftOne.getCurrentPosition() + liftTwo.getTargetPosition()) / 2.0;
         if (liftTwo.getCurrentPosition() <= liftTwo.getTargetPosition() + 20 && liftTwo.getCurrentPosition() >= liftTwo.getTargetPosition() - 20) {
+            setRunMode(DcMotor.RunMode.RUN_USING_ENCODER);
             return true;
+
         }
         return false;
     }
@@ -175,7 +177,6 @@ public class LiftModule {
 
         if (moveHeight((incremHeight * increment),.5) && runPosition) {
             telemetry.addLine("moving to position");
-            telemetry.addLine("h");
         }
         /*if (!moveHeight(convertToInches(liftTwo.getCurrentPosition()), .25) && holdPosition) ;
         {
