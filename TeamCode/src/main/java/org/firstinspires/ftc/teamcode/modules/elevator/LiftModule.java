@@ -135,71 +135,39 @@ public class LiftModule {
 
         // This sets the joystick to control the power with a cubic root function and caps the value at the max power of 1
         double power = Range.clip(Math.cbrt(stick), -.5, .5);
-        /*if (liftTwo.getCurrentPosition() <= convertToTicks(42)+10 && liftTwo.getCurrentPosition() >= convertToTicks(0) - 10) {
-            liftOne.setPower(power);
-            liftTwo.setPower(power);
-        }*/
-        /*if (stick == 0) {
-            holdPosition = true;
-        } else if (stick != 0) {
-            holdPosition = false;
-        }*/
-
-
         if (liftTwo.getCurrentPosition() >= convertToTicks(54) && power > 0) {
             power = 0;
         } else if (liftTwo.getCurrentPosition() <= convertToTicks(0) && power < 0) {
             power = 0;
         }
-        /*if (power == 0) {
-            liftOne.setPower(power);
-            liftTwo.setPower(power);
-        }*/
         if(!runPosition) {
             liftOne.setPower(power);
             liftTwo.setPower(power);
         }
-
         if (g.Ou) {
-            //telemetry.addLine("FULL HEIGHT");
-            //state = PositionalStates.FULL;
             Range.clip(increment+=1,0,10);
             setRunMode(DcMotor.RunMode.RUN_TO_POSITION);
             runPosition = true;
         } else if (g.Od) {
-            //telemetry.addLine("QUARTER HEIGHT");
-            //state = PositionalStates.QUARTER;
             Range.clip(increment-=1,0,10);
             setRunMode(DcMotor.RunMode.RUN_TO_POSITION);
             runPosition = true;
         } else if (g.Ol) {
-            //telemetry.addLine("HALF HEIGHT");
-            //state = PositionalStates.HALF;
             setRunMode(DcMotor.RunMode.RUN_TO_POSITION);
             runPosition = true;
         } else if (g.Or) {
-            //telemetry.addLine("THREE_QUARTER HEIGHT");
-            //state = PositionalStates.THREE_QUARTERS;
             increment = 0;
             setRunMode(DcMotor.RunMode.RUN_TO_POSITION);
             runPosition = true;
         }
-
-
         if (runPosition) {
             moveHeight(Range.clip((incremHeight * increment),0,54),.8);
             telemetry.addLine("moving to position");
         }
-        /*if (!moveHeight(convertToInches(liftTwo.getCurrentPosition()), .25) && holdPosition) ;
-        {
-            telemetry.addLine("holding");
-        }*/
+
         telemetry.addData("increment: ",increment);
         telemetry.addData("power: ", power);
         telemetry.addData("position: ", liftTwo.getCurrentPosition());
-        //telemetry.addData("max position: ", convertToTicks(42));
-        //telemetry.addData("stick value: ", stick);
-
 
     }
 

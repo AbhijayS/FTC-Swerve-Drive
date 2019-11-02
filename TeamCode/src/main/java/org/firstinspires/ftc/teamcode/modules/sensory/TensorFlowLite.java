@@ -113,7 +113,7 @@ public class TensorFlowLite {
                     }
                     int indexToRemove = 0;
                     for (int i = 0; i < SkystoneYvals.size(); i++) {
-                        if (SkyStoneY <= SkystoneYvals.get(i) || SkyStoneX < SkystoneXvals.get(i)) {
+                        if (SkyStoneY <= SkystoneYvals.get(i)) {
                             SkyStoneY = SkystoneXvals.get(i);
                             SkyStoneX = SkystoneXvals.get(i);
                         }
@@ -296,6 +296,6 @@ public class TensorFlowLite {
         //Change these parameters when loading a new model asset for object detection. Set appropriate labels
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
         //allows you to crop the image view in the camera
-        tfod.setClippingMargins(0,0,0,0);
+        tfod.setClippingMargins(0,150,0,0);
     }
 }
