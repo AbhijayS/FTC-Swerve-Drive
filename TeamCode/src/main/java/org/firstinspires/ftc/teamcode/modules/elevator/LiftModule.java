@@ -137,17 +137,17 @@ public class LiftModule {
         }
 
 
-        if (liftTwo.getCurrentPosition() <= convertToTicks(42) && power > 0) {
-            liftOne.setPower(power);
-            liftTwo.setPower(power);
-        } else if (liftTwo.getCurrentPosition() >= convertToTicks(0) && power < 0) {
-            liftOne.setPower(power);
-            liftTwo.setPower(power);
+        if (liftTwo.getCurrentPosition() >= convertToTicks(42) && power > 0) {
+            power = 0;
+        } else if (liftTwo.getCurrentPosition() <= convertToTicks(0) && power < 0) {
+            power = 0;
         }
         /*if (power == 0) {
             liftOne.setPower(power);
             liftTwo.setPower(power);
         }*/
+        liftOne.setPower(power);
+        liftTwo.setPower(power);
 
         if (g.Ou) {
             telemetry.addLine("FULL HEIGHT");
