@@ -87,7 +87,7 @@ public class LiftModule {
 
     public boolean moveHeight(double height, double power) {
         if (height <= 42) {
-            setRunMode(DcMotor.RunMode.RUN_TO_POSITION);
+            //setRunMode(DcMotor.RunMode.RUN_TO_POSITION);
             liftOne.setPower(power);
             liftTwo.setPower(power);
             //liftOne.setTargetPosition((int) convertToTicks(height));
@@ -106,7 +106,7 @@ public class LiftModule {
         return false;
     }
 
-    public boolean moveToState() {
+    public void moveToState() {
         if (PositionalStates.FULL.height <= 42) {
             setRunMode(DcMotor.RunMode.RUN_TO_POSITION);
             liftOne.setPower(state.runPower);
@@ -121,9 +121,9 @@ public class LiftModule {
         //double averagePosition = (liftOne.getCurrentPosition() + liftTwo.getTargetPosition()) / 2.0;
         if (liftTwo.getCurrentPosition() <= liftTwo.getTargetPosition() + 20 && liftTwo.getCurrentPosition() >= liftTwo.getTargetPosition() - 20) {
             runPosition = false;
-            return true;
+            //return true;
         }
-        return false;
+        //return false;
     }
 
     public void updateByGamepad(Gamepad g, double stick) {
@@ -157,31 +157,37 @@ public class LiftModule {
             //telemetry.addLine("FULL HEIGHT");
             //state = PositionalStates.FULL;
             increment++;
+            setRunMode(DcMotor.RunMode.RUN_TO_POSITION);
             runPosition = true;
         } else if (g.Od) {
             //telemetry.addLine("QUARTER HEIGHT");
             //state = PositionalStates.QUARTER;
             increment--;
+            setRunMode(DcMotor.RunMode.RUN_TO_POSITION);
             runPosition = true;
         } else if (g.Ol) {
             //telemetry.addLine("HALF HEIGHT");
             //state = PositionalStates.HALF;
+            setRunMode(DcMotor.RunMode.RUN_TO_POSITION);
             runPosition = true;
         } else if (g.Or) {
             //telemetry.addLine("THREE_QUARTER HEIGHT");
             //state = PositionalStates.THREE_QUARTERS;
             increment = 0;
+            setRunMode(DcMotor.RunMode.RUN_TO_POSITION);
             runPosition = true;
         }
 
 
-        if (moveHeight((incremHeight * increment),.5) && runPosition) {
+        if (runPosition) {
+            moveHeight(Range.clip((incremHeight * increment),0,42),.5);
             telemetry.addLine("moving to position");
         }
         /*if (!moveHeight(convertToInches(liftTwo.getCurrentPosition()), .25) && holdPosition) ;
         {
             telemetry.addLine("holding");
         }*/
+        telemetry.addData("increment: ",increment);
         telemetry.addData("power: ", power);
         telemetry.addData("position: ", liftTwo.getCurrentPosition());
         telemetry.addData("max position: ", convertToTicks(42));
