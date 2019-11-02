@@ -132,11 +132,11 @@ public class LiftModule {
             liftOne.setPower(power);
             liftTwo.setPower(power);
         }*/
-        if (stick == 0) {
+        /*if (stick == 0) {
             holdPosition = true;
         } else if (stick != 0) {
             holdPosition = false;
-        }
+        }*/
 
 
         if (liftTwo.getCurrentPosition() >= convertToTicks(42) && power > 0) {
@@ -173,7 +173,7 @@ public class LiftModule {
         }
 
 
-        if (!moveHeight((incremHeight * increment),.5) && runPosition) {
+        if (moveHeight((incremHeight * increment),.5) && runPosition) {
             telemetry.addLine("moving to position");
         }
         /*if (!moveHeight(convertToInches(liftTwo.getCurrentPosition()), .25) && holdPosition) ;
