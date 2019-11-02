@@ -85,7 +85,7 @@ public class LiftModule {
         return height;
     }
 
-    public boolean moveHeight(double height, double power) {
+    public void moveHeight(double height, double power) {
         if (height <= 42) {
             //setRunMode(DcMotor.RunMode.RUN_TO_POSITION);
             liftOne.setPower(power);
@@ -100,10 +100,10 @@ public class LiftModule {
         //double averagePosition = (liftOne.getCurrentPosition() + liftTwo.getTargetPosition()) / 2.0;
         if (liftTwo.getCurrentPosition() <= liftTwo.getTargetPosition() + 20 && liftTwo.getCurrentPosition() >= liftTwo.getTargetPosition() - 20) {
             setRunMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            return true;
+            runPosition = false;
 
         }
-        return false;
+
     }
 
     public void moveToState() {
