@@ -150,19 +150,21 @@ public class LiftModule {
             liftOne.setPower(power);
             liftTwo.setPower(power);
         }*/
-        liftOne.setPower(power);
-        liftTwo.setPower(power);
+        if(!runPosition) {
+            liftOne.setPower(power);
+            liftTwo.setPower(power);
+        }
 
         if (g.Ou) {
             //telemetry.addLine("FULL HEIGHT");
             //state = PositionalStates.FULL;
-            increment++;
+            increment+= 1;
             setRunMode(DcMotor.RunMode.RUN_TO_POSITION);
             runPosition = true;
         } else if (g.Od) {
             //telemetry.addLine("QUARTER HEIGHT");
             //state = PositionalStates.QUARTER;
-            increment--;
+            increment-=1;
             setRunMode(DcMotor.RunMode.RUN_TO_POSITION);
             runPosition = true;
         } else if (g.Ol) {
@@ -190,8 +192,8 @@ public class LiftModule {
         telemetry.addData("increment: ",increment);
         telemetry.addData("power: ", power);
         telemetry.addData("position: ", liftTwo.getCurrentPosition());
-        telemetry.addData("max position: ", convertToTicks(42));
-        telemetry.addData("stick value: ", stick);
+        //telemetry.addData("max position: ", convertToTicks(42));
+        //telemetry.addData("stick value: ", stick);
 
 
     }
