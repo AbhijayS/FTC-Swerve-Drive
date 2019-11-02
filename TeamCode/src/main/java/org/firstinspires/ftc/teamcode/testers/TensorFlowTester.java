@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.modules.sensory.TensorFlowLite;
 public class TensorFlowTester extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
-        TensorFlowLite tensorFlowLite = new TensorFlowLite(this,.23);
+        TensorFlowLite tensorFlowLite = new TensorFlowLite(this,.25);
 
         tensorFlowLite.activateTfod();
         waitForStart();
