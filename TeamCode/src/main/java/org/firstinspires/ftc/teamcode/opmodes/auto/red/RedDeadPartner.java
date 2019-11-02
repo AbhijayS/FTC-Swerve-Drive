@@ -163,6 +163,7 @@ public class RedDeadPartner extends LinearOpMode {
         // Clamp the stone
         jewelSwatter.requestState(JewelSwatter.JewelSwatterState.POSSESS_LEFT);
         Thread.sleep(500);
+        jewelSwatter.requestState(JewelSwatter.JewelSwatterState.RIDE_LOW_LEFT);
 
         while (opModeIsActive()) {
 
