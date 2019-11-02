@@ -112,7 +112,7 @@ public class LiftModule {
     }
 
     public void moveToState() {
-        if (PositionalStates.FULL.height <= 42) {
+        if (PositionalStates.FULL.height <= 54) {
             setRunMode(DcMotor.RunMode.RUN_TO_POSITION);
             liftOne.setPower(state.runPower);
             liftTwo.setPower(state.runPower);
@@ -134,7 +134,7 @@ public class LiftModule {
     public void updateByGamepad(Gamepad g, double stick) {
 
         // This sets the joystick to control the power with a cubic root function and caps the value at the max power of 1
-        double power = Range.clip(Math.cbrt(stick), -.25, .5);
+        double power = Range.clip(Math.cbrt(stick), -.5, .5);
         /*if (liftTwo.getCurrentPosition() <= convertToTicks(42)+10 && liftTwo.getCurrentPosition() >= convertToTicks(0) - 10) {
             liftOne.setPower(power);
             liftTwo.setPower(power);
@@ -146,7 +146,7 @@ public class LiftModule {
         }*/
 
 
-        if (liftTwo.getCurrentPosition() >= convertToTicks(42) && power > 0) {
+        if (liftTwo.getCurrentPosition() >= convertToTicks(54) && power > 0) {
             power = 0;
         } else if (liftTwo.getCurrentPosition() <= convertToTicks(0) && power < 0) {
             power = 0;
@@ -163,13 +163,13 @@ public class LiftModule {
         if (g.Ou) {
             //telemetry.addLine("FULL HEIGHT");
             //state = PositionalStates.FULL;
-            increment+= 1;
+            Range.clip(increment+=1,0,10);
             setRunMode(DcMotor.RunMode.RUN_TO_POSITION);
             runPosition = true;
         } else if (g.Od) {
             //telemetry.addLine("QUARTER HEIGHT");
             //state = PositionalStates.QUARTER;
-            increment-=1;
+            Range.clip(increment-=1,0,10);
             setRunMode(DcMotor.RunMode.RUN_TO_POSITION);
             runPosition = true;
         } else if (g.Ol) {
@@ -187,7 +187,7 @@ public class LiftModule {
 
 
         if (runPosition) {
-            moveHeight(Range.clip((incremHeight * increment),0,42),.8);
+            moveHeight(Range.clip((incremHeight * increment),0,54),.8);
             telemetry.addLine("moving to position");
         }
         /*if (!moveHeight(convertToInches(liftTwo.getCurrentPosition()), .25) && holdPosition) ;
