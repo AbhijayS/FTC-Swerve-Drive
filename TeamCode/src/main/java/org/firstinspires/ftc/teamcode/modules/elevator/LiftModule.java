@@ -176,10 +176,10 @@ public class LiftModule {
         if (!moveHeight((incremHeight * increment),.5) && runPosition) {
             telemetry.addLine("moving to position");
         }
-        if (!moveHeight(convertToInches(liftTwo.getCurrentPosition()), .25) && holdPosition) ;
+        /*if (!moveHeight(convertToInches(liftTwo.getCurrentPosition()), .25) && holdPosition) ;
         {
             telemetry.addLine("holding");
-        }
+        }*/
         telemetry.addData("power: ", power);
         telemetry.addData("position: ", liftTwo.getCurrentPosition());
         telemetry.addData("max position: ", convertToTicks(42));
