@@ -94,10 +94,14 @@ public class SwerveDrive {
             return;
         }
 
+        double slow = 1;
+        if (g.slowmo)
+            slow = 0.25;
+
         double x_left = g.x;
         double y_left = g.y;
 
-        double OMEGA = Range.scale(g.z, 0, 1, 0, ROBOT_MAX_SPEED); // Rotational speed: Clockwise is positive and Anti-Clockwise is negative
+        double OMEGA = Range.scale(g.z, 0, 1, 0, ROBOT_MAX_SPEED*slow); // Rotational speed: Clockwise is positive and Anti-Clockwise is negative
         if (Double.compare(OMEGA, 0.0) == 0) {
             if (!headingGoalSet) {
                 headingGoal = roundTo2DecimalPlaces(swerveKinematics.getCenterOfMass().getDegrees());
@@ -127,7 +131,8 @@ public class SwerveDrive {
                 headingGoal = 270;
             headingGoalSet = true;
         }
-        double STR = Range.scale(Math.abs(Math.hypot(x_left, y_left)), 0, 1, 0, ROBOT_MAX_SPEED); // Strafing speed
+
+        double STR = Range.scale(Math.abs(Math.hypot(x_left, y_left)), 0, 1, 0, ROBOT_MAX_SPEED*slow); // Strafing speed
         double STR_ANGLE = Math.toDegrees(Math.atan2(y_left, x_left)); // Strafing angle
         double corner0 = Math.atan2(ROBOT_LENGTH / 2, ROBOT_WIDTH / 2);
         double corner1 = corner0 - (HALF_PI);
@@ -161,10 +166,10 @@ public class SwerveDrive {
             max = speed3;
         }
         if (max > ROBOT_MAX_SPEED) {
-            speed0 = Range.scale(speed0, 0, max, 0, ROBOT_MAX_SPEED);
-            speed1 = Range.scale(speed1, 0, max, 0, ROBOT_MAX_SPEED);
-            speed2 = Range.scale(speed2, 0, max, 0, ROBOT_MAX_SPEED);
-            speed3 = Range.scale(speed3, 0, max, 0, ROBOT_MAX_SPEED);
+            speed0 = Range.scale(speed0, 0, max, 0, ROBOT_MAX_SPEED*slow);
+            speed1 = Range.scale(speed1, 0, max, 0, ROBOT_MAX_SPEED*slow);
+            speed2 = Range.scale(speed2, 0, max, 0, ROBOT_MAX_SPEED*slow);
+            speed3 = Range.scale(speed3, 0, max, 0, ROBOT_MAX_SPEED*slow);
         }
 
         if (ROBOT_STATUS != RELEASE) {
@@ -375,7 +380,7 @@ public class SwerveDrive {
                 if (!Double.isNaN(trackingPoint.getDegrees()))
                     headingGoal = trackingPoint.getDegrees();
 
-                fod(crossTrackAngle, 0.2, turnPID(headingGoal), yaw);
+                fod(crossTrackAngle, 0.25, turnPID(headingGoal), yaw);
 
                 if (!ROBOT_STATUS.equals(RELEASE)) {
                     debugger.addData("Yaw", Double.toString(yaw));

@@ -9,7 +9,7 @@ public class Gamepad {
 
     private LinearOpMode linearOpMode;
     // driver controls
-    public boolean _0, _45, _90, _135, _180, _225, _270, _315, heading, Oa, Ob, Ou, Ol, Or, Od;
+    public boolean _0, _45, _90, _135, _180, _225, _270, _315, heading, Oa, Ob, Ou, Ol, Or, Od, slowmo;
 
     // operator controls
     public boolean clamp;
@@ -36,6 +36,7 @@ public class Gamepad {
         Od = operator.dpad_down;
         Ol = operator.dpad_left;
         Or = operator.dpad_right;
+        slowmo = driver.left_bumper;
 
         heading = (_0 || _90 || _180 || _270) && !(_0 && _90 && _180 && _270);
 

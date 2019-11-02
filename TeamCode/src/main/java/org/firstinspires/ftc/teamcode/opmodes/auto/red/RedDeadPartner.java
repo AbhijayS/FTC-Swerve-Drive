@@ -26,7 +26,7 @@ public class RedDeadPartner extends LinearOpMode {
         JewelSwatter jewelSwatter = new JewelSwatter(this.hardwareMap);
 
         double[] x = {0, 0, 0};
-        double[] y = {0, -12.5, -25};
+        double[] y = {0, -12.5, -24};
         double[] z = {90, 90, 90};
 
         Path interpolant = new Path(this, x, y, z);
@@ -52,7 +52,7 @@ public class RedDeadPartner extends LinearOpMode {
         Thread.sleep(500);
 
         x = new double[]{0, 0, 0};
-        y = new double[]{-25, -23, -20};
+        y = new double[]{-24, -23, -20};
         z = new double[]{90, 90, 90};
 
         interpolant = new Path(this, x, y, z);
@@ -70,7 +70,7 @@ public class RedDeadPartner extends LinearOpMode {
         }
 
         x = new double[]{0, 60, 80};
-        y = new double[]{-20, -24, -24};
+        y = new double[]{-20, -24, -25};
         z = new double[]{90, 0, 90};
 
         interpolant = new Path(this, x, y, z);
@@ -87,12 +87,11 @@ public class RedDeadPartner extends LinearOpMode {
             robotDebugger.log();
         }
 
-        // Clamp the stone
         jewelSwatter.requestState(JewelSwatter.JewelSwatterState.DOCK_LEFT);
         Thread.sleep(500);
 
         x = new double[]{80,60,0};
-        y = new double[]{-22,-24,-24};
+        y = new double[]{-25,-25,-25};
         z = new double[]{90,0,90};
 
         interpolant = new Path(this, x, y, z);
@@ -103,14 +102,14 @@ public class RedDeadPartner extends LinearOpMode {
             if (swerveDrive.getState() == SwerveState.PATH_FOLLOWING_COMPLETE) {
                 break;
             }
-            jewelSwatter.requestState(JewelSwatter.JewelSwatterState.DOCK_LEFT);
+            jewelSwatter.requestState(JewelSwatter.JewelSwatterState.STOW_ALL);
             swerveDrive.swerveKinematics.update();
             swerveDrive.stanleyPursuit();
             robotDebugger.log();
         }
 
-        x = new double[]{0,-5,-10};
-        y = new double[]{-24,-24,-24};
+        x = new double[]{0,-5,-14, -14};
+        y = new double[]{-24,-24,-24, -25};
         z = new double[]{90,90,90};
 
         interpolant = new Path(this, x, y, z);
@@ -118,13 +117,32 @@ public class RedDeadPartner extends LinearOpMode {
         swerveDrive.requestState(SwerveState.PATH_FOLLOWING);
 
         while (opModeIsActive()) {
-//            if (swerveDrive.getState() == SwerveState.PATH_FOLLOWING_COMPLETE) {
-//                break;
-//            }
-            jewelSwatter.requestState(JewelSwatter.JewelSwatterState.DOCK_LEFT);
+            if (swerveDrive.getState() == SwerveState.PATH_FOLLOWING_COMPLETE) {
+                break;
+            }
+            jewelSwatter.requestState(JewelSwatter.JewelSwatterState.STOW_ALL);
             swerveDrive.swerveKinematics.update();
             swerveDrive.stanleyPursuit();
             robotDebugger.log();
+        }
+
+        // Clamp the stone
+        jewelSwatter.requestState(JewelSwatter.JewelSwatterState.DOCK_LEFT);
+        Thread.sleep(500);
+
+//        x = new double[]{0,-5,-12, -12};
+//        y = new double[]{-24,-24,-24, -25};
+//        z = new double[]{90,90,90, 90};
+//
+//        interpolant = new Path(this, x, y, z);
+//        swerveDrive.setPath(interpolant);
+//        swerveDrive.requestState(SwerveState.PATH_FOLLOWING);
+
+        while (opModeIsActive()) {
+//            if (swerveDrive.getState() == SwerveState.PATH_FOLLOWING_COMPLETE) {
+//                break;
+//            }
+            jewelSwatter.requestState(JewelSwatter.JewelSwatterState.POSSESS_LEFT);
         }
 
         robotDebugger.stopLogging();
