@@ -75,6 +75,13 @@ public class LiftModule {
         return tickValue;
     }
 
+    public double convertToInches(double Tics){
+        double height = 0;
+        double linear_conversion = Tics / ((1.0 / (2.3 * Math.PI)) * 62 * (38.0 / 62.0) * (1.0 / 38.0) * 560.0);
+        height = 4 * linear_conversion;
+        return  height;
+    }
+
     public boolean moveHeight(double height, double power) {
         if (height <= 42) {
             setRunMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -123,8 +130,7 @@ public class LiftModule {
             liftTwo.setPower(power);
         }
         if(stick == 0){
-            liftTwo.setPower(0);
-            liftOne.setPower(0);
+            moveHeight(convertToInches(liftTwo.getCurrentPosition()), .25);
         }
 
 
