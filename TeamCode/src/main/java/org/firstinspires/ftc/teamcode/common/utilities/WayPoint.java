@@ -4,7 +4,8 @@ import org.firstinspires.ftc.teamcode.modules.elevator.Clamp;
 import org.firstinspires.ftc.teamcode.modules.jewelswatter.JewelSwatter;
 
 public class WayPoint {
-    Path path;
     JewelSwatter.JewelSwatterState jewelSwatterState;
-    
+    Clamp clamp;
+    double velocity;
+    double x, y, z;
 }
