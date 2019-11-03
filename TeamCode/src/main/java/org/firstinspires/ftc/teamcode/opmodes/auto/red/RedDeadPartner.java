@@ -196,6 +196,9 @@ public class RedDeadPartner extends LinearOpMode {
             robotDebugger.log();
         }
 
+        jewelSwatter.requestState(JewelSwatter.JewelSwatterState.DOCK_LEFT);
+        Thread.sleep(500);
+
         while (opModeIsActive()) {
 
         }
