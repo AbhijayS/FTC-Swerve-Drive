@@ -77,7 +77,7 @@ public class RedDeadPartner extends LinearOpMode {
 
         clamp.coast();
 
-        x = new double[]{0, 25, 48, 48};
+        x = new double[]{0, 25, 47, 47};
         y = new double[]{-18, -16, -16, -18};
         z = new double[]{90, 90, 90, 90};
 
@@ -100,7 +100,7 @@ public class RedDeadPartner extends LinearOpMode {
         jewelSwatter.requestState(JewelSwatter.JewelSwatterState.DOCK_LEFT);
         Thread.sleep(500);
 
-        x = new double[]{48,48,25,0};
+        x = new double[]{47,47,25,0};
         y = new double[]{-18,-16,-16,-18};
         z = new double[]{90,90,90,90};
 
@@ -119,15 +119,15 @@ public class RedDeadPartner extends LinearOpMode {
             robotDebugger.log();
         }
 
-        x = new double[]{0,-10,-19};
-        y = new double[]{-18,-18,-24};
+        x = new double[]{0,-10,-22};
+        y = new double[]{-18,-18,-25};
         z = new double[]{90,90,90};
 
         interpolant = new Path(this,robotDebugger, x, y, z);
         swerveDrive.setPath(interpolant,1);
         swerveDrive.requestState(SwerveState.PATH_FOLLOWING);
 
-        //Returns across field to 2nd sky stone
+        //Grabs second sky stone
         while (opModeIsActive()) {
             if (swerveDrive.getState() == SwerveState.PATH_FOLLOWING_COMPLETE) {
                 break;
@@ -141,15 +141,15 @@ public class RedDeadPartner extends LinearOpMode {
         jewelSwatter.requestState(JewelSwatter.JewelSwatterState.POSSESS_LEFT);
         Thread.sleep(500);
 
-        x = new double[]{-19,-15,0};
-        y = new double[]{-31,-28,-25};
+        x = new double[]{-22,-15,0};
+        y = new double[]{-31,-28,-22};
         z = new double[]{90,90,180};
 
         interpolant = new Path(this, robotDebugger, x, y, z);
         swerveDrive.setPath(interpolant, 1);
         swerveDrive.requestState(SwerveState.PATH_FOLLOWING);
 
-        //Positions in front of 2nd sky stone
+        //Backs up from second sky stone
         while (opModeIsActive()) {
             if (swerveDrive.getState() == SwerveState.PATH_FOLLOWING_COMPLETE) {
                 break;
@@ -164,8 +164,8 @@ public class RedDeadPartner extends LinearOpMode {
         // ride low
 
         x = new double[]{0,25,50};
-        y = new double[]{-25,-27,-29};
-        z = new double[]{180,180,180};
+        y = new double[]{-22,-22,-29};
+        z = new double[]{180,180,220};
 
         interpolant = new Path(this, robotDebugger, x, y, z);
         swerveDrive.setPath(interpolant, 1);
@@ -183,11 +183,11 @@ public class RedDeadPartner extends LinearOpMode {
         }
 
         // park
-        clamp.stow();
+
         jewelSwatter.requestState(JewelSwatter.JewelSwatterState.DOCK_LEFT);
         Thread.sleep(500);
 
-        x = new double[]{50,49,48};
+        x = new double[]{50,47,45};
         y = new double[]{-29,-29,-29};
         z = new double[]{180,180,180};
 
