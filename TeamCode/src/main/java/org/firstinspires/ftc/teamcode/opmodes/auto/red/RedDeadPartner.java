@@ -77,9 +77,9 @@ public class RedDeadPartner extends LinearOpMode {
 
         clamp.coast();
 
-        x = new double[]{0, 25, 48};
-        y = new double[]{-18, -16, -16};
-        z = new double[]{90, 90, 90};
+        x = new double[]{0, 25, 48, 48};
+        y = new double[]{-18, -16, -16, -18};
+        z = new double[]{90, 90, 90, 90};
 
         interpolant = new Path(this,robotDebugger, x, y, z);
         swerveDrive.setPath(interpolant,1);
@@ -100,9 +100,9 @@ public class RedDeadPartner extends LinearOpMode {
         jewelSwatter.requestState(JewelSwatter.JewelSwatterState.DOCK_LEFT);
         Thread.sleep(500);
 
-        x = new double[]{48,25,0};
-        y = new double[]{-16,-20,-25};
-        z = new double[]{90,90,90};
+        x = new double[]{48,48,25,0};
+        y = new double[]{-18,-16,-16,-18};
+        z = new double[]{90,90,90,90};
 
         interpolant = new Path(this,robotDebugger, x, y, z);
         swerveDrive.setPath(interpolant,1);
@@ -119,9 +119,8 @@ public class RedDeadPartner extends LinearOpMode {
             robotDebugger.log();
         }
 
-        // lower the jewel swatter
-        x = new double[]{0,-10,-17};
-        y = new double[]{-25,-28,-31};
+        x = new double[]{0,-10,-19};
+        y = new double[]{-18,-18,-24};
         z = new double[]{90,90,90};
 
         interpolant = new Path(this,robotDebugger, x, y, z);
@@ -140,9 +139,9 @@ public class RedDeadPartner extends LinearOpMode {
         }
 
         jewelSwatter.requestState(JewelSwatter.JewelSwatterState.POSSESS_LEFT);
+        Thread.sleep(500);
 
-        // deposit the second stone
-        x = new double[]{-17,-15,0};
+        x = new double[]{-19,-15,0};
         y = new double[]{-31,-28,-25};
         z = new double[]{90,90,180};
 

@@ -98,7 +98,7 @@ public class UniversalConstants {
         MODULE_ZERO     ("Module ZERO",     (-ROBOT_WIDTH/2)-ROBOT_COM_X,(ROBOT_LENGTH/2)-ROBOT_COM_Y,     false,  "fls",    0        ,  Servo.Direction.REVERSE,    "flm",  MotorDirection.REVERSE)  ,
         MODULE_ONE      ("Module ONE",      (ROBOT_WIDTH/2)-ROBOT_COM_X,(ROBOT_LENGTH/2)-ROBOT_COM_Y,      false,  "frs",   -3.07    ,  Servo.Direction.REVERSE,    "frm", MotorDirection.FORWARD)  ,
         MODULE_TWO      ("Module TWO",      (ROBOT_WIDTH/2)-ROBOT_COM_X,(-ROBOT_LENGTH/2)-ROBOT_COM_Y,     false,  "rrs",    -7     ,  Servo.Direction.REVERSE,    "rrm",  MotorDirection.FORWARD)  ,
-        MODULE_THREE    ("Module THREE",    (-ROBOT_WIDTH/2)-ROBOT_COM_X,(-ROBOT_LENGTH/2)-ROBOT_COM_Y,    false,  "rls",     4.57    ,  Servo.Direction.FORWARD,    "rlm",   MotorDirection.REVERSE)  ;
+        MODULE_THREE    ("Module THREE",    (-ROBOT_WIDTH/2)-ROBOT_COM_X,(-ROBOT_LENGTH/2)-ROBOT_COM_Y,    false,  "rls",     4.57    ,  Servo.Direction.REVERSE,    "rlm",   MotorDirection.REVERSE)  ;
 
         public final String                     moduleName;
         public final String                     servoID;
