@@ -15,7 +15,8 @@ public class TensorFlowTester extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()){
-            tensorFlowLite.determinePattern();
+            tensorFlowLite.twoStone();
         }
+        tensorFlowLite.shutDownTfod();
     }
 }

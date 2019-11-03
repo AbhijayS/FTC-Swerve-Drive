@@ -79,6 +79,51 @@ public class TensorFlowLite {
         }
     }
 
+    /**
+     * This function is used to determine the SkyStone Arrangement Pattern seeing only two stones.
+     * Use this function primarily in code.
+     * It will set the pattern variable to A, B or C depending on SkyStone arrangement.
+     * The function has a background elimination method based off of the one implemented in Rover Ruckus
+     */
+    public void twoStone(){
+        if(tfod != null){
+            List<Recognition> updateRecognitions = tfod.getUpdatedRecognitions();
+            if(updateRecognitions != null){
+                telemetry.addData("Objects Detected", updateRecognitions.size());
+                if(updateRecognitions.size() >= 2){
+                    int SkyStoneX = -1;
+                    int Stone1X = -1;
+                    int Stone2X = -1;
+                    for(Recognition recognition: updateRecognitions){
+                        if(recognition.getLabel().equals(LABEL_SECOND_ELEMENT)){
+                            SkyStoneX = (int) recognition.getLeft();
+                        }
+                        else if(recognition.getLabel().equals(LABEL_FIRST_ELEMENT)){
+                            Stone1X = (int) recognition.getLeft();
+                        }
+                        else{
+                            Stone2X = (int) recognition.getLeft();
+                        }
+                    }
+                    if(SkyStoneX != -1 && Stone1X != -1){
+                        if(Stone1X <= SkyStoneX){
+                            pattern = "C";
+                            telemetry.addData("Pattern: ","C");
+                        }else{
+                            pattern = "B";
+                            telemetry.addData("Pattern: ","B");
+                        }
+                    }
+                    else{
+                        pattern = "A";
+                        telemetry.addData("Pattern: ","A");
+                    }
+                }
+                telemetry.addData("Pattern Variable: ", pattern);
+                telemetry.update();
+            }
+        }
+    }
 
     /**
      * This function is used to determine the SkyStone Arrangement Pattern.
@@ -296,6 +341,7 @@ public class TensorFlowLite {
         //Change these parameters when loading a new model asset for object detection. Set appropriate labels
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
         //allows you to crop the image view in the camera
-        tfod.setClippingMargins(0,150,0,0);
+        tfod.setClippingMargins(220,200,50,0);
+
     }
 }
