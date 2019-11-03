@@ -11,13 +11,10 @@ import org.firstinspires.ftc.teamcode.common.utilities.Gamepad;
 import org.firstinspires.ftc.teamcode.common.utilities.Path;
 import org.firstinspires.ftc.teamcode.common.utilities.Point;
 
-import static org.firstinspires.ftc.teamcode.common.UniversalConstants.Debugging.CORRECTION;
-import static org.firstinspires.ftc.teamcode.common.UniversalConstants.Debugging.ERROR;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.Debugging.PATH;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.Debugging.PX;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.Debugging.PY;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.Debugging.VELOCITY;
-import static org.firstinspires.ftc.teamcode.common.UniversalConstants.Debugging.WA;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.HALF_PI;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ModuleConfig;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ROBOT_LENGTH;
@@ -54,6 +51,7 @@ public class SwerveDrive {
     private Point kinematicsDelta;
     private double headingGoal;
     private boolean headingGoalSet;
+    private double maxPower; // path following power
 
     public SwerveDrive(LinearOpMode l, Debugger debugger) {
         linearOpMode = l;
@@ -101,7 +99,7 @@ public class SwerveDrive {
         double x_left = g.x;
         double y_left = g.y;
 
-        double OMEGA = Range.scale(g.z, 0, 1, 0, ROBOT_MAX_SPEED*slow); // Rotational speed: Clockwise is positive and Anti-Clockwise is negative
+        double OMEGA = Range.scale(g.z, 0, 1, 0, ROBOT_MAX_SPEED * slow); // Rotational speed: Clockwise is positive and Anti-Clockwise is negative
         if (Double.compare(OMEGA, 0.0) == 0) {
             if (!headingGoalSet) {
                 headingGoal = roundTo2DecimalPlaces(swerveKinematics.getCenterOfMass().getDegrees());
@@ -132,7 +130,7 @@ public class SwerveDrive {
             headingGoalSet = true;
         }
 
-        double STR = Range.scale(Math.abs(Math.hypot(x_left, y_left)), 0, 1, 0, ROBOT_MAX_SPEED*slow); // Strafing speed
+        double STR = Range.scale(Math.abs(Math.hypot(x_left, y_left)), 0, 1, 0, ROBOT_MAX_SPEED * slow); // Strafing speed
         double STR_ANGLE = Math.toDegrees(Math.atan2(y_left, x_left)); // Strafing angle
         double corner0 = Math.atan2(ROBOT_LENGTH / 2, ROBOT_WIDTH / 2);
         double corner1 = corner0 - (HALF_PI);
@@ -166,10 +164,10 @@ public class SwerveDrive {
             max = speed3;
         }
         if (max > ROBOT_MAX_SPEED) {
-            speed0 = Range.scale(speed0, 0, max, 0, ROBOT_MAX_SPEED*slow);
-            speed1 = Range.scale(speed1, 0, max, 0, ROBOT_MAX_SPEED*slow);
-            speed2 = Range.scale(speed2, 0, max, 0, ROBOT_MAX_SPEED*slow);
-            speed3 = Range.scale(speed3, 0, max, 0, ROBOT_MAX_SPEED*slow);
+            speed0 = Range.scale(speed0, 0, max, 0, ROBOT_MAX_SPEED * slow);
+            speed1 = Range.scale(speed1, 0, max, 0, ROBOT_MAX_SPEED * slow);
+            speed2 = Range.scale(speed2, 0, max, 0, ROBOT_MAX_SPEED * slow);
+            speed3 = Range.scale(speed3, 0, max, 0, ROBOT_MAX_SPEED * slow);
         }
 
         if (ROBOT_STATUS != RELEASE) {
@@ -312,7 +310,7 @@ public class SwerveDrive {
         module3.setPower(power3);
     }
 
-    public void setPath(Path path) {
+    public void setPath(Path path, double maxPower) {
         this.path = path;
         this.CoM.setCoordinates(path.getStartLocation().getX(), path.getStartLocation().getY());
         this.kinematicsDelta.setCoordinates(
@@ -321,7 +319,7 @@ public class SwerveDrive {
         );
         this.trackingPoint = new Point(0, 0, path.heading(0));
         this.splineSegment = 1;
-
+        this.maxPower = maxPower;
     }
 
     /*
@@ -346,8 +344,6 @@ public class SwerveDrive {
         CoM.setCoordinates(roundedComX, roundedComY);
 
         path.pathFollowing(CoM);
-        debugger.addData("Path State", path.getPathState().name());
-
 
         switch (path.getPathState()) {
             case END:
@@ -380,20 +376,15 @@ public class SwerveDrive {
                 if (!Double.isNaN(trackingPoint.getDegrees()))
                     headingGoal = trackingPoint.getDegrees();
 
-                fod(crossTrackAngle, 1, turnPID(headingGoal), yaw);
+                fod(crossTrackAngle, maxPower, turnPID(headingGoal), yaw);
 
                 if (!ROBOT_STATUS.equals(RELEASE)) {
-                    debugger.addData("Yaw", Double.toString(yaw));
                     debugger.addData(PATH.toString(), path.toString());
                     debugger.addData(PX.toString(), Double.toString(path.getTrackingPoint().getX()));
                     debugger.addData(PY.toString(), Double.toString(path.getTrackingPoint().getY()));
-                    debugger.addData(ERROR.toString(), Double.toString(distance));
-                    debugger.addData(CORRECTION.toString(), Double.toString(crossTrackAngle));
                     debugger.addData(VELOCITY.toString(), Double.toString(velocity));
                     debugger.addData(PATH.toString(), path.toString());
-                    debugger.addData(WA.toString(), Double.toString(module0.getServoPosition()));
                     debugger.addData(VELOCITY.toString(), Double.toString(velocity));
-
                 }
         }
     }

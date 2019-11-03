@@ -75,7 +75,7 @@ public class RedDeadPartner extends LinearOpMode {
             robotDebugger.log();
         }
 
-        clamp.noPower();
+        clamp.coast();
 
         x = new double[]{0, 60, 75};
         y = new double[]{-16, -16, -20};

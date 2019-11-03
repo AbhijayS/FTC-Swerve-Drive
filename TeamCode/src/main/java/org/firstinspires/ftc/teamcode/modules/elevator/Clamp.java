@@ -50,7 +50,7 @@ public class Clamp {
         servo.setPower(enable * maxPower);
     }
 
-    public void noPower() {
+    public void coast() {
         this.enable = 0;
         servo.setPower(enable * maxPower);
     }

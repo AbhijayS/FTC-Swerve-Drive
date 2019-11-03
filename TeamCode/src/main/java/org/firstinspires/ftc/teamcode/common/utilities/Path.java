@@ -15,6 +15,9 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ROBOT_STATUS;
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.Status.RELEASE;
+
 public class Path {
     public PolynomialSplineFunction spline;
     private SplineInterpolator splineInterpolator;
@@ -28,9 +31,11 @@ public class Path {
     private int zIndex;
     private Point trackingPoint;
     private PathState pathState;
+    private Debugger debugger;
 
-    public Path(LinearOpMode linearOpMode, double[] x, double[] y, double[] z) {
+    public Path(LinearOpMode linearOpMode, Debugger debugger, double[] x, double[] y, double[] z) {
         this.linearOpMode = linearOpMode;
+        this.debugger = debugger;
 
         if (x.length < 3)
             throw new RuntimeException("Path must include at least 3 points!");
@@ -109,7 +114,6 @@ public class Path {
         direction = Direction.UNKOWN;
         splineSegment = 1;
         pathSegment = 1;
-        linearOpMode.telemetry.addLine(paths.toString());
     }
 
     /**
@@ -131,6 +135,7 @@ public class Path {
 
     public void pathFollowing(Point CoM) {
         if (pathSegment > segments.size()) {
+            debugger.addData("Path State", pathState.name());
             pathState = PathState.END;
             return;
         }
@@ -280,6 +285,10 @@ public class Path {
                 pathSegment++;
                 zIndex++;
                 pathState = PathState.PAUSE;
+        }
+
+        if (!ROBOT_STATUS.equals(RELEASE)) {
+            debugger.addData("Path State", pathState.name());
         }
     }
 

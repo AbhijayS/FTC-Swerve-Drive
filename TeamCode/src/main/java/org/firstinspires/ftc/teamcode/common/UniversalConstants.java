@@ -27,16 +27,10 @@ public class UniversalConstants {
     public enum Debugging {
         RX("Robot X"),
         RY("Robot Y"),
-        WA("Module0"),
-        HEADING("Heading"),
-        DISTANCE("Distance Delta"),
-        VELOCITY("Velocity"),
-        TRACE("Old TP X"),
-        SEG("Segment"),
         PX("Tracking Point X"),
         PY("Tracking Point Y"),
-        ERROR("Error"),
-        CORRECTION("Correction"),
+        HEADING("Heading"),
+        VELOCITY("Velocity"),
         PATH("Path");
 
         private final String name;
