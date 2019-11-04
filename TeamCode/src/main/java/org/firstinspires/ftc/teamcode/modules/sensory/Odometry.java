@@ -46,6 +46,18 @@ public class Odometry {
         return (rotation * (wheel * Math.PI));
     }
 
+    public double vectorMagnitude(){
+        double x = tickToInch(Xencoder.getCurrentPosition());
+        double y = tickToInch(Yencoder.getCurrentPosition());
+        double vectorSquare = Math.pow(x,2) + Math.pow(y,2);
+        return Math.sqrt(vectorSquare);
+    }
+
+    public  double genX(){
+
+        return 0;
+    }
+
 
 
 
