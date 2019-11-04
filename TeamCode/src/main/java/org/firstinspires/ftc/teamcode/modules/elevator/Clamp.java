@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.common.utilities.Gamepad;
+import org.firstinspires.ftc.teamcode.modules.sensory.Potentiometer;
 
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.clampServo;
 
@@ -29,6 +30,8 @@ public class Clamp {
             this.POWER = power;
         }
     }
+    private int enable; // -1 = unclamp, 1 = clamp, 0 = no movement
+    private Potentiometer potentiometer;
 
     public Clamp(LinearOpMode l) {
         linearOpMode = l;
@@ -43,9 +46,12 @@ public class Clamp {
     public void requestState(ClampState newState) {
         this.clampState = newState;
         update();
+        potentiometer = new Potentiometer("P", linearOpMode);
+        enable = 1;
     }
 
     public void updateByGamepad(Gamepad g) {
+        //64-100
         if (g.clamp) {
             this.clampState = ClampState.CLAMP;
         } else if (g.stow){
@@ -53,7 +59,22 @@ public class Clamp {
         } else {
             this.clampState = ClampState.COAST;
         }
+        if(potentiometer.returnAngle() <= 64 && this.clampState.equals(ClampState.CLAMP)){
+            enable = 0;
+        }else if(potentiometer.returnAngle() >= 99 && this.clampState.equals(ClampState.CLAMP)){
+            enable = 0;
+        }
         update();
+    }
+
+    public void clamp() {
+        this.enable = 1;
+        servo.setPower(enable * maxPower);
+    }
+
+    public void stow() {
+        this.enable = -1;
+        servo.setPower(enable * maxPower);
     }
 
     public void update() {
