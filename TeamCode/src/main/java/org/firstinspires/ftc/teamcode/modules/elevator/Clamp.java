@@ -18,7 +18,7 @@ public class Clamp {
     private CRServo servo;
     private double maxPower = 1;
     private ClampState clampState;
-
+    private Potentiometer potentiometer;
     public enum ClampState {
         CLAMP(1),
         STOW(-1),
@@ -31,7 +31,7 @@ public class Clamp {
         }
     }
     private int enable; // -1 = unclamp, 1 = clamp, 0 = no movement
-    private Potentiometer potentiometer;
+
 
     public Clamp(LinearOpMode l) {
         linearOpMode = l;
@@ -40,13 +40,13 @@ public class Clamp {
         servo = hardwareMap.crservo.get(clampServo);
         servo.setDirection(DcMotorSimple.Direction.REVERSE);
         this.clampState = ClampState.CLAMP;
+        potentiometer = new Potentiometer("P", linearOpMode);
     }
 
     // TODO: Add restrictions if necessary
     public void requestState(ClampState newState) {
         this.clampState = newState;
         update();
-        potentiometer = new Potentiometer("P", linearOpMode);
         enable = 1;
     }
 
