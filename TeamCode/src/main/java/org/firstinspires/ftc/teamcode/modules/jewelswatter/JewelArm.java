@@ -34,7 +34,7 @@ class JewelArm {
     }
 
     public enum JewelArmState {
-        STOW(0, 0), DOCK(1, 1), POSSESS(1, 0), RIDE_LOW(0.6, 0), RIDE_HIGH(0.4, 0);
+        STOW(0, 0), DOCK(1, 1), POSSESS(1, 0), RIDE_LOW(0.7, 0), RIDE_HIGH(0.4, 0);
         public double axis1, axis2;
 
         JewelArmState(double axis1, double axis2) {
