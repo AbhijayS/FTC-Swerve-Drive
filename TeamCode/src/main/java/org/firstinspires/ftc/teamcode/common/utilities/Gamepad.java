@@ -13,7 +13,7 @@ public class Gamepad {
 
     // operator controls
     public boolean clamp;
-    public boolean unclamp;
+    public boolean stow;
     public double lift;
 
     public double x, y, z, lx, ly, rx, ry;
@@ -55,7 +55,7 @@ public class Gamepad {
 
         lift = -operator.left_stick_y;
         clamp = operator.right_bumper;
-        unclamp = operator.left_bumper;
+        stow = operator.left_bumper;
     }
 
 }

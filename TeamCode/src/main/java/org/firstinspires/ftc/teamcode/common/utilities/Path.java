@@ -153,7 +153,7 @@ public class Path {
                         return;
                     }
                     pathSegment++;
-                    zIndex++;
+//                    zIndex++;
                     splineSegment = 1;
                     pathState = PathState.SUSTAIN;
                     return;
@@ -192,7 +192,7 @@ public class Path {
                         return;
                     }
                     pathSegment++;
-                    zIndex++;
+//                    zIndex++;
                     splineSegment = 1;
                     pathState = PathState.SUSTAIN;
                     return;
@@ -396,6 +396,7 @@ public class Path {
             return trackingPoint.getX();
         else if (Double.compare(min, dKnotB) == 0) {
             splineSegment++;
+            zIndex++;
             return knotB;
         } else
             return real.get(realDistances.indexOf(min));
