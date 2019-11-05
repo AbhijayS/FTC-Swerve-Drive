@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.opmodes.auto.red;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.common.UniversalConstants;
 import org.firstinspires.ftc.teamcode.common.states.SwerveState;
@@ -11,6 +12,7 @@ import org.firstinspires.ftc.teamcode.common.utilities.Path;
 import org.firstinspires.ftc.teamcode.common.utilities.Util;
 import org.firstinspires.ftc.teamcode.modules.elevator.Clamp;
 import org.firstinspires.ftc.teamcode.modules.jewelswatter.JewelSwatter;
+import org.firstinspires.ftc.teamcode.modules.sensory.TensorFlowLite;
 import org.firstinspires.ftc.teamcode.modules.swerve.SwerveDrive;
 
 import java.util.ArrayList;
@@ -27,11 +29,19 @@ public class RedDeadPartner extends LinearOpMode {
         SwerveDrive swerveDrive = new SwerveDrive(this, robotDebugger);
         Clamp clamp = new Clamp(this);
         JewelSwatter jewelSwatter = new JewelSwatter(this.hardwareMap);
+        TensorFlowLite tensorFlowLite = new TensorFlowLite(this,.45);
 
-        String stonePosition = "B";
-        telemetry.addData("Stone", stonePosition);
-        telemetry.update();
+        String stonePosition = "Unknown";
+        tensorFlowLite.activateTfod();
         waitForStart();
+        ElapsedTime elapsedTime = new ElapsedTime();
+        while(opModeIsActive() && stonePosition == "Unknown"){
+            tensorFlowLite.twoStone();
+            stonePosition = tensorFlowLite.getPattern();
+            if (stonePosition != "Unknown" || elapsedTime.time() > 5.0) {
+                break;
+            }
+        }
         switch (stonePosition) {
 
             case("C"): {
