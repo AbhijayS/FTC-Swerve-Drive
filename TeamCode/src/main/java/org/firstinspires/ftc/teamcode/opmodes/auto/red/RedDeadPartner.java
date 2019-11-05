@@ -218,7 +218,7 @@ public class RedDeadPartner extends LinearOpMode {
             }
             case "B": {
                 clamp.requestState(Clamp.ClampState.CLAMP);
-                double[] x = {0, 0, 4, 8};
+                double[] x = {0, 2, 4, 8};
                 double[] y = {0, -12.5, -18, -22};
                 double[] z = {90, 90, 90, 90};
 
