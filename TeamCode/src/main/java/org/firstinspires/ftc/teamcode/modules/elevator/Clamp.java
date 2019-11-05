@@ -59,7 +59,7 @@ public class Clamp {
         } else {
             this.clampState = ClampState.COAST;
         }
-        if(potentiometer.returnAngle() <= 64 && this.clampState.equals(ClampState.CLAMP)){
+        if(potentiometer.returnAngle() <= 75 && this.clampState.equals(ClampState.CLAMP)){
             enable = 0;
         }else if(potentiometer.returnAngle() >= 99 && this.clampState.equals(ClampState.CLAMP)){
             enable = 0;
