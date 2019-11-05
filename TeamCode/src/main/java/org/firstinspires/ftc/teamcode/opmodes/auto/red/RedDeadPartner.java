@@ -31,7 +31,7 @@ public class RedDeadPartner extends LinearOpMode {
         JewelSwatter jewelSwatter = new JewelSwatter(this.hardwareMap);
         TensorFlowLite tensorFlowLite = new TensorFlowLite(this,.45);
 
-        String stonePosition = "Unknown";
+        String stonePosition = "B";
         tensorFlowLite.activateTfod();
         waitForStart();
         ElapsedTime elapsedTime = new ElapsedTime();
@@ -42,6 +42,7 @@ public class RedDeadPartner extends LinearOpMode {
                 break;
             }
         }
+        tensorFlowLite.shutDownTfod();
         switch (stonePosition) {
 
             case("C"): {
@@ -229,8 +230,8 @@ public class RedDeadPartner extends LinearOpMode {
             }
             case "B": {
                 clamp.requestState(Clamp.ClampState.CLAMP);
-                double[] x = {0, 2, 4, 8};
-                double[] y = {0, -12.5, -18, -22};
+                double[] x = {0, 1, 5, 8};
+                double[] y = {0, -15, -20, -23};
                 double[] z = {90, 90, 90, 90};
 
                 Path interpolant = new Path(this, robotDebugger, x, y, z);
@@ -243,20 +244,17 @@ public class RedDeadPartner extends LinearOpMode {
                         break;
                     }
                     //Opens left clamp
-                    jewelSwatter.requestState(JewelSwatter.JewelSwatterState.RIDE_LOW_LEFT);
+                    jewelSwatter.requestState(JewelSwatter.JewelSwatterState.DOCK_LEFT);
                     swerveDrive.swerveKinematics.update();
                     swerveDrive.stanleyPursuit();
                     robotDebugger.log();
                 }
 
-                // Clamps the sky stone
-                jewelSwatter.requestState(JewelSwatter.JewelSwatterState.DOCK_LEFT);
-                Thread.sleep(500);
                 jewelSwatter.requestState(JewelSwatter.JewelSwatterState.POSSESS_LEFT);
                 Thread.sleep(500);
 
                 x = new double[]{8,8,8};
-                y = new double[]{-22, -21, -18};
+                y = new double[]{-23, -21, -18};
                 z = new double[]{90, 90, 90};
 
                 interpolant = new Path(this, robotDebugger, x, y, z);

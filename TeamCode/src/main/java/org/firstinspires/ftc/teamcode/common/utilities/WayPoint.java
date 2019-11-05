@@ -8,13 +8,15 @@ public class WayPoint {
     Clamp.ClampState clampState;
     double power;
     double x, y, z;
+    double wait;
 
-    public WayPoint(double x, double y, double z, double power, Clamp.ClampState clampState, JewelSwatter.JewelSwatterState jewelSwatterState) {
+    public WayPoint(double x, double y, double z, double power, Clamp.ClampState clampState, JewelSwatter.JewelSwatterState jewelSwatterState, double wait) {
         this.x = x;
         this.y = y;
         this.z = z;
         this.power = power;
         this.clampState = clampState;
         this.jewelSwatterState = jewelSwatterState;
+        this.wait = wait;
     }
 }
