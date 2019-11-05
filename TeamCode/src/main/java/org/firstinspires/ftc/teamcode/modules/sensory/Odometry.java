@@ -14,6 +14,7 @@ public class Odometry {
     private DcMotor Xencoder, Yencoder;
     private Coordinate origin;
     private double XencoderZero, YencoderZero;
+    public ArrayList<Coordinate> save = new ArrayList<Coordinate>();
     private ArrayList<Coordinate> snapshot = new ArrayList<Coordinate>(); // This array List will be a snapshot of the last ten seconds of match position
     private Coordinate current;
     private final double CPR = 512;
@@ -53,10 +54,33 @@ public class Odometry {
         return Math.sqrt(vectorSquare);
     }
 
-    public  double genX(){
-
-        return 0;
+    public  double genX(double heading){
+       return Math.cos(Math.toRadians(heading + 90)) * vectorMagnitude();
     }
+
+    public  double genY(double heading){
+        return Math.sin(Math.toRadians(heading + 90)) * vectorMagnitude();
+    }
+
+    public void setCurrent(double heading){
+        current.setXY(genX(heading), genY(heading));
+    }
+
+    public void addToSnapshot(double seconds){
+        if(seconds % 2 == 0){
+            if(snapshot.size() == 10){
+                snapshot.remove(0);
+                snapshot.add(current);
+            } else{
+                snapshot.add(current);
+            }
+        }
+    }
+
+    public void saveSnapshot(){
+        save = snapshot;
+    }
+
 
 
 
