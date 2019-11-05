@@ -26,8 +26,23 @@ public class TensorFlowLite {
     private LinearOpMode linearOpMode;
     private HardwareMap hardwareMap;
     private double confidence;
-    String pattern;
+    private String pattern;
 
+
+    /*
+    an example of scanning from last year, do not use this exact one.
+    String Position = "Unknown";
+            tensorFlowLite.activateTfod();
+            ElapsedTime elapsedTime = new ElapsedTime();
+            while (opModeIsActive() && Position == "Unknown") {
+                tensorFlowLite.updateTensorFlowExp();
+                Position = tensorFlowLite.getPosition();
+                if (Position != "Unknown" || elapsedTime.time() > 3.0) {
+                    break;
+                }
+            }
+            tensorFlowLite.shutDownTfod();
+     */
 
     public void status(String s) {
         telemetry.addLine(s);
@@ -290,7 +305,7 @@ public class TensorFlowLite {
 
 
     /**
-     * Acccesses the private variable pattern which is set by determinePattern() function
+     * Accesses the private variable pattern which is set by determinePattern() function
      *
      * @return pattern
      */
