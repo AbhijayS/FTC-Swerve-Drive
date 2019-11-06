@@ -358,7 +358,7 @@ public class TensorFlowLite {
         //Change these parameters when loading a new model asset for object detection. Set appropriate labels
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
         //allows you to crop the image view in the camera
-        tfod.setClippingMargins(160,200,65,0);
+        tfod.setClippingMargins(190,200,25,0);
 
     }
 }
