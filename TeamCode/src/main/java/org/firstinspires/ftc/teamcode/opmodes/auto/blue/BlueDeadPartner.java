@@ -27,7 +27,7 @@ public class BlueDeadPartner extends LinearOpMode {
 //        TensorFlowLite tensorFlowLite = new TensorFlowLite(this,.55);
 //        tensorFlowLite.activateTfod();
 
-        String stonePosition = "C";
+        String stonePosition = "A";
         telemetry.update();
 
         waitForStart();
@@ -93,7 +93,7 @@ public class BlueDeadPartner extends LinearOpMode {
                 clamp.requestState(Clamp.ClampState.COAST);
 
 //                x = new double[]{0, 25, 45, 46};
-                x = new double[]{0, -25, -45, -46};
+                x = new double[]{0, -25, -44, -45};
                 y = new double[]{-18, -19, -19, -19};
                 z = new double[]{90, 90, 90, 90};
 
@@ -117,8 +117,8 @@ public class BlueDeadPartner extends LinearOpMode {
                 Thread.sleep(500);
 
 //                x = new double[]{46, 45, 25, 0};
-                x = new double[]{-46, -45, -25, 0};
-                y = new double[]{-19, -19, -20, -21};
+                x = new double[]{-45, -43, -25, 0};
+                y = new double[]{-19, -19, -21, -23};
                 z = new double[]{90, 90, 90, 90};
 
                 interpolant = new Path(robotDebugger, x, y, z);
@@ -136,9 +136,10 @@ public class BlueDeadPartner extends LinearOpMode {
                     robotDebugger.log();
                 }
 
+                UniversalConstants.kS = 5;
 //                x = new double[]{0, -10, -22};
-                x = new double[]{0, 10, 18,18};
-                y = new double[]{-21, -25, -31,-32};
+                x = new double[]{0, 10, 18};
+                y = new double[]{-23, -26, -29};
                 z = new double[]{90, 90, 90};
 
                 interpolant = new Path(robotDebugger, x, y, z);
@@ -161,9 +162,10 @@ public class BlueDeadPartner extends LinearOpMode {
                 jewelSwatter.requestState(JewelSwatter.JewelSwatterState.RIDE_HIGH_LEFT);
                 Thread.sleep(500);
 
+                UniversalConstants.kS = 0.75;
 //                x = new double[]{-22, -15, 0};
                 x = new double[]{18, 15, 0};
-                y = new double[]{-31, -30, -30};
+                y = new double[]{-29, -28, -28};
                 z = new double[]{90, 0, 0};
 
                 interpolant = new Path(robotDebugger, x, y, z);
@@ -185,7 +187,7 @@ public class BlueDeadPartner extends LinearOpMode {
                 // ride low
 //                x = new double[]{0, 25, 50};
                 x = new double[]{0, -25, -50};
-                y = new double[]{-30, -31, -31};
+                y = new double[]{-28, -29, -30};
                 z = new double[]{0, 0, 0};
 
                 interpolant = new Path(robotDebugger, x, y, z);
@@ -210,7 +212,7 @@ public class BlueDeadPartner extends LinearOpMode {
 
 //                x = new double[]{50, 47, 45};
                 x = new double[]{-50, -47, -45};
-                y = new double[]{-31, -31, -31};
+                y = new double[]{-30, -30, -30};
                 z = new double[]{0, 0, 0};
 
                 interpolant = new Path(robotDebugger, x, y, z);
@@ -283,7 +285,7 @@ public class BlueDeadPartner extends LinearOpMode {
                 jewelSwatter.requestState(JewelSwatter.JewelSwatterState.DOCK_RIGHT);
 
                 x = new double[]{-3, -3, -3};
-                y = new double[]{-17, -19, -20};
+                y = new double[]{-17, -18, -19};
                 z = new double[]{90, 90, 90};
 
                 interpolant = new Path(robotDebugger, x, y, z);
@@ -306,7 +308,7 @@ public class BlueDeadPartner extends LinearOpMode {
                 Thread.sleep(500);
 
                 x = new double[]{-3, -3, -3};
-                y = new double[]{-20, -18, -15};
+                y = new double[]{-19, -16, -14};
                 z = new double[]{90, 90, 90};
 
                 interpolant = new Path(robotDebugger, x, y, z);
@@ -325,10 +327,12 @@ public class BlueDeadPartner extends LinearOpMode {
                     robotDebugger.log();
                 }
 
+                UniversalConstants.kS = 0.75;
+
                 clamp.requestState(Clamp.ClampState.COAST);
 
                 x = new double[]{-3, -25, -41, -45};
-                y = new double[]{-15, -15, -15, -17};
+                y = new double[]{-14, -13, -14, -16};
                 z = new double[]{90, 90, 90, 90};
 
                 interpolant = new Path(robotDebugger, x, y, z);
@@ -340,7 +344,7 @@ public class BlueDeadPartner extends LinearOpMode {
                     if (swerveDrive.getState() == SwerveState.PATH_FOLLOWING_COMPLETE) {
                         break;
                     }
-                    jewelSwatter.requestState(JewelSwatter.JewelSwatterState.POSSESS_RIGHT);
+                    jewelSwatter.requestState(JewelSwatter.JewelSwatterState.RIDE_LOW_RIGHT);
                     swerveDrive.swerveKinematics.update();
                     swerveDrive.stanleyPursuit();
                     robotDebugger.log();
@@ -352,7 +356,7 @@ public class BlueDeadPartner extends LinearOpMode {
                 Thread.sleep(500);
 
                 x = new double[]{-45, -41, -25, 0};
-                y = new double[]{-17, -19, -21, -23};
+                y = new double[]{-16, -19, -21, -23};
                 z = new double[]{90, 90, 90, 90};
 
                 interpolant = new Path(robotDebugger, x, y, z);
@@ -370,9 +374,10 @@ public class BlueDeadPartner extends LinearOpMode {
                     robotDebugger.log();
                 }
 
+                UniversalConstants.kS = 5;
 
-                x = new double[]{0, 7, 11};
-                y = new double[]{-23, -29, -35};
+                x = new double[]{0, 7, 16};
+                y = new double[]{-23, -25, -30};
                 z = new double[]{90, 90, 90};
 
                 interpolant = new Path(robotDebugger, x, y, z);
@@ -393,8 +398,10 @@ public class BlueDeadPartner extends LinearOpMode {
                 jewelSwatter.requestState(JewelSwatter.JewelSwatterState.POSSESS_RIGHT);
                 Thread.sleep(500);
 
-                x = new double[]{11, 7, 0};
-                y = new double[]{-35, -29, -25};
+                UniversalConstants.kS = 0.75;
+
+                x = new double[]{16, 7, 0};
+                y = new double[]{-30, -28, -25};
                 z = new double[]{90, 0, 0};
 
                 interpolant = new Path(robotDebugger, x, y, z);
@@ -413,7 +420,7 @@ public class BlueDeadPartner extends LinearOpMode {
                 }
 
                 // ride low
-                x = new double[]{0, -25, -50};
+                x = new double[]{0, -25, -47};
                 y = new double[]{-25, -28, -28};
                 z = new double[]{0, 0, 0};
 
@@ -437,7 +444,7 @@ public class BlueDeadPartner extends LinearOpMode {
                 jewelSwatter.requestState(JewelSwatter.JewelSwatterState.DOCK_RIGHT);
                 Thread.sleep(500);
 
-                x = new double[]{-50, -48, -45};
+                x = new double[]{-47, -45, -42};
                 y = new double[]{-28, -28, -28};
                 z = new double[]{0, 0, 0};
 
@@ -514,7 +521,7 @@ public class BlueDeadPartner extends LinearOpMode {
                 clamp.requestState(Clamp.ClampState.COAST);
 
                 x = new double[]{0, -25, -41, -43};
-                y = new double[]{-18, -18, -18, -18};
+                y = new double[]{-18, -16, -17, -18};
                 z = new double[]{90, 90, 90, 90};
 
                 interpolant = new Path(robotDebugger, x, y, z);
@@ -557,6 +564,8 @@ public class BlueDeadPartner extends LinearOpMode {
                     robotDebugger.log();
                 }
 
+                UniversalConstants.kS = 3;
+
                 x = new double[]{0, 10, 22};
                 y = new double[]{-23, -29, -35};
                 z = new double[]{90, 90, 90};
@@ -578,6 +587,8 @@ public class BlueDeadPartner extends LinearOpMode {
 
                 jewelSwatter.requestState(JewelSwatter.JewelSwatterState.POSSESS_RIGHT);
                 Thread.sleep(500);
+
+                UniversalConstants.kS = 0.75;
 
                 x = new double[]{22, 15, 0};
                 y = new double[]{-35, -28, -25};
