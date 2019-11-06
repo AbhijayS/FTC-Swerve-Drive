@@ -29,7 +29,7 @@ public class ElevatorTester extends LinearOpMode {
         waitForStart();
         while (opModeIsActive()) {
             elevator.updateByGamepad(gamepad, liftPower);
-            //telemetry.addData("Clamp Status", clamp.getStatus());
+            //telemetry.addData("Clamp status", clamp.getStatus());
             /*double power = Range.scale(gamepad.lift, -1, 1, -0.25, 0.25);
             liftOne.setPower(power);
             liftTwo.setPower(power);*/

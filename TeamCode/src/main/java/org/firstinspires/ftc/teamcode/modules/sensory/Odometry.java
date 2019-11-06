@@ -20,7 +20,16 @@ public class Odometry {
     public Coordinate previous;
     private final double CPR = 512;
     private final double wheel = 1.1811; // inches
+    private double t1;
+    private double t2;
+    private double velocity; //inches / second
 
+
+    public void status(String s) {
+        telemetry.addLine(s);
+        telemetry.update();
+
+    }
 
     public Odometry(LinearOpMode l) {
         linearOpMode = l;
@@ -30,13 +39,27 @@ public class Odometry {
         Yencoder = hardwareMap.dcMotor.get("Yencode");
         Xencoder.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         Yencoder.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        status("Initialized Encoders");
+
         XencoderZero = (double) Xencoder.getCurrentPosition();
         YencoderZero = (double) Yencoder.getCurrentPosition();
+
+        status("O position set");
+
         telemetry.addData("X Origin: ", XencoderZero);
         telemetry.addData("Y Origin: ", YencoderZero);
         origin = new Coordinate(XencoderZero, YencoderZero);
         current = new Coordinate(origin.getX(), origin.getY());
         previous = new Coordinate(0, 0);
+
+        status("Initialized Coordinates");
+
+        t1 = 0;
+        t2 = 0;
+        velocity = 0;
+
+        status("Miscellaneous Variables Initialized");
     }
 
     /**
@@ -103,9 +126,11 @@ public class Odometry {
      *
      * @param heading Pass in the current heading of the robot based off of the gyro.
      */
-    public void setCurrent(double heading) {
+    public void setCurrent(double heading, double time) {
         previous.setXY(current.getX(), current.getY());
+        t1 = t2;
         current.setXY(genX(heading), genY(heading));
+        t2 = time;
     }
 
     /**
@@ -131,6 +156,18 @@ public class Odometry {
         save = snapshot;
     }
 
+    public double calcDistance() {
+        double dx = current.getX() - previous.getX();
+        double dy = current.getY() - previous.getY();
+        double dSquare = Math.pow(dx, 2) + Math.pow(dy, 2);
+        return Math.sqrt(dSquare);
+    }
+
+    public void calcVelocity() {
+        double dP = calcDistance();
+        double dT = t2 - t1;
+        velocity = dP / dT;
+    }
 
 
 }
