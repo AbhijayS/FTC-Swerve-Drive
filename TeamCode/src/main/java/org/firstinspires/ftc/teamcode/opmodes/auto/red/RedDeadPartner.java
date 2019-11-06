@@ -54,7 +54,7 @@ public class RedDeadPartner extends LinearOpMode {
                 double[] y = {0, -12.5, -22};
                 double[] z = {90, 90, 90};
 
-                Path interpolant = new Path(this, robotDebugger, x, y, z);
+                Path interpolant = new Path(robotDebugger, x, y, z);
                 swerveDrive.setPath(interpolant, .3);
                 swerveDrive.requestState(SwerveState.PATH_FOLLOWING);
 
@@ -80,7 +80,7 @@ public class RedDeadPartner extends LinearOpMode {
                 y = new double[]{-22, -21, -18};
                 z = new double[]{90, 90, 90};
 
-                interpolant = new Path(this, robotDebugger, x, y, z);
+                interpolant = new Path(robotDebugger, x, y, z);
                 swerveDrive.setPath(interpolant, 0.3);
                 swerveDrive.requestState(SwerveState.PATH_FOLLOWING);
 
@@ -102,7 +102,7 @@ public class RedDeadPartner extends LinearOpMode {
                 y = new double[]{-18, -19, -19, -19};
                 z = new double[]{90, 90, 90, 90};
 
-                interpolant = new Path(this, robotDebugger, x, y, z);
+                interpolant = new Path(robotDebugger, x, y, z);
                 swerveDrive.setPath(interpolant, 0.3);
                 swerveDrive.requestState(SwerveState.PATH_FOLLOWING);
 
@@ -125,7 +125,7 @@ public class RedDeadPartner extends LinearOpMode {
                 y = new double[]{-19, -19, -20, -21};
                 z = new double[]{90, 90, 90, 90};
 
-                interpolant = new Path(this, robotDebugger, x, y, z);
+                interpolant = new Path(robotDebugger, x, y, z);
                 swerveDrive.setPath(interpolant, 0.3);
                 swerveDrive.requestState(SwerveState.PATH_FOLLOWING);
 
@@ -144,7 +144,7 @@ public class RedDeadPartner extends LinearOpMode {
                 y = new double[]{-21, -26, -31};
                 z = new double[]{90, 90, 90};
 
-                interpolant = new Path(this, robotDebugger, x, y, z);
+                interpolant = new Path(robotDebugger, x, y, z);
                 swerveDrive.setPath(interpolant, 0.3);
                 swerveDrive.requestState(SwerveState.PATH_FOLLOWING);
 
@@ -166,7 +166,7 @@ public class RedDeadPartner extends LinearOpMode {
                 y = new double[]{-31, -30, -30};
                 z = new double[]{90, 180, 180};
 
-                interpolant = new Path(this, robotDebugger, x, y, z);
+                interpolant = new Path(robotDebugger, x, y, z);
                 swerveDrive.setPath(interpolant, 0.3);
                 swerveDrive.requestState(SwerveState.PATH_FOLLOWING);
 
@@ -187,7 +187,7 @@ public class RedDeadPartner extends LinearOpMode {
                 y = new double[]{-30, -31, -31};
                 z = new double[]{180, 180, 180};
 
-                interpolant = new Path(this, robotDebugger, x, y, z);
+                interpolant = new Path(robotDebugger, x, y, z);
                 swerveDrive.setPath(interpolant, 0.3);
                 swerveDrive.requestState(SwerveState.PATH_FOLLOWING);
 
@@ -211,7 +211,7 @@ public class RedDeadPartner extends LinearOpMode {
                 y = new double[]{-31, -31, -31};
                 z = new double[]{180, 180, 180};
 
-                interpolant = new Path(this, robotDebugger, x, y, z);
+                interpolant = new Path(robotDebugger, x, y, z);
                 swerveDrive.setPath(interpolant, 0.3);
                 swerveDrive.requestState(SwerveState.PATH_FOLLOWING);
 
@@ -240,7 +240,7 @@ public class RedDeadPartner extends LinearOpMode {
                 double[] y = {0, -15,-23};
                 double[] z = {90, 90, 90, 90};
 
-                Path interpolant = new Path(this, robotDebugger, x, y, z);
+                Path interpolant = new Path(robotDebugger, x, y, z);
                 swerveDrive.setPath(interpolant, 1);
                 swerveDrive.requestState(SwerveState.PATH_FOLLOWING);
 
@@ -260,7 +260,7 @@ public class RedDeadPartner extends LinearOpMode {
                 y = new double[]{-23, -23,-23};
                 z = new double[]{90, 90, 90};
 
-                interpolant = new Path(this, robotDebugger, x, y, z);
+                interpolant = new Path(robotDebugger, x, y, z);
                 swerveDrive.setPath(interpolant, 1);
                 swerveDrive.requestState(SwerveState.PATH_FOLLOWING);
 
@@ -282,7 +282,7 @@ public class RedDeadPartner extends LinearOpMode {
                 y = new double[]{-23, -24, -25};
                 z = new double[]{90, 90, 90};
 
-                interpolant = new Path(this, robotDebugger, x, y, z);
+                interpolant = new Path(robotDebugger, x, y, z);
                 swerveDrive.setPath(interpolant, 1);
                 swerveDrive.requestState(SwerveState.PATH_FOLLOWING);
 
@@ -307,7 +307,7 @@ public class RedDeadPartner extends LinearOpMode {
                 y = new double[]{-25, -21, -19};
                 z = new double[]{90, 90, 90};
 
-                interpolant = new Path(this, robotDebugger, x, y, z);
+                interpolant = new Path(robotDebugger, x, y, z);
                 swerveDrive.setPath(interpolant, 1);
                 swerveDrive.requestState(SwerveState.PATH_FOLLOWING);
 
@@ -329,7 +329,7 @@ public class RedDeadPartner extends LinearOpMode {
                 y = new double[]{-18, -16, -16, -18};
                 z = new double[]{90, 90, 90, 90};
 
-                interpolant = new Path(this, robotDebugger, x, y, z);
+                interpolant = new Path(robotDebugger, x, y, z);
                 swerveDrive.setPath(interpolant, 1);
                 swerveDrive.requestState(SwerveState.PATH_FOLLOWING);
 
@@ -352,7 +352,7 @@ public class RedDeadPartner extends LinearOpMode {
                 y = new double[]{-18, -16, -16, -18};
                 z = new double[]{90, 90, 90, 90};
 
-                interpolant = new Path(this, robotDebugger, x, y, z);
+                interpolant = new Path(robotDebugger, x, y, z);
                 swerveDrive.setPath(interpolant, 1);
                 swerveDrive.requestState(SwerveState.PATH_FOLLOWING);
 
@@ -372,7 +372,7 @@ public class RedDeadPartner extends LinearOpMode {
                 y = new double[]{-18, -25, -31};
                 z = new double[]{90, 90, 90};
 
-                interpolant = new Path(this, robotDebugger, x, y, z);
+                interpolant = new Path(robotDebugger, x, y, z);
                 swerveDrive.setPath(interpolant, 1);
                 swerveDrive.requestState(SwerveState.PATH_FOLLOWING);
 
@@ -394,7 +394,7 @@ public class RedDeadPartner extends LinearOpMode {
                 y = new double[]{-31, -28, -25};
                 z = new double[]{90, 180, 180};
 
-                interpolant = new Path(this, robotDebugger, x, y, z);
+                interpolant = new Path(robotDebugger, x, y, z);
                 swerveDrive.setPath(interpolant, 1);
                 swerveDrive.requestState(SwerveState.PATH_FOLLOWING);
 
@@ -414,7 +414,7 @@ public class RedDeadPartner extends LinearOpMode {
                 y = new double[]{-25, -28, -28};
                 z = new double[]{180, 180, 180};
 
-                interpolant = new Path(this, robotDebugger, x, y, z);
+                interpolant = new Path(robotDebugger, x, y, z);
                 swerveDrive.setPath(interpolant, 1);
                 swerveDrive.requestState(SwerveState.PATH_FOLLOWING);
 
@@ -438,7 +438,7 @@ public class RedDeadPartner extends LinearOpMode {
                 y = new double[]{-28, -28, -28};
                 z = new double[]{180, 180, 180};
 
-                interpolant = new Path(this, robotDebugger, x, y, z);
+                interpolant = new Path(robotDebugger, x, y, z);
                 swerveDrive.setPath(interpolant, 1);
                 swerveDrive.requestState(SwerveState.PATH_FOLLOWING);
 
@@ -467,7 +467,7 @@ public class RedDeadPartner extends LinearOpMode {
                 double[] y = {0, -12.5, -22};
                 double[] z = {90, 90, 90};
 
-                Path interpolant = new Path(this, robotDebugger, x, y, z);
+                Path interpolant = new Path(robotDebugger, x, y, z);
                 swerveDrive.setPath(interpolant, 0.3);
                 swerveDrive.requestState(SwerveState.PATH_FOLLOWING);
                 telemetry.addData("Stone", "C");
@@ -492,7 +492,7 @@ public class RedDeadPartner extends LinearOpMode {
                 y = new double[]{-22, -21, -18};
                 z = new double[]{90, 90, 90};
 
-                interpolant = new Path(this, robotDebugger, x, y, z);
+                interpolant = new Path(robotDebugger, x, y, z);
                 swerveDrive.setPath(interpolant, 0.3);
                 swerveDrive.requestState(SwerveState.PATH_FOLLOWING);
 
@@ -514,7 +514,7 @@ public class RedDeadPartner extends LinearOpMode {
                 y = new double[]{-18, -16, -16, -18};
                 z = new double[]{90, 90, 90, 90};
 
-                interpolant = new Path(this, robotDebugger, x, y, z);
+                interpolant = new Path(robotDebugger, x, y, z);
                 swerveDrive.setPath(interpolant, 0.3);
                 swerveDrive.requestState(SwerveState.PATH_FOLLOWING);
 
@@ -537,7 +537,7 @@ public class RedDeadPartner extends LinearOpMode {
                 y = new double[]{-18, -16, -16, -18};
                 z = new double[]{90, 90, 90, 90};
 
-                interpolant = new Path(this, robotDebugger, x, y, z);
+                interpolant = new Path(robotDebugger, x, y, z);
                 swerveDrive.setPath(interpolant, 0.3);
                 swerveDrive.requestState(SwerveState.PATH_FOLLOWING);
 
@@ -556,7 +556,7 @@ public class RedDeadPartner extends LinearOpMode {
                 y = new double[]{-18, -25, -31};
                 z = new double[]{90, 90, 90};
 
-                interpolant = new Path(this, robotDebugger, x, y, z);
+                interpolant = new Path(robotDebugger, x, y, z);
                 swerveDrive.setPath(interpolant, 0.3);
                 swerveDrive.requestState(SwerveState.PATH_FOLLOWING);
 
@@ -578,7 +578,7 @@ public class RedDeadPartner extends LinearOpMode {
                 y = new double[]{-31, -28, -25};
                 z = new double[]{90, 180, 180};
 
-                interpolant = new Path(this, robotDebugger, x, y, z);
+                interpolant = new Path(robotDebugger, x, y, z);
                 swerveDrive.setPath(interpolant, 0.3);
                 swerveDrive.requestState(SwerveState.PATH_FOLLOWING);
 
@@ -599,7 +599,7 @@ public class RedDeadPartner extends LinearOpMode {
                 y = new double[]{-25, -28, -28};
                 z = new double[]{180, 180, 180};
 
-                interpolant = new Path(this, robotDebugger, x, y, z);
+                interpolant = new Path(robotDebugger, x, y, z);
                 swerveDrive.setPath(interpolant, 0.3);
                 swerveDrive.requestState(SwerveState.PATH_FOLLOWING);
 
@@ -623,7 +623,7 @@ public class RedDeadPartner extends LinearOpMode {
                 y = new double[]{-28, -28, -28};
                 z = new double[]{180, 180, 180};
 
-                interpolant = new Path(this, robotDebugger, x, y, z);
+                interpolant = new Path(robotDebugger, x, y, z);
                 swerveDrive.setPath(interpolant, 0.3);
                 swerveDrive.requestState(SwerveState.PATH_FOLLOWING);
 

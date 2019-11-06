@@ -4,19 +4,19 @@ import org.firstinspires.ftc.teamcode.modules.elevator.Clamp;
 import org.firstinspires.ftc.teamcode.modules.jewelswatter.JewelSwatter;
 
 public class WayPoint {
-    JewelSwatter.JewelSwatterState jewelSwatterState;
-    Clamp.ClampState clampState;
-    double power;
-    double x, y, z;
-    double wait;
+    public JewelSwatter.JewelSwatterState jewelSwatterState;
+    public Clamp.ClampState clampState;
+    public double power;
+    public double x, y, z;
+    public double waitMillis;
 
-    public WayPoint(double x, double y, double z, double power, Clamp.ClampState clampState, JewelSwatter.JewelSwatterState jewelSwatterState, double wait) {
+    public WayPoint(double x, double y, double z, double power, Clamp.ClampState clampState, JewelSwatter.JewelSwatterState jewelSwatterState, double waitMillis) {
         this.x = x;
         this.y = y;
         this.z = z;
         this.power = power;
         this.clampState = clampState;
         this.jewelSwatterState = jewelSwatterState;
-        this.wait = wait;
+        this.waitMillis = waitMillis;
     }
 }
