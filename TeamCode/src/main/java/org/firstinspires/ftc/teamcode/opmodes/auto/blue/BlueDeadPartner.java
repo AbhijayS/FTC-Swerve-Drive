@@ -38,14 +38,14 @@ public class BlueDeadPartner extends LinearOpMode {
         while(opModeIsActive() && stonePosition.equals("Unknown")){
             tensorFlowLite.twoStone();
             stonePosition = tensorFlowLite.getPattern();
-            if (stonePosition != "Unknown" || elapsedTime.time() > 5.0) {
+            if (!stonePosition.equals("Unknown") || elapsedTime.time() > 3.0) {
                 break;
             }
         }
         tensorFlowLite.shutDownTfod();
 
         switch (stonePosition) {
-
+            default:
             case "C": {
                 double[] x = {0, 0, 0};
                 double[] y = {0, -12.5, -22};
@@ -474,7 +474,7 @@ public class BlueDeadPartner extends LinearOpMode {
             }
 
             // Case A or Unknown
-            default: {
+            case "A": {
                 double[] x = {0, 0, 0};
                 double[] y = {0, -12.5, -22};
                 double[] z = {90, 90, 90};
@@ -569,7 +569,7 @@ public class BlueDeadPartner extends LinearOpMode {
                 UniversalConstants.kS = 3;
 
                 x = new double[]{0, 10, 22};
-                y = new double[]{-23, -29, -35};
+                y = new double[]{-23, -25, -34};
                 z = new double[]{90, 90, 90};
 
                 interpolant = new Path(robotDebugger, x, y, z);
@@ -587,13 +587,15 @@ public class BlueDeadPartner extends LinearOpMode {
                     robotDebugger.log();
                 }
 
+//                swerveDrive.module3.swivel(-20);
+//                Thread.sleep(500);
                 jewelSwatter.requestState(JewelSwatter.JewelSwatterState.POSSESS_RIGHT);
                 Thread.sleep(500);
 
                 UniversalConstants.kS = 0.75;
 
                 x = new double[]{22, 15, 0};
-                y = new double[]{-35, -28, -25};
+                y = new double[]{-34, -28, -25};
                 z = new double[]{90, 0, 0};
 
                 interpolant = new Path(robotDebugger, x, y, z);

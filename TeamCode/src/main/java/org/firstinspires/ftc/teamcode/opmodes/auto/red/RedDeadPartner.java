@@ -32,7 +32,7 @@ public class RedDeadPartner extends LinearOpMode {
         TensorFlowLite tensorFlowLite = new TensorFlowLite(this,.28);
         tensorFlowLite.activateTfod();
 
-        String stonePosition = "Unkown";
+        String stonePosition = "Unknown";
         telemetry.update();
 
         waitForStart();
@@ -45,7 +45,7 @@ public class RedDeadPartner extends LinearOpMode {
                 stonePosition = "C";
             else if (stonePosition.equals("C"))
                 stonePosition = "A";
-            if (stonePosition != "Unknown" || elapsedTime.time() > 5.0) {
+            if (!stonePosition.equals("Unknown") || elapsedTime.time() > 3.0) {
                 break;
             }
         }
@@ -374,8 +374,8 @@ public class RedDeadPartner extends LinearOpMode {
                     robotDebugger.log();
                 }
                 UniversalConstants.kS = 10;
-                x = new double[]{0, -5, -10, -15};
-                y = new double[]{-18, -19, -21, -22.5};
+                x = new double[]{0, -5, -10, -16};
+                y = new double[]{-18, -19, -20, -24};
                 z = new double[]{90, 90, 90,90};
 
                 interpolant = new Path(robotDebugger, x, y, z);
@@ -397,8 +397,9 @@ public class RedDeadPartner extends LinearOpMode {
                 jewelSwatter.requestState(JewelSwatter.JewelSwatterState.POSSESS_LEFT);
                 Thread.sleep(500);
                 UniversalConstants.kS = 0.75;
-                x = new double[]{-15, -5, 0};
-                y = new double[]{-22.5, -21, -20};
+
+                x = new double[]{-16, -5, 0};
+                y = new double[]{-24, -23, -23};
                 z = new double[]{90, 180, 180};
 
                 interpolant = new Path(robotDebugger, x, y, z);
@@ -418,7 +419,7 @@ public class RedDeadPartner extends LinearOpMode {
 
                 // ride low
                 x = new double[]{0, 25, 47};
-                y = new double[]{-20, -20, -22};
+                y = new double[]{-23, -23, -23};
                 z = new double[]{180, 180, 180};
 
                 interpolant = new Path(robotDebugger, x, y, z);
@@ -442,7 +443,7 @@ public class RedDeadPartner extends LinearOpMode {
                 Thread.sleep(500);
 
                 x = new double[]{47, 45, 42};
-                y = new double[]{-22, -22, -22};
+                y = new double[]{-23, -23, -23};
                 z = new double[]{180, 180, 180};
 
                 interpolant = new Path(robotDebugger, x, y, z);
@@ -585,7 +586,7 @@ public class RedDeadPartner extends LinearOpMode {
                 Thread.sleep(500);
 
                 x = new double[]{-22, -15, 0};
-                y = new double[]{-35, -28, -25};
+                y = new double[]{-35, -28, -28};
                 z = new double[]{90, 180, 180};
 
                 interpolant = new Path(robotDebugger, x, y, z);
@@ -606,7 +607,7 @@ public class RedDeadPartner extends LinearOpMode {
 
                 // ride low
                 x = new double[]{0, 25, 50};
-                y = new double[]{-25, -28, -28};
+                y = new double[]{-28, -29, -29};
                 z = new double[]{180, 180, 180};
 
                 interpolant = new Path(robotDebugger, x, y, z);
@@ -630,7 +631,7 @@ public class RedDeadPartner extends LinearOpMode {
                 Thread.sleep(500);
 
                 x = new double[]{50, 47, 45};
-                y = new double[]{-28, -28, -28};
+                y = new double[]{-29, -29, -29};
                 z = new double[]{180, 180, 180};
 
                 interpolant = new Path(robotDebugger, x, y, z);
