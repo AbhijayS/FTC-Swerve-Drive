@@ -26,7 +26,7 @@ public class PathFollowing extends LinearOpMode {
         double y[] = {0, -5, -10};
         double z[] = {90,90,90};
 
-        Path toInterpolate = new Path(this, robotDebugger, x, y, z);
+        Path toInterpolate = new Path(robotDebugger, x, y, z);
         swerveDrive.setPath(toInterpolate, 1);
         swerveDrive.requestState(SwerveState.PATH_FOLLOWING);
 

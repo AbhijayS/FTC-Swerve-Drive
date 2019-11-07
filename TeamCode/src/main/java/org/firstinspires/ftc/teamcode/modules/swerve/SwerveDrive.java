@@ -194,7 +194,7 @@ public class SwerveDrive {
 
         /* Make angles field-oriented */
         STR_ANGLE -= yaw;
-        double abscissa = STR * Math.cos(Math.toRadians(STR_ANGLE)); // TODO: generalize gyro angles so they don't depend on the hub's orientation
+        double abscissa = STR * Math.cos(Math.toRadians(STR_ANGLE));
         double ordinate = STR * Math.sin(Math.toRadians(STR_ANGLE));
 
         double swivel0 = Math.toDegrees(Math.atan2((ordinate + Math.sin(corner0) * OMEGA), (abscissa + Math.cos(corner0) * OMEGA)));

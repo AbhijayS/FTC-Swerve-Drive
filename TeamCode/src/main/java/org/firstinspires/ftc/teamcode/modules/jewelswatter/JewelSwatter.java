@@ -55,6 +55,14 @@ public class JewelSwatter {
                 left.requestState(JewelArm.JewelArmState.STOW);
                 right.requestState(JewelArm.JewelArmState.RIDE_LOW);
                 break;
+            case RIDE_LOW_LEFT_OPEN:
+                left.requestState(JewelArm.JewelArmState.RIDE_LOW_OPEN);
+                right.requestState(JewelArm.JewelArmState.STOW);
+                break;
+            case RIDE_LOW_RIGHT_OPEN:
+                left.requestState(JewelArm.JewelArmState.STOW);
+                right.requestState(JewelArm.JewelArmState.RIDE_LOW_OPEN);
+                break;
             case RIDE_LOW_ALL:
                 left.requestState(JewelArm.JewelArmState.RIDE_LOW);
                 right.requestState(JewelArm.JewelArmState.RIDE_LOW);
@@ -85,8 +93,8 @@ public class JewelSwatter {
     }
 
     public enum JewelSwatterState {
-        DOCK_LEFT, POSSESS_LEFT, RIDE_LOW_LEFT, RIDE_HIGH_LEFT,
-        DOCK_RIGHT, POSSESS_RIGHT, RIDE_LOW_RIGHT, RIDE_HIGH_RIGHT,
+        DOCK_LEFT, POSSESS_LEFT, RIDE_LOW_LEFT, RIDE_LOW_LEFT_OPEN, RIDE_HIGH_LEFT,
+        DOCK_RIGHT, POSSESS_RIGHT, RIDE_LOW_RIGHT, RIDE_LOW_RIGHT_OPEN, RIDE_HIGH_RIGHT,
         STOW_ALL, DOCK_ALL, POSSESS_ALL, RIDE_LOW_ALL, RIDE_HIGH_ALL
     }
 }

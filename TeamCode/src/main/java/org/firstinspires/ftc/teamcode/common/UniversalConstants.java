@@ -95,10 +95,10 @@ public class UniversalConstants {
     }
 
     public enum ModuleConfig {
-        MODULE_ZERO     ("Module ZERO",     (-ROBOT_WIDTH/2)-ROBOT_COM_X,(ROBOT_LENGTH/2)-ROBOT_COM_Y,     false,  "fls",    -1.7        ,  Servo.Direction.REVERSE,    "flm",  MotorDirection.REVERSE)  ,
-        MODULE_ONE      ("Module ONE",      (ROBOT_WIDTH/2)-ROBOT_COM_X,(ROBOT_LENGTH/2)-ROBOT_COM_Y,      false,  "frs",   -3.07    ,  Servo.Direction.REVERSE,    "frm", MotorDirection.FORWARD)  ,
-        MODULE_TWO      ("Module TWO",      (ROBOT_WIDTH/2)-ROBOT_COM_X,(-ROBOT_LENGTH/2)-ROBOT_COM_Y,     false,  "rrs",    0     ,  Servo.Direction.REVERSE,    "rrm",  MotorDirection.FORWARD)  ,
-        MODULE_THREE    ("Module THREE",    (-ROBOT_WIDTH/2)-ROBOT_COM_X,(-ROBOT_LENGTH/2)-ROBOT_COM_Y,    false,  "rls",     -1.83    ,  Servo.Direction.REVERSE,    "rlm",   MotorDirection.REVERSE)  ;
+        MODULE_ZERO     ("Module ZERO",     (-ROBOT_WIDTH/2)-ROBOT_COM_X,(ROBOT_LENGTH/2)-ROBOT_COM_Y,     false,  "fls",    5.3        ,  Servo.Direction.REVERSE,    "flm",  MotorDirection.REVERSE)  ,
+        MODULE_ONE      ("Module ONE",      (ROBOT_WIDTH/2)-ROBOT_COM_X,(ROBOT_LENGTH/2)-ROBOT_COM_Y,      false,  "frs",   -4    ,  Servo.Direction.REVERSE,    "frm", MotorDirection.FORWARD)  ,
+        MODULE_TWO      ("Module TWO",      (ROBOT_WIDTH/2)-ROBOT_COM_X,(-ROBOT_LENGTH/2)-ROBOT_COM_Y,     false,  "rrs",    7.1     ,  Servo.Direction.REVERSE,    "rrm",  MotorDirection.FORWARD)  ,
+        MODULE_THREE    ("Module THREE",    (-ROBOT_WIDTH/2)-ROBOT_COM_X,(-ROBOT_LENGTH/2)-ROBOT_COM_Y,    false,  "rls",     6.97    ,  Servo.Direction.REVERSE,    "rlm",   MotorDirection.REVERSE)  ;
 
         public final String                     moduleName;
         public final String                     servoID;
@@ -125,7 +125,7 @@ public class UniversalConstants {
 
     public enum JewelSwatterConfig {
         LEFT("JSLA1", "JSLA2", Servo.Direction.REVERSE, Servo.Direction.REVERSE, 0),
-        RIGHT("JSRA1", "JSRA2", Servo.Direction.FORWARD, Servo.Direction.FORWARD, 0);
+        RIGHT("JSRA1", "JSRA2", Servo.Direction.FORWARD, Servo.Direction.FORWARD, 0.1);
 
         public String nameAxis1, nameAxis2;
         public double delta;
@@ -144,7 +144,7 @@ public class UniversalConstants {
     public static final Status  ROBOT_STATUS        =   Status.TESTING;
     public static final double  ROBOT_WIDTH         =   14.75; // INCHES
     public static final double  ROBOT_LENGTH        =   11.8; // INCHES
-    public static final double  ROBOT_MAX_SPEED     =   0.3;
+    public static final double  ROBOT_MAX_SPEED     =   0.5;
     public static final double  ROBOT_COM_X         =   0; // offset from (0,0)
     public static final double  ROBOT_COM_Y         =   0; // offset from (0,0)
     public static final double  PI                  =   Math.PI;
@@ -163,8 +163,8 @@ public class UniversalConstants {
     public static final String clampServoBottom = "CSB";
     public static final String clampServo = "CS";
 
-    public static final double kS =   0.75; // Steering gain (path following only)
-    public static final double kP =   0.6/90; // Proportional gain
+    public static double kS =   0.75; // Steering gain (path following only)
+    public static final double kP =   0.5/90; // Proportional gain
     public static final double kI =   0; // Integral gain
     public static final double kD =   0; // Derivative gain
     public static final double tolerance = 0.5; // degrees

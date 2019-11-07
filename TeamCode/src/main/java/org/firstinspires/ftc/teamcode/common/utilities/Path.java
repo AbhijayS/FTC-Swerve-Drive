@@ -24,7 +24,6 @@ public class Path {
     private LinkedHashMap<LinkedHashMap<Double, Double>, Direction> paths;
     private LinkedList<LinkedHashMap<Double, Double>> segments;
     private double[] z;
-    private LinearOpMode linearOpMode;
     private Direction direction;
     private int splineSegment;
     private int pathSegment;
@@ -33,8 +32,7 @@ public class Path {
     private PathState pathState;
     private Debugger debugger;
 
-    public Path(LinearOpMode linearOpMode, Debugger debugger, double[] x, double[] y, double[] z) {
-        this.linearOpMode = linearOpMode;
+    public Path(Debugger debugger, double[] x, double[] y, double[] z) {
         this.debugger = debugger;
 
         if (x.length < 3)
