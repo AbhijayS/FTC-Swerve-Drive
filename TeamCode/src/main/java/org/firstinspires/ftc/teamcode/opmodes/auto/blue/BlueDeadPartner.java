@@ -29,7 +29,7 @@ public class BlueDeadPartner extends LinearOpMode {
         TensorFlowLite tensorFlowLite = new TensorFlowLite(this,.28);
         tensorFlowLite.activateTfod();
 
-        String stonePosition = "A";
+        String stonePosition = "Unknown";
         telemetry.update();
 
         waitForStart();
