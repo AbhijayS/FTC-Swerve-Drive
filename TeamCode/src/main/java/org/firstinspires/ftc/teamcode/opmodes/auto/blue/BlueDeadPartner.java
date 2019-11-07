@@ -38,14 +38,14 @@ public class BlueDeadPartner extends LinearOpMode {
         while(opModeIsActive() && stonePosition.equals("Unknown")){
             tensorFlowLite.twoStone();
             stonePosition = tensorFlowLite.getPattern();
-            if (stonePosition != "Unknown" || elapsedTime.time() > 5.0) {
+            if (!stonePosition.equals("Unknown") || elapsedTime.time() > 3.0) {
                 break;
             }
         }
         tensorFlowLite.shutDownTfod();
 
         switch (stonePosition) {
-
+            default:
             case "C": {
                 double[] x = {0, 0, 0};
                 double[] y = {0, -12.5, -22};
@@ -474,7 +474,7 @@ public class BlueDeadPartner extends LinearOpMode {
             }
 
             // Case A or Unknown
-            default: {
+            case "A": {
                 double[] x = {0, 0, 0};
                 double[] y = {0, -12.5, -22};
                 double[] z = {90, 90, 90};

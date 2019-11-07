@@ -32,7 +32,7 @@ public class RedDeadPartner extends LinearOpMode {
         TensorFlowLite tensorFlowLite = new TensorFlowLite(this,.28);
         tensorFlowLite.activateTfod();
 
-        String stonePosition = "Unkown";
+        String stonePosition = "Unknown";
         telemetry.update();
 
         waitForStart();
@@ -45,7 +45,7 @@ public class RedDeadPartner extends LinearOpMode {
                 stonePosition = "C";
             else if (stonePosition.equals("C"))
                 stonePosition = "A";
-            if (stonePosition != "Unknown" || elapsedTime.time() > 5.0) {
+            if (!stonePosition.equals("Unknown") || elapsedTime.time() > 5.0) {
                 break;
             }
         }

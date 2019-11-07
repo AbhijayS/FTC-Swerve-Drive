@@ -95,10 +95,10 @@ public class UniversalConstants {
     }
 
     public enum ModuleConfig {
-        MODULE_ZERO     ("Module ZERO",     (-ROBOT_WIDTH/2)-ROBOT_COM_X,(ROBOT_LENGTH/2)-ROBOT_COM_Y,     false,  "fls",    -1.7        ,  Servo.Direction.REVERSE,    "flm",  MotorDirection.REVERSE)  ,
-        MODULE_ONE      ("Module ONE",      (ROBOT_WIDTH/2)-ROBOT_COM_X,(ROBOT_LENGTH/2)-ROBOT_COM_Y,      false,  "frs",   -3.07    ,  Servo.Direction.REVERSE,    "frm", MotorDirection.FORWARD)  ,
-        MODULE_TWO      ("Module TWO",      (ROBOT_WIDTH/2)-ROBOT_COM_X,(-ROBOT_LENGTH/2)-ROBOT_COM_Y,     false,  "rrs",    0     ,  Servo.Direction.REVERSE,    "rrm",  MotorDirection.FORWARD)  ,
-        MODULE_THREE    ("Module THREE",    (-ROBOT_WIDTH/2)-ROBOT_COM_X,(-ROBOT_LENGTH/2)-ROBOT_COM_Y,    false,  "rls",     -1.83    ,  Servo.Direction.REVERSE,    "rlm",   MotorDirection.REVERSE)  ;
+        MODULE_ZERO     ("Module ZERO",     (-ROBOT_WIDTH/2)-ROBOT_COM_X,(ROBOT_LENGTH/2)-ROBOT_COM_Y,     false,  "fls",    5.3        ,  Servo.Direction.REVERSE,    "flm",  MotorDirection.REVERSE)  ,
+        MODULE_ONE      ("Module ONE",      (ROBOT_WIDTH/2)-ROBOT_COM_X,(ROBOT_LENGTH/2)-ROBOT_COM_Y,      false,  "frs",   -4    ,  Servo.Direction.REVERSE,    "frm", MotorDirection.FORWARD)  ,
+        MODULE_TWO      ("Module TWO",      (ROBOT_WIDTH/2)-ROBOT_COM_X,(-ROBOT_LENGTH/2)-ROBOT_COM_Y,     false,  "rrs",    7.1     ,  Servo.Direction.REVERSE,    "rrm",  MotorDirection.FORWARD)  ,
+        MODULE_THREE    ("Module THREE",    (-ROBOT_WIDTH/2)-ROBOT_COM_X,(-ROBOT_LENGTH/2)-ROBOT_COM_Y,    false,  "rls",     6.97    ,  Servo.Direction.REVERSE,    "rlm",   MotorDirection.REVERSE)  ;
 
         public final String                     moduleName;
         public final String                     servoID;
@@ -124,8 +124,8 @@ public class UniversalConstants {
     }
 
     public enum JewelSwatterConfig {
-        LEFT("JSLA1", "JSLA2", Servo.Direction.REVERSE, Servo.Direction.REVERSE, 0.2),
-        RIGHT("JSRA1", "JSRA2", Servo.Direction.FORWARD, Servo.Direction.FORWARD, .1);
+        LEFT("JSLA1", "JSLA2", Servo.Direction.REVERSE, Servo.Direction.REVERSE, 0),
+        RIGHT("JSRA1", "JSRA2", Servo.Direction.FORWARD, Servo.Direction.FORWARD, 0.1);
 
         public String nameAxis1, nameAxis2;
         public double delta;
