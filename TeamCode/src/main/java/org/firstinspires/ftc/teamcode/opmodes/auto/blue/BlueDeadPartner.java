@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.opmodes.auto.blue;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.common.UniversalConstants;
 import org.firstinspires.ftc.teamcode.common.states.SwerveState;
@@ -10,6 +11,7 @@ import org.firstinspires.ftc.teamcode.common.utilities.Path;
 import org.firstinspires.ftc.teamcode.common.utilities.Util;
 import org.firstinspires.ftc.teamcode.modules.elevator.Clamp;
 import org.firstinspires.ftc.teamcode.modules.jewelswatter.JewelSwatter;
+import org.firstinspires.ftc.teamcode.modules.sensory.TensorFlowLite;
 import org.firstinspires.ftc.teamcode.modules.swerve.SwerveDrive;
 
 import java.util.ArrayList;
@@ -24,23 +26,23 @@ public class BlueDeadPartner extends LinearOpMode {
         SwerveDrive swerveDrive = new SwerveDrive(this, robotDebugger);
         Clamp clamp = new Clamp(this);
         JewelSwatter jewelSwatter = new JewelSwatter(this.hardwareMap);
-//        TensorFlowLite tensorFlowLite = new TensorFlowLite(this,.55);
-//        tensorFlowLite.activateTfod();
+        TensorFlowLite tensorFlowLite = new TensorFlowLite(this,.28);
+        tensorFlowLite.activateTfod();
 
         String stonePosition = "A";
         telemetry.update();
 
         waitForStart();
 
-//        ElapsedTime elapsedTime = new ElapsedTime();
-//        while(opModeIsActive() && stonePosition.equals("Unknown")){
-//            tensorFlowLite.twoStone();
-//            stonePosition = tensorFlowLite.getPattern();
-//            if (stonePosition != "Unknown" || elapsedTime.time() > 5.0) {
-//                break;
-//            }
-//        }
-//        tensorFlowLite.shutDownTfod();
+        ElapsedTime elapsedTime = new ElapsedTime();
+        while(opModeIsActive() && stonePosition.equals("Unknown")){
+            tensorFlowLite.twoStone();
+            stonePosition = tensorFlowLite.getPattern();
+            if (stonePosition != "Unknown" || elapsedTime.time() > 5.0) {
+                break;
+            }
+        }
+        tensorFlowLite.shutDownTfod();
 
         switch (stonePosition) {
 

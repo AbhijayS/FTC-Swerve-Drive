@@ -29,23 +29,23 @@ public class RedDeadPartner extends LinearOpMode {
         SwerveDrive swerveDrive = new SwerveDrive(this, robotDebugger);
         Clamp clamp = new Clamp(this);
         JewelSwatter jewelSwatter = new JewelSwatter(this.hardwareMap);
-//        TensorFlowLite tensorFlowLite = new TensorFlowLite(this,.55);
-//        tensorFlowLite.activateTfod();
+        TensorFlowLite tensorFlowLite = new TensorFlowLite(this,.28);
+        tensorFlowLite.activateTfod();
 
         String stonePosition = "A";
         telemetry.update();
 
         waitForStart();
 
-//        ElapsedTime elapsedTime = new ElapsedTime();
-//        while(opModeIsActive() && stonePosition.equals("Unknown")){
-//            tensorFlowLite.twoStone();
-//            stonePosition = tensorFlowLite.getPattern();
-//            if (stonePosition != "Unknown" || elapsedTime.time() > 5.0) {
-//                break;
-//            }
-//        }
-//        tensorFlowLite.shutDownTfod();
+        ElapsedTime elapsedTime = new ElapsedTime();
+        while(opModeIsActive() && stonePosition.equals("Unknown")){
+            tensorFlowLite.twoStone();
+            stonePosition = tensorFlowLite.getPattern();
+            if (stonePosition != "Unknown" || elapsedTime.time() > 5.0) {
+                break;
+            }
+        }
+        tensorFlowLite.shutDownTfod();
 
         switch (stonePosition) {
 
