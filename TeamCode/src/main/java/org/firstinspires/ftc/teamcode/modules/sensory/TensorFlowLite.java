@@ -100,7 +100,7 @@ public class TensorFlowLite {
      * It will set the pattern variable to A, B or C depending on SkyStone arrangement.
      * The function has a background elimination method based off of the one implemented in Rover Ruckus
      */
-    public void twoStone(){
+    public void twoStoneR(){
         if(tfod != null){
             List<Recognition> updateRecognitions = tfod.getUpdatedRecognitions();
             if(updateRecognitions != null){
@@ -132,6 +132,46 @@ public class TensorFlowLite {
                     else{
                         pattern = "A";
                         telemetry.addData("Pattern: ","A");
+                    }
+                }
+                telemetry.addData("Pattern Variable: ", pattern);
+                telemetry.update();
+            }
+        }
+    }
+
+    public void twoStoneB(){
+        if(tfod != null){
+            List<Recognition> updateRecognitions = tfod.getUpdatedRecognitions();
+            if(updateRecognitions != null){
+                telemetry.addData("Objects Detected", updateRecognitions.size());
+                if(updateRecognitions.size() >= 2){
+                    int SkyStoneX = -1;
+                    int Stone1X = -1;
+                    int Stone2X = -1;
+                    for(Recognition recognition: updateRecognitions){
+                        if(recognition.getLabel().equals(LABEL_SECOND_ELEMENT)){
+                            SkyStoneX = (int) recognition.getLeft();
+                        }
+                        else if(recognition.getLabel().equals(LABEL_FIRST_ELEMENT)){
+                            Stone1X = (int) recognition.getLeft();
+                        }
+                        else{
+                            Stone2X = (int) recognition.getLeft();
+                        }
+                    }
+                    if(SkyStoneX != -1 && Stone1X != -1){
+                        if(Stone1X <= SkyStoneX){
+                            pattern = "A";
+                            telemetry.addData("Pattern: ","A");
+                        }else{
+                            pattern = "B";
+                            telemetry.addData("Pattern: ","B");
+                        }
+                    }
+                    else{
+                        pattern = "C";
+                        telemetry.addData("Pattern: ","C");
                     }
                 }
                 telemetry.addData("Pattern Variable: ", pattern);

@@ -72,7 +72,7 @@ public class SwerveDrive {
         this.IMU_ZERO = swerveKinematics.getIMU_ZERO();
         this.headingGoal = 90;
         this.headingGoalSet = true;
-        linearOpMode.telemetry.addLine(String.format("Swerve Drive Calibrated in %s Status", ROBOT_STATUS));
+        linearOpMode.telemetry.addLine(String.format("Swerve Drive Calibrated in %s status", ROBOT_STATUS));
     }
 
     public void requestState(SwerveState swerveState) {
