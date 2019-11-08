@@ -141,7 +141,7 @@ public class UniversalConstants {
     }
 
     public static final int     CYCLE_MS            =   50;
-    public static final Status  ROBOT_STATUS        =   Status.TESTING;
+    public static final Status  ROBOT_STATUS        =   Status.RELEASE;
     public static final double  ROBOT_WIDTH         =   14.75; // INCHES
     public static final double  ROBOT_LENGTH        =   11.8; // INCHES
     public static final double  ROBOT_MAX_SPEED     =   0.5;
