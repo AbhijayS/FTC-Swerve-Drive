@@ -257,6 +257,10 @@ public class SwerveKinematics {
         return delta;
     }
 
+    public void resetGyro() {
+        IMU_ZERO = imu.getAngularOrientation().firstAngle;
+    }
+
     public double getYaw() {
         return yawStamp;
     }

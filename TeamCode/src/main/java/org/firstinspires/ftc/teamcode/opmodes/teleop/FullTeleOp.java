@@ -38,7 +38,15 @@ public class FullTeleOp extends LinearOpMode {
             elevator.updateByGamepad(gamepad, liftPower);
 
             swerveDrive.fod(gamepad);
-//            swerveDrive.swerveKinematics.update();
+
+            if (gamepad.fod)
+                swerveDrive.swerveKinematics.update();
+
+            if (gamepad.reset_gyro) {
+                swerveDrive.swerveKinematics.resetGyro();
+                gamepad.reset_gyro = false;
+            }
+
             gamepad.update();
             liftPower = gamepad.lift;
             telemetry.update();
