@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.modules.sensory.TensorFlowLite;
 public class TensorFlowTesterRed extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
-        TensorFlowLite tensorFlowLite = new TensorFlowLite(this,.28);
+        TensorFlowLite tensorFlowLite = new TensorFlowLite(this,.35);
 
         tensorFlowLite.activateTfod();
         waitForStart();
@@ -21,8 +21,8 @@ public class TensorFlowTesterRed extends LinearOpMode {
                 stonePosition = "C";
             else if (stonePosition.equals("C"))
                 stonePosition = "A";
-            telemetry.addData("Pattern", stonePosition);
-            telemetry.update();
+            //telemetry.addData("Pattern", stonePosition);
+            //telemetry.update();
         }
         tensorFlowLite.shutDownTfod();
     }

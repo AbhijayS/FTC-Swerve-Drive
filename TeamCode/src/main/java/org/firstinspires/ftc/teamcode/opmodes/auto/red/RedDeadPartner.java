@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.opmodes.auto.red;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.common.UniversalConstants;
@@ -17,8 +16,6 @@ import org.firstinspires.ftc.teamcode.modules.swerve.SwerveDrive;
 
 import java.util.ArrayList;
 
-import static org.firstinspires.ftc.teamcode.common.UniversalConstants.roundTo2DecimalPlaces;
-
 @Autonomous(name = "Red Dead Partner")
 public class RedDeadPartner extends LinearOpMode {
     @Override
@@ -29,7 +26,7 @@ public class RedDeadPartner extends LinearOpMode {
         SwerveDrive swerveDrive = new SwerveDrive(this, robotDebugger);
         Clamp clamp = new Clamp(this);
         JewelSwatter jewelSwatter = new JewelSwatter(this.hardwareMap);
-        TensorFlowLite tensorFlowLite = new TensorFlowLite(this,.28);
+        TensorFlowLite tensorFlowLite = new TensorFlowLite(this,.35);
         tensorFlowLite.activateTfod();
 
         String stonePosition = "Unknown";

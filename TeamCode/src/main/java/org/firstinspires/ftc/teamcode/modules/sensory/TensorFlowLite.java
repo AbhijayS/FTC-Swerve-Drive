@@ -100,7 +100,7 @@ public class TensorFlowLite {
      * It will set the pattern variable to A, B or C depending on SkyStone arrangement.
      * The function has a background elimination method based off of the one implemented in Rover Ruckus
      */
-    public void twoStoneR(){
+    public void twoStone(){
         if(tfod != null){
             List<Recognition> updateRecognitions = tfod.getUpdatedRecognitions();
             if(updateRecognitions != null){
