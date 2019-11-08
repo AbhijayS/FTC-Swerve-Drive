@@ -144,7 +144,7 @@ public class LiftModule {
             liftOne.setPower(power);
             liftTwo.setPower(power);
         }
-        if (g.Ou) {
+        /*if (g.Ou) {
             Range.clip(increment+=1,0,10);
             setRunMode(DcMotor.RunMode.RUN_TO_POSITION);
             runPosition = true;
@@ -163,7 +163,7 @@ public class LiftModule {
         if (runPosition) {
             moveHeight(Range.clip((incremHeight * increment),0,54),.8);
             telemetry.addLine("moving to position");
-        }
+        }*/
 
         telemetry.addData("increment: ",increment);
         telemetry.addData("power: ", power);
