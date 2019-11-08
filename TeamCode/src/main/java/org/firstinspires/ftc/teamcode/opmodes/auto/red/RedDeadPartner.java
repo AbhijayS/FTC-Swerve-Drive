@@ -26,7 +26,7 @@ public class RedDeadPartner extends LinearOpMode {
         SwerveDrive swerveDrive = new SwerveDrive(this, robotDebugger);
         Clamp clamp = new Clamp(this);
         JewelSwatter jewelSwatter = new JewelSwatter(this.hardwareMap);
-        TensorFlowLite tensorFlowLite = new TensorFlowLite(this,.35);
+        TensorFlowLite tensorFlowLite = new TensorFlowLite(this,.5);
         tensorFlowLite.activateTfod();
 
         String stonePosition = "Unknown";
