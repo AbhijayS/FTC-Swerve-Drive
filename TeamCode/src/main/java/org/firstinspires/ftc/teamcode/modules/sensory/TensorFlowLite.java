@@ -121,12 +121,12 @@ public class TensorFlowLite {
                         }
                     }
                     if(SkyStoneX != -1 && Stone1X != -1){
-                        if(Stone1X <= SkyStoneX){
-                            pattern = "C";
-                            telemetry.addData("Pattern: ","C");
-                        }else{
+                        if(SkyStoneX <= Stone1X){
                             pattern = "B";
                             telemetry.addData("Pattern: ","B");
+                        }else{
+                            pattern = "C";
+                            telemetry.addData("Pattern: ","C");
                         }
                     }
                     else{
@@ -398,7 +398,7 @@ public class TensorFlowLite {
         //Change these parameters when loading a new model asset for object detection. Set appropriate labels
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
         //allows you to crop the image view in the camera
-        tfod.setClippingMargins(200,200,0,0);
+        tfod.setClippingMargins(210,200,0,0);
 
     }
 }
