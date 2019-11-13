@@ -167,6 +167,11 @@ public class LiftModule {
 
         telemetry.addData("increment: ",increment);
         telemetry.addData("power: ", power);
+        telemetry.addData("stick: ",stick);
+        telemetry.addData("Motor Power 1: ", liftOne.getPower());
+        telemetry.addData("Motor Power 2: ", liftTwo.getPower());
+        telemetry.addData("Motor Velo 1: ", liftOne.getVelocity());
+        telemetry.addData("Motor Velo 2: ", liftTwo.getVelocity());
         telemetry.addData("position: ", liftTwo.getCurrentPosition());
 
     }
