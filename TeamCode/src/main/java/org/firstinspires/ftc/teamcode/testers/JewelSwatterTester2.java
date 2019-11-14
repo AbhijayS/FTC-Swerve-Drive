@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.modules.jewelswatter.JewelSwatter;
 public class JewelSwatterTester2 extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
-        JewelSwatter JewelSwatter = new JewelSwatter(this);
+        JewelSwatter JewelSwatter = new JewelSwatter(this.hardwareMap);
 
 
         waitForStart();
