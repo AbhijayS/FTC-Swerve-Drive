@@ -185,16 +185,16 @@ public class Odometry {
         return distance / velocity;
     }
 
-    // save for later, need to formulate math on paper.
+    // save for later, need to formulate math on paper. //needs testing to see how it will return angle values.
     public double angularDistToPoint(double heading, double x, double y){
-        double adjHeading = heading+90;
+        double adjHeading = heading + 90;
         double dx = x - current.getX();
         double dy = y - current.getY();
         double angleFromZero = Math.toDegrees(Math.atan(y/x));
         double dAngle = angleFromZero - adjHeading;
-        while(Math.abs(dAngle)> 180)
-            dAngle %= 180;
-        return 1.0;
+        while (dAngle >= 270) {dAngle -= 360;}
+        while (dAngle <= -90) {dAngle += 360;}
+        return dAngle + 90;
     }
 
 
