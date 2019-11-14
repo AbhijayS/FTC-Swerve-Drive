@@ -20,9 +20,9 @@ public class Odometry {
     public Coordinate previous;
     private final double CPR = 512;
     private final double wheel = 1.1811; // inches
-    private double t1;
-    private double t2;
+    private double t1, t2;
     private double velocity; //inches / second
+
 
 
     public void status(String s) {
@@ -156,6 +156,10 @@ public class Odometry {
         save = snapshot;
     }
 
+    /**
+     * Calculates the distance between the current point and the previous known location. This is used to calculate a velocity of robot based off of odometry readings.
+     * @return distance between current and previous point.
+     */
     public double calcDistance() {
         double dx = current.getX() - previous.getX();
         double dy = current.getY() - previous.getY();
@@ -168,6 +172,31 @@ public class Odometry {
         double dT = t2 - t1;
         velocity = dP / dT;
     }
+
+    public double calcDistance(double xCoordinate, double yCoordinate){
+        double dx = xCoordinate - current.getX();
+        double dy = yCoordinate - current.getY();
+        double dSquare = Math.pow(dx, 2) + Math.pow(dy, 2);
+        return Math.sqrt(dSquare);
+    }
+
+    public double estimateTimeToPoint(double x, double y){
+        double distance = calcDistance(x,y);
+        return distance / velocity;
+    }
+
+    // save for later, need to formulate math on paper.
+    public double angularDistToPoint(double heading, double x, double y){
+        double adjHeading = heading+90;
+        double dx = x - current.getX();
+        double dy = y - current.getY();
+        double angleFromZero = Math.toDegrees(Math.atan(y/x));
+        double dAngle = angleFromZero - adjHeading;
+        while(Math.abs(dAngle)> 180)
+            dAngle %= 180;
+        return 1.0;
+    }
+
 
 
 }
