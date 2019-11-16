@@ -153,7 +153,8 @@ public class Odometry {
      * sets a snapshot of robot movement to be saved so that it can be fed into path following later.
      */
     public void saveSnapshot() {
-        save = snapshot;
+        save.clear();
+        save.addAll(snapshot);
     }
 
     /**
