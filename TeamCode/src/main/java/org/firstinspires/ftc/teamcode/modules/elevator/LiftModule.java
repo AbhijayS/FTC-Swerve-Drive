@@ -101,6 +101,7 @@ public class LiftModule {
             telemetry.addData("LiftOne Pos: ", liftOne.getCurrentPosition());
             telemetry.addData("Target Position: ", liftTwo.getTargetPosition());
             telemetry.addData("LiftTwo Pos: ", liftTwo.getCurrentPosition());
+
         }
         //double averagePosition = (liftOne.getCurrentPosition() + liftTwo.getTargetPosition()) / 2.0;
         if (liftTwo.getCurrentPosition() <= (liftTwo.getTargetPosition() + 20) && liftTwo.getCurrentPosition() >= (liftTwo.getTargetPosition() - 20)) {
