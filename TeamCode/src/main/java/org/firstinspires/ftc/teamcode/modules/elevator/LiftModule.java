@@ -21,6 +21,7 @@ public class LiftModule {
     private PIDCoefficients pidCoefficients;
     private boolean runPosition = false;
     private boolean holdPosition = true;
+    public boolean moveDown = false;
     private double incremHeight = 5;
     private int increment = 0;
 
@@ -129,6 +130,22 @@ public class LiftModule {
             //return true;
         }
         //return false;
+    }
+
+    public void alternateState(){
+        runPosition = true;
+        setRunMode(DcMotor.RunMode.RUN_TO_POSITION);
+        if(!moveDown && runPosition){
+            moveHeight(42,.5);
+            if(!runPosition){
+                moveDown = true;
+            }
+        }else{
+            moveHeight(0,.5);
+            if(!runPosition){
+                moveDown = false;
+            }
+        }
     }
 
     public void updateByGamepad(Gamepad g, double stick) {
