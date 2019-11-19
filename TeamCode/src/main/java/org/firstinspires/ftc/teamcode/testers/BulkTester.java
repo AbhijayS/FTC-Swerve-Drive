@@ -12,14 +12,19 @@ import org.openftc.revextensions2.RevBulkData;
 public class BulkTester extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
-        ExpansionHubEx expansionHub = hardwareMap.get(ExpansionHubEx.class, "Expansion Hub 2");
+        ExpansionHubEx expansionHub = hardwareMap.get(ExpansionHubEx.class, "Expansion Hub 1");
         RevBulkData bulkData;
-        DcMotor motor0 = hardwareMap.dcMotor.get("motor0");
-        DcMotor motor1 = hardwareMap.dcMotor.get("motor1");
-        DcMotor motor2 = hardwareMap.dcMotor.get("motor2");
-        DcMotor motor3 = hardwareMap.dcMotor.get("motor3");
+        DcMotor motor0 = hardwareMap.dcMotor.get("flm");
+        DcMotor motor1 = hardwareMap.dcMotor.get("frm");
+//        DcMotor motor2 = hardwareMap.dcMotor.get("rrm");
+        DcMotor motor3 = hardwareMap.dcMotor.get("rlm");
 
-        final int cycles = 100000;
+        motor0.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        motor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motor3.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        final int cycles = 500;
         Stopwatch stopwatch = new Stopwatch();
         int counter;
         double elapsed;
@@ -43,6 +48,8 @@ public class BulkTester extends LinearOpMode {
         while (opModeIsActive() && counter < cycles) {
             motor0.getCurrentPosition();
             counter++;
+//            telemetry.addLine(Integer.toString(counter));
+//            telemetry.update();
             idle();
         }
 
@@ -96,7 +103,7 @@ public class BulkTester extends LinearOpMode {
         while (opModeIsActive() && counter < cycles) {
             motor0.getCurrentPosition();
             motor1.getCurrentPosition();
-            motor2.getCurrentPosition();
+//            motor2.getCurrentPosition();
             motor3.getCurrentPosition();
             counter++;
             idle();
@@ -183,7 +190,7 @@ public class BulkTester extends LinearOpMode {
             bulkData = expansionHub.getBulkInputData();
             bulkData.getMotorCurrentPosition(motor0);
             bulkData.getMotorCurrentPosition(motor1);
-            bulkData.getMotorCurrentPosition(motor2);
+//            bulkData.getMotorCurrentPosition(motor2);
             bulkData.getMotorCurrentPosition(motor3);
             counter++;
             idle();
