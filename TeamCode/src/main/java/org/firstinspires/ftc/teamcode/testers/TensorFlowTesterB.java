@@ -11,13 +11,16 @@ public class TensorFlowTesterB extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        TensorFlowLite tensorFlowLite = new TensorFlowLite(this,.28);
+        TensorFlowLite tensorFlowLite = new TensorFlowLite(this,.5);
 
         tensorFlowLite.activateTfod();
         waitForStart();
 
         while (opModeIsActive()){
-            tensorFlowLite.twoStoneB();
+            tensorFlowLite.twoStone();
+            //String stonePosition = tensorFlowLite.getPattern();
+            //telemetry.addData("Pattern", stonePosition);
+            //telemetry.update();
         }
         tensorFlowLite.shutDownTfod();
     }

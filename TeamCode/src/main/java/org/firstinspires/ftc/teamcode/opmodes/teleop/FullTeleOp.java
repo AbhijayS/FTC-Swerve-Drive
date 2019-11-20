@@ -31,6 +31,7 @@ public class FullTeleOp extends LinearOpMode {
 
         while (opModeIsActive()){
 
+
             //clamp.updateByGamepad(gamepad);
             telemetry.addData("Clamp status", elevator.clamp.getStatus());
 
