@@ -59,7 +59,7 @@ public class Odometry {
         t2 = 0;
         velocity = 0;
 
-        status("Miscellaneous Variables Initialized");
+        status("Kinematic Variables Initialized");
     }
 
     /**
@@ -186,7 +186,7 @@ public class Odometry {
         return distance / velocity;
     }
 
-    // save for later, need to formulate math on paper. //needs testing to see how it will return angle values.
+    //needs testing to see how it will return angle values.
     public double angularDistToPoint(double heading, double x, double y){
         double adjHeading = heading + 90;
         double dx = x - current.getX();

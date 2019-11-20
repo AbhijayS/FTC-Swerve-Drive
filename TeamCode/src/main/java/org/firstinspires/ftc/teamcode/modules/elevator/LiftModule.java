@@ -89,7 +89,7 @@ public class LiftModule {
     public void moveHeight(double height, double power) {
         if (height <= 42) {
             double p = power;
-            //setRunMode(DcMotor.RunMode.RUN_TO_POSITION);
+
             if(((int)convertToTicks(height))<liftTwo.getCurrentPosition()){
                 p = -p;
             }
@@ -97,6 +97,7 @@ public class LiftModule {
             liftTwo.setPower(p);
             liftOne.setTargetPosition((int) convertToTicks(height));
             liftTwo.setTargetPosition((int) convertToTicks(height));
+            setRunMode(DcMotor.RunMode.RUN_TO_POSITION);
             telemetry.addData("Height: ", height);
             telemetry.addData("Height Conversion: ", (int) convertToTicks(height));
             telemetry.addData("LiftOne Pos: ", liftOne.getCurrentPosition());
@@ -134,9 +135,9 @@ public class LiftModule {
 
     public void alternateState(){
         runPosition = true;
-        setRunMode(DcMotor.RunMode.RUN_TO_POSITION);
+
         if(!moveDown && runPosition){
-            moveHeight(42,.5);
+            moveHeight(42,1);
             if(!runPosition){
                 moveDown = true;
             }
