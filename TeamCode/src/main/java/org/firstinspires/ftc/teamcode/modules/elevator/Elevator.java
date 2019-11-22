@@ -15,7 +15,7 @@ public class Elevator {
         liftModule = new LiftModule(l);
     }
 
-    public void updateByGamepad(Gamepad g, double leftStick){
+    public void updateByGamepad(Gamepad g, double leftStick) throws InterruptedException{
         clamp.updateByGamepad(g);
         liftModule.updateByGamepad(g,leftStick);
         linearOpMode.telemetry.update();
