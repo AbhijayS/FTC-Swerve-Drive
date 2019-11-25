@@ -18,7 +18,7 @@ public class TurnDrive extends LinearOpMode {
         Debugger robotDebugger = new Debugger(Util.getContext(), this, (ArrayList<String>) UniversalConstants.Debugging.getDebuggingMarkers());
         robotDebugger.initialize("turn drive");
         Gamepad gamepad = new Gamepad(this);
-        SwerveDrive swerveDrive = new SwerveDrive(this, null);
+        SwerveDrive swerveDrive = new SwerveDrive(this, robotDebugger);
         telemetry.update();
 
         waitForStart();

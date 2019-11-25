@@ -95,10 +95,10 @@ public class UniversalConstants {
     }
 
     public enum ModuleConfig {
-        MODULE_ZERO     ("Module ZERO",     (-ROBOT_WIDTH/2)-ROBOT_COM_X,(ROBOT_LENGTH/2)-ROBOT_COM_Y,     false,  "fls",    5.3        ,  Servo.Direction.REVERSE,    "flm",  MotorDirection.REVERSE)  ,
-        MODULE_ONE      ("Module ONE",      (ROBOT_WIDTH/2)-ROBOT_COM_X,(ROBOT_LENGTH/2)-ROBOT_COM_Y,      false,  "frs",   -4    ,  Servo.Direction.REVERSE,    "frm", MotorDirection.FORWARD)  ,
-        MODULE_TWO      ("Module TWO",      (ROBOT_WIDTH/2)-ROBOT_COM_X,(-ROBOT_LENGTH/2)-ROBOT_COM_Y,     false,  "rrs",    7.1     ,  Servo.Direction.REVERSE,    "rrm",  MotorDirection.FORWARD)  ,
-        MODULE_THREE    ("Module THREE",    (-ROBOT_WIDTH/2)-ROBOT_COM_X,(-ROBOT_LENGTH/2)-ROBOT_COM_Y,    false,  "rls",     6.97    ,  Servo.Direction.REVERSE,    "rlm",   MotorDirection.REVERSE)  ;
+        MODULE_ZERO     ("Module ZERO",     (-ROBOT_WIDTH/2)-ROBOT_COM_X,(ROBOT_LENGTH/2)-ROBOT_COM_Y,     false,  "fls",    -14.5        ,  Servo.Direction.FORWARD,    "flm",  MotorDirection.REVERSE)  ,
+        MODULE_ONE      ("Module ONE",      (ROBOT_WIDTH/2)-ROBOT_COM_X,(ROBOT_LENGTH/2)-ROBOT_COM_Y,      false,  "frs",   0.8    ,  Servo.Direction.FORWARD,    "frm", MotorDirection.FORWARD)  ,
+        MODULE_TWO      ("Module TWO",      (ROBOT_WIDTH/2)-ROBOT_COM_X,(-ROBOT_LENGTH/2)-ROBOT_COM_Y,     false,  "rrs",    -14.73     ,  Servo.Direction.FORWARD,    "rrm",  MotorDirection.FORWARD)  ,
+        MODULE_THREE    ("Module THREE",    (-ROBOT_WIDTH/2)-ROBOT_COM_X,(-ROBOT_LENGTH/2)-ROBOT_COM_Y,    false,  "rls",     4.27    ,  Servo.Direction.FORWARD,    "rlm",   MotorDirection.REVERSE)  ;
 
         public final String                     moduleName;
         public final String                     servoID;
@@ -141,12 +141,12 @@ public class UniversalConstants {
     }
 
     public static final int     CYCLE_MS            =   50;
-    public static final Status  ROBOT_STATUS        =   Status.RELEASE;
+    public static final Status  ROBOT_STATUS        =   Status.TESTING;
     public static final double  ROBOT_WIDTH         =   14.75; // INCHES
     public static final double  ROBOT_LENGTH        =   11.8; // INCHES
-    public static final double  ROBOT_MAX_SPEED     =   0.5;
+    public static final double  ROBOT_MAX_SPEED     =   1;
     public static final double  ROBOT_COM_X         =   0; // offset from (0,0)
-    public static final double  ROBOT_COM_Y         =   0; // offset from (0,0)
+    public static final double  ROBOT_COM_Y         =   1; // offset from (0,0)
     public static final double  PI                  =   Math.PI;
     public static final double  HALF_PI             =   PI/2;
 
@@ -159,6 +159,8 @@ public class UniversalConstants {
     public static final double  wheelCircumference  = wheelDiameter*Math.PI; //inches
     public static final double  driveGearRatio      = 24.0/18.0; // Output rate : Input rate
 
+    public static final String expansionHubBottom = "Expansion Hub 1";
+    public static final String expansionHubTop = "Expansion Hub 2";
     public static final String clampServoTop = "CST";
     public static final String clampServoBottom = "CSB";
     public static final String clampServo = "CS";

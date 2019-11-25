@@ -21,7 +21,6 @@ public class Calibration extends LinearOpMode {
         robotDebugger.initialize("servo_calib");
         SwerveDrive swerveDrive = new SwerveDrive(this, null);
         SwerveModule[] modules = {swerveDrive.module0, swerveDrive.module1, swerveDrive.module3, swerveDrive.module2};
-        double timestamp = System.currentTimeMillis();
 
         double increment = 0.1;
         double angle = servoDefaultAngle;
@@ -57,8 +56,6 @@ public class Calibration extends LinearOpMode {
             modules[frontBack+leftRight].swivel(angle);
 
             telemetry.addLine(String.format("Offset from home: %s deg", angle-servoDefaultAngle));
-            telemetry.addData("Delta t", System.currentTimeMillis()-timestamp);
-            timestamp = System.currentTimeMillis();
             telemetry.update();
         }
 

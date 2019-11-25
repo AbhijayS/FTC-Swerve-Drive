@@ -7,9 +7,14 @@ import org.firstinspires.ftc.teamcode.common.UniversalConstants;
 import org.firstinspires.ftc.teamcode.common.utilities.Debugger;
 import org.firstinspires.ftc.teamcode.common.utilities.Point;
 import org.firstinspires.ftc.teamcode.common.utilities.Stopwatch;
+import org.openftc.revextensions2.ExpansionHubEx;
+import org.openftc.revextensions2.RevBulkData;
 
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ModuleConfig;
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.driveGearRatio;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.servoDefaultAngle;
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ticksPerRevolution;
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.wheelCircumference;
 
 public class SwerveKinematics {
     private Stopwatch stopwatch;
@@ -25,9 +30,14 @@ public class SwerveKinematics {
     private Debugger debugger;
     private BNO055IMU imu;
     private double IMU_ZERO;
+    private ExpansionHubEx expansionHubBottom;
+    private RevBulkData bulkDataBottom;
+
 
     public SwerveKinematics(LinearOpMode linearOpMode, Debugger debugger, SwerveDrive swerveDrive) {
         ModuleConfig[] modulesConfig = ModuleConfig.values();
+        this.expansionHubBottom = linearOpMode.hardwareMap.get(ExpansionHubEx.class, UniversalConstants.expansionHubBottom);
+        this.bulkDataBottom = expansionHubBottom.getBulkInputData();
         this.debugger = debugger;
         this.stopwatch = new Stopwatch();
         this.stopwatch.start();
@@ -38,10 +48,14 @@ public class SwerveKinematics {
         this.swerveModules[2] = swerveDrive.module2;
         this.swerveModules[3] = swerveDrive.module3;
         this.wheelStamps = new Double[] {
-                swerveModules[0].getDisplacement(),
-                swerveModules[1].getDisplacement(),
-                swerveModules[2].getDisplacement(),
-                swerveModules[3].getDisplacement()
+                bulkDataBottom.getMotorCurrentPosition(swerveModules[0].driveMotor) * wheelCircumference * driveGearRatio / ticksPerRevolution,
+                bulkDataBottom.getMotorCurrentPosition(swerveModules[1].driveMotor) * wheelCircumference * driveGearRatio / ticksPerRevolution,
+                bulkDataBottom.getMotorCurrentPosition(swerveModules[2].driveMotor) * wheelCircumference * driveGearRatio / ticksPerRevolution,
+                bulkDataBottom.getMotorCurrentPosition(swerveModules[3].driveMotor) * wheelCircumference * driveGearRatio / ticksPerRevolution,
+//                swerveModules[0].getDisplacement(),
+//                swerveModules[1].getDisplacement(),
+//                swerveModules[2].getDisplacement(),
+//                swerveModules[3].getDisplacement()
         };
         this.modulesPose = new Point[]{
                 new Point(modulesConfig[0].x, modulesConfig[0].y, servoDefaultAngle),
@@ -82,12 +96,15 @@ public class SwerveKinematics {
         this.yawStamp = yaw();
         this.centerOfMass = new Point(0, 0, 90 + this.yawStamp);
         this.velocity = 0;
+
         linearOpMode.telemetry.addLine("Swerve Kinematics Calibrated!");
     }
 
 
     // measure -> control -> measure -> control -> ...
     public void update() {
+        bulkDataBottom = expansionHubBottom.getBulkInputData();
+
         stopwatch.stop();
         dT = stopwatch.seconds();
         stopwatch.start();
@@ -105,10 +122,14 @@ public class SwerveKinematics {
         modulesPose[3].setHeading(swerveModules[3].getServoPosition() + yawStamp);
 
         double[] temp = {
-                swerveModules[0].getDisplacement(),
-                swerveModules[1].getDisplacement(),
-                swerveModules[2].getDisplacement(),
-                swerveModules[3].getDisplacement()
+                bulkDataBottom.getMotorCurrentPosition(swerveModules[0].driveMotor) * wheelCircumference * driveGearRatio / ticksPerRevolution,
+                bulkDataBottom.getMotorCurrentPosition(swerveModules[1].driveMotor) * wheelCircumference * driveGearRatio / ticksPerRevolution,
+                bulkDataBottom.getMotorCurrentPosition(swerveModules[2].driveMotor) * wheelCircumference * driveGearRatio / ticksPerRevolution,
+                bulkDataBottom.getMotorCurrentPosition(swerveModules[3].driveMotor) * wheelCircumference * driveGearRatio / ticksPerRevolution,
+//                swerveModules[0].getDisplacement(),
+//                swerveModules[1].getDisplacement(),
+//                swerveModules[2].getDisplacement(),
+//                swerveModules[3].getDisplacement()
         };
         dS = new Double[]{
                 (temp[0] - wheelStamps[0]) * swerveModules[0].getMotorDirection().getSign(),

@@ -199,6 +199,16 @@ public class SwerveModule {
         return this.motorDirection;
     }
 
+    public void enablePID() {
+        driveMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        driveMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
+
+    public void movePID(int position, double power) {
+        driveMotor.setTargetPosition((int) motorDirection.assignDirection(position));
+        driveMotor.setPower(power);
+    }
+
     public String toString() {
         return swerveModule.moduleName;
     }

@@ -23,10 +23,13 @@ import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ROBOT_STA
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ROBOT_WIDTH;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.Status.RELEASE;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.clipAngle;
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.driveGearRatio;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.kP;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.kS;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.roundTo2DecimalPlaces;
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ticksPerRevolution;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.tolerance;
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.wheelCircumference;
 import static org.firstinspires.ftc.teamcode.common.states.SwerveState.HUMAN_INPUT;
 import static org.firstinspires.ftc.teamcode.common.states.SwerveState.PATH_FOLLOWING;
 import static org.firstinspires.ftc.teamcode.common.states.SwerveState.PATH_FOLLOWING_COMPLETE;
@@ -387,5 +390,20 @@ public class SwerveDrive {
                     debugger.addData(VELOCITY.toString(), Double.toString(velocity));
                 }
         }
+    }
+
+    public void enablePID() {
+        module0.enablePID();
+        module1.enablePID();
+        module2.enablePID();
+        module3.enablePID();
+    }
+
+    public void movePID(int position, double power) {
+        position = (int)(Math.round(position * ticksPerRevolution / wheelCircumference / driveGearRatio));
+        module0.movePID(position, power);
+        module1.movePID(position, power);
+        module2.movePID(position, power);
+        module3.movePID(position, power);
     }
 }
