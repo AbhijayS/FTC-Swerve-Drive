@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.ServoImplEx;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.ServoConfigurationType;
 import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.teamcode.common.utilities.Point;
+import org.firstinspires.ftc.teamcode.common.utilities.Pose;
 
 import java.util.Locale;
 
@@ -42,7 +42,7 @@ public class SwerveModule {
     private double mileage; // in inches
     private boolean disabled = false;
     private MotorDirection motorDirection;
-    private Point pose;
+    private Pose pose;
 
 
     public SwerveModule(LinearOpMode l, ModuleConfig module) {
@@ -80,7 +80,7 @@ public class SwerveModule {
         if (swerveModule.isModuleDisabled)
             disableModule();
 
-        pose = new Point(swerveModule.x, swerveModule.y, 90);
+        pose = new Pose(swerveModule.x, swerveModule.y, 90);
     }
 
     public double swivel(double toAngle) {
@@ -159,7 +159,7 @@ public class SwerveModule {
         driveMotor.setTargetPosition(encoder);
     }
 
-    public Point getPose() {
+    public Pose getPose() {
         return pose;
     }
 

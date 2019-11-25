@@ -27,8 +27,8 @@ public class UniversalConstants {
     public enum Debugging {
         RX("Robot X"),
         RY("Robot Y"),
-        PX("Tracking Point X"),
-        PY("Tracking Point Y"),
+        PX("Tracking Pose X"),
+        PY("Tracking Pose Y"),
         HEADING("Heading"),
         VELOCITY("Velocity"),
         PATH("Path");

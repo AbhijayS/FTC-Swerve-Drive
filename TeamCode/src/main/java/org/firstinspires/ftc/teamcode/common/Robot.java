@@ -47,9 +47,9 @@ public class Robot {
         double ry[] = new double[this.size];
         double rz[] = new double[this.size];
         for (int i = 0; i < this.size; i++) {
-            rx[i] = this.wayPoints.get(i).x;
-            ry[i] = this.wayPoints.get(i).y;
-            rz[i] = this.wayPoints.get(i).z;
+            rx[i] = this.wayPoints.get(i).POSE.getX();
+            ry[i] = this.wayPoints.get(i).POSE.getY();
+            rz[i] = this.wayPoints.get(i).POSE.getDegrees();
         }
         path = new Path(debugger,rx,ry,rz);
         swerveDrive.setPath(path,0.3);
@@ -63,15 +63,15 @@ public class Robot {
         WayPoint current = wayPoints.get(point);
 
         if (counter >= 0) {
-            if (current.waitMillis != 0) {
-                counter = (int)(current.waitMillis/CYCLE_MS);
+            if (current.WAIT_MILLIS != 0) {
+                counter = (int)(current.WAIT_MILLIS/CYCLE_MS);
                 return;
             }
             swerveDrive.stanleyPursuit();
         } else {
             swerveDrive.setPower(0);
-            jewelSwatter.requestState(current.jewelSwatterState);
-            clamp.requestState(current.clampState);
+            jewelSwatter.requestState(current.JEWEL_SWATTER_STATE);
+            clamp.requestState(current.CLAMP_STATE);
             counter--;
         }
         updateAll();
