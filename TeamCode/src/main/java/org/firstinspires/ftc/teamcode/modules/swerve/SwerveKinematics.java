@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.common.UniversalConstants;
 import org.firstinspires.ftc.teamcode.common.utilities.Debugger;
-import org.firstinspires.ftc.teamcode.common.utilities.Point;
+import org.firstinspires.ftc.teamcode.common.utilities.Pose;
 import org.firstinspires.ftc.teamcode.common.utilities.Stopwatch;
 import org.openftc.revextensions2.ExpansionHubEx;
 import org.openftc.revextensions2.RevBulkData;
@@ -20,8 +20,8 @@ public class SwerveKinematics {
     private Stopwatch stopwatch;
     private SwerveDrive swerveDrive;
     public SwerveModule[] swerveModules;
-    private Point centerOfMass;
-    public Point[] modulesPose; // Describes pose (position & direction) of each module in the global reference frame
+    private Pose centerOfMass;
+    public Pose[] modulesPose; // Describes pose (position & direction) of each module in the global reference frame
     private Double[] wheelStamps; // Save the position of each module wheel for later calculations
     private double yawStamp; // Save the drivetrain's yaw
     private Double[] dS;
@@ -57,11 +57,11 @@ public class SwerveKinematics {
 //                swerveModules[2].getDisplacement(),
 //                swerveModules[3].getDisplacement()
         };
-        this.modulesPose = new Point[]{
-                new Point(modulesConfig[0].x, modulesConfig[0].y, servoDefaultAngle),
-                new Point(modulesConfig[1].x, modulesConfig[1].y, servoDefaultAngle),
-                new Point(modulesConfig[2].x, modulesConfig[2].y, servoDefaultAngle),
-                new Point(modulesConfig[3].x, modulesConfig[3].y, servoDefaultAngle),
+        this.modulesPose = new Pose[]{
+                new Pose(modulesConfig[0].x, modulesConfig[0].y, servoDefaultAngle),
+                new Pose(modulesConfig[1].x, modulesConfig[1].y, servoDefaultAngle),
+                new Pose(modulesConfig[2].x, modulesConfig[2].y, servoDefaultAngle),
+                new Pose(modulesConfig[3].x, modulesConfig[3].y, servoDefaultAngle),
 //                swerveModules[0].getPose(),
 //                swerveModules[1].getPose(),
 //                swerveModules[2].getPose(),
@@ -94,7 +94,7 @@ public class SwerveKinematics {
         IMU_ZERO = imu.getAngularOrientation().firstAngle;
 
         this.yawStamp = yaw();
-        this.centerOfMass = new Point(0, 0, 90 + this.yawStamp);
+        this.centerOfMass = new Pose(0, 0, 90 + this.yawStamp);
         this.velocity = 0;
 
         linearOpMode.telemetry.addLine("Swerve Kinematics Calibrated!");
@@ -174,7 +174,7 @@ public class SwerveKinematics {
         );
 
         // calculate COM per wheel
-        Point[] coms = new Point[]{new Point(), new Point(), new Point(), new Point()};
+        Pose[] coms = new Pose[]{new Pose(), new Pose(), new Pose(), new Pose()};
         for (int i = 0; i < modulesPose.length; i++) {
             ModuleConfig module = ModuleConfig.values()[i];
             // TODO The distance 'd' and angle 'a' could be pre-computed to save time
@@ -190,7 +190,7 @@ public class SwerveKinematics {
         // average center of mass x and y coordinates
         double comX = 0;
         double comY = 0;
-        for (Point p : coms) {
+        for (Pose p : coms) {
             comX += p.getX();
             comY += p.getY();
         }
@@ -246,8 +246,8 @@ public class SwerveKinematics {
         return velocity;
     }
 
-    public Point getCenterOfMass() {
-        return new Point(centerOfMass.getX(), centerOfMass.getY(), centerOfMass.getDegrees());
+    public Pose getCenterOfMass() {
+        return new Pose(centerOfMass.getX(), centerOfMass.getY(), centerOfMass.getDegrees());
     }
 
     // (1/k) * sin(k*S + C) | s1->s2

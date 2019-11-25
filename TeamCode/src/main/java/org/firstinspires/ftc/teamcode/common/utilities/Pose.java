@@ -6,21 +6,21 @@ import static org.firstinspires.ftc.teamcode.common.UniversalConstants.decimalFo
 /*
  * TODO This class should be renamed to Pose2D to better describe its purpose
  */
-public class Point {
+public class Pose {
 
     private double x, y, heading, originalHeading;
 
     // heading is in DEGREES
     // TODO Make an Enum to specify units (DEGREES, RADIANS, STRAIGHT, RIGHT, ETC.)
 
-    public Point() {
+    public Pose() {
         x = 0;
         y = 0;
         heading = 90;
         originalHeading = 90;
     }
 
-    public Point(double x, double y, double heading) {
+    public Pose(double x, double y, double heading) {
         this.x = x;
         this.y = y;
         this.heading = heading;

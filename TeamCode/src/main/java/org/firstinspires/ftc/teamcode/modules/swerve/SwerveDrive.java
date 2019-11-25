@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.common.utilities.Debugger;
 import org.firstinspires.ftc.teamcode.common.utilities.Direction;
 import org.firstinspires.ftc.teamcode.common.utilities.Gamepad;
 import org.firstinspires.ftc.teamcode.common.utilities.Path;
-import org.firstinspires.ftc.teamcode.common.utilities.Point;
+import org.firstinspires.ftc.teamcode.common.utilities.Pose;
 
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.Debugging.PATH;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.Debugging.PX;
@@ -45,13 +45,13 @@ public class SwerveDrive {
     private LinearOpMode linearOpMode;
     private Path path = null;
     private double IMU_ZERO;
-    private Point CoM;
-    private Point trackingPoint; // Point on the path to be tracked
+    private Pose CoM;
+    private Pose trackingPose; // Pose on the path to be tracked
     private int splineSegment;
     private Debugger debugger;
     private SwerveState swerveState;
     private MotionState motionState;
-    private Point kinematicsDelta;
+    private Pose kinematicsDelta;
     private double headingGoal;
     private boolean headingGoalSet;
     private double maxPower; // path following power
@@ -68,10 +68,10 @@ public class SwerveDrive {
         module2 = new SwerveModule(l, ModuleConfig.MODULE_TWO);
         module3 = new SwerveModule(l, ModuleConfig.MODULE_THREE);
 
-        CoM = new Point();
+        CoM = new Pose();
 
         this.swerveKinematics = new SwerveKinematics(l, debugger, this);
-        this.kinematicsDelta = new Point(0, 0, 0);
+        this.kinematicsDelta = new Pose(0, 0, 0);
         this.IMU_ZERO = swerveKinematics.getIMU_ZERO();
         this.headingGoal = 90;
         this.headingGoalSet = true;
@@ -320,7 +320,7 @@ public class SwerveDrive {
                 path.getStartLocation().getX() - swerveKinematics.getCenterOfMass().getX(),
                 path.getStartLocation().getY() - swerveKinematics.getCenterOfMass().getY()
         );
-        this.trackingPoint = new Point(0, 0, path.heading(0));
+        this.trackingPose = new Pose(0, 0, path.heading(0));
         this.splineSegment = 1;
         this.maxPower = maxPower;
     }
@@ -364,27 +364,27 @@ public class SwerveDrive {
 
             default:
                 // Calculate cross-track error
-                Point trackingPoint = path.getTrackingPoint();
-                double distance = Math.hypot(trackingPoint.getX() - CoM.getX(), trackingPoint.getY() - CoM.getY());
+                Pose trackingPose = path.getTrackingPose();
+                double distance = Math.hypot(trackingPose.getX() - CoM.getX(), trackingPose.getY() - CoM.getY());
                 double crossTrackAngle;
 
                 if (path.getDirection() == Direction.LEFT || path.getDirection() == Direction.RIGHT) {
-                    distance = Math.copySign(distance, trackingPoint.getY() - CoM.getY());
+                    distance = Math.copySign(distance, trackingPose.getY() - CoM.getY());
                     crossTrackAngle = Math.toDegrees(Math.atan2(distance, path.getDirection().assignDirection(velocity / kS)));
                 } else {
-                    distance = Math.copySign(distance, trackingPoint.getX() - CoM.getX());
+                    distance = Math.copySign(distance, trackingPose.getX() - CoM.getX());
                     crossTrackAngle = Math.toDegrees(Math.atan2(path.getDirection().assignDirection(velocity / kS), distance));
                 }
 
-                if (!Double.isNaN(trackingPoint.getDegrees()))
-                    headingGoal = trackingPoint.getDegrees();
+                if (!Double.isNaN(trackingPose.getDegrees()))
+                    headingGoal = trackingPose.getDegrees();
 
                 fod(crossTrackAngle, maxPower, turnPID(headingGoal), yaw);
 
                 if (!ROBOT_STATUS.equals(RELEASE)) {
                     debugger.addData(PATH.toString(), path.toString());
-                    debugger.addData(PX.toString(), Double.toString(path.getTrackingPoint().getX()));
-                    debugger.addData(PY.toString(), Double.toString(path.getTrackingPoint().getY()));
+                    debugger.addData(PX.toString(), Double.toString(path.getTrackingPose().getX()));
+                    debugger.addData(PY.toString(), Double.toString(path.getTrackingPose().getY()));
                     debugger.addData(VELOCITY.toString(), Double.toString(velocity));
                     debugger.addData(PATH.toString(), path.toString());
                     debugger.addData(VELOCITY.toString(), Double.toString(velocity));
