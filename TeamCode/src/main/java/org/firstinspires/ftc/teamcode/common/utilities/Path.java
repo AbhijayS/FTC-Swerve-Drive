@@ -20,30 +20,36 @@ import static org.firstinspires.ftc.teamcode.common.UniversalConstants.Status.RE
 
 // TODO: Re-write paths using WayPoints
 public class Path {
-    public PolynomialSplineFunction spline;
+    // public variables
+    public Direction DIRECTION;
+    public PathState PATH_STATE;
+    public int PATH_SEGMENT;
+    public Pose TRACKING_POSE;
+    // start and end points of the current path segment
+    public Pose SEGMENT_START;
+    public Pose SEGMENT_END;
+
+    // private variables
+    private PolynomialSplineFunction spline;
     private SplineInterpolator splineInterpolator;
-    private LinkedHashMap<LinkedHashMap<Double, Double>, Direction> paths; // <Coordinates, Direction>
-    private LinkedList<LinkedHashMap<Double, Double>> segments;
-    private double[] z;
-    private LinkedList<WayPoint> wayPoints;
-    private Direction direction;
+    private LinkedHashMap<LinkedList<WayPoint>, Direction> paths; // <Multiple Waypoints, Direction>
+    private LinkedList<LinkedList<WayPoint>> segments; // keyset of paths (path segments)
+    private WayPoint[] wayPoints; // x, y
     private int splineSegment;
-    private int pathSegment;
-    private int zIndex;
-    private Pose trackingPose;
-    private PathState pathState;
     private Debugger debugger;
+
 
     public Path(Debugger debugger, WayPoint[] wayPoints) {
         if (wayPoints.length < 3)
             throw new RuntimeException("Path must include at least 3 points!");
 
         this.debugger = debugger;
-        this.wayPoints.addAll(Arrays.asList(wayPoints));
 
-        this.zIndex = 0;
+        // waypoints can't be changed after initialization
+        this.wayPoints = Arrays.copyOf(wayPoints, wayPoints.length);
+
         int length = wayPoints.length;
-        trackingPose = new Pose(
+        TRACKING_POSE = new Pose(
                 wayPoints[0].X,
                 wayPoints[0].Y,
                 wayPoints[0].Z
@@ -51,30 +57,30 @@ public class Path {
 
         // <Coordinates, ID>
         // Later to be converted to <Coordinates, Direction>
-        LinkedHashMap<LinkedHashMap<Double, Double>, Integer> raw_paths = new LinkedHashMap<>();
+        LinkedHashMap<LinkedList<WayPoint>, Integer> raw_paths = new LinkedHashMap<>();
 
         // List of Coordinates for each path segment
-        LinkedHashMap<Double, Double> XY = new LinkedHashMap<>();
+        LinkedList<WayPoint> XY = new LinkedList<>();
 
-        XY.put(wayPoints[0].X, wayPoints[0].Y);
+        XY.add(wayPoints[0]);
         int comparator = Double.compare(wayPoints[1].X, wayPoints[0].X);
 
         // Filter out paths based on whether a path segment is directed LEFT, RIGHT, FORWARD, or REVERSE
         for (int i = 1; i < length; i++) {
             if (Double.compare(wayPoints[i].X, wayPoints[i-1].X) == 0) {
                 raw_paths.put(XY, comparator);
-                XY = new LinkedHashMap<>();
-                XY.put(wayPoints[i].X, wayPoints[i].Y);
+                XY = new LinkedList<>();
+                XY.add(wayPoints[i]);
                 comparator = wayPoints[i].Y > wayPoints[i-1].Y ? 2 : -2;
             } else {
                 if (Double.compare(wayPoints[i].X, wayPoints[i-1].X) != comparator) {
                     raw_paths.put(XY, comparator);
-                    XY = new LinkedHashMap<>();
-                    XY.put(wayPoints[i-1].X, wayPoints[i-1].Y);
-                    XY.put(wayPoints[i].X, wayPoints[i].Y);
+                    XY = new LinkedList<>();
+                    XY.add(wayPoints[i-1]);
+                    XY.add(wayPoints[i]);
                     comparator = Double.compare(wayPoints[i].X, wayPoints[i-1].X);
                 } else {
-                    XY.put(wayPoints[i].X, wayPoints[i].Y);
+                    XY.add(wayPoints[i]);
                 }
             }
         }
@@ -85,7 +91,7 @@ public class Path {
         segments.addAll(raw_paths.keySet());
 
         for (int i = 0; i < raw_paths.size(); i++) {
-            LinkedHashMap<Double, Double> lMap = segments.get(i);
+            LinkedList<WayPoint> lMap = segments.get(i);
             int direction = raw_paths.get(lMap);
             System.out.println(direction);
 
@@ -118,9 +124,9 @@ public class Path {
         }
         splineInterpolator = new SplineInterpolator();
         spline = splineInterpolator.interpolate(new double[]{0, 1, 2}, new double[]{0, 0, 0});
-        direction = Direction.UNKOWN;
+        DIRECTION = Direction.UNKOWN;
         splineSegment = 1;
-        pathSegment = 1;
+        PATH_SEGMENT = 1;
     }
 
     /**
@@ -141,28 +147,28 @@ public class Path {
     }
 
     public void pathFollowing(Pose CoM) {
-        if (pathSegment > segments.size()) {
-            debugger.addData("Path State", pathState.name());
-            pathState = PathState.END;
+        if (PATH_SEGMENT > segments.size()) {
+            debugger.addData("Path State", PATH_STATE.name());
+            PATH_STATE = PathState.END;
             return;
         }
 
-        LinkedHashMap<Double, Double> currentSegment = segments.get(pathSegment - 1);
-        LinkedList<Double> keys = new LinkedList<>(currentSegment.keySet());
-        LinkedList<Double> values = new LinkedList<>(currentSegment.values());
-        direction = paths.get(currentSegment);
+        LinkedList<WayPoint> currentSegment = segments.get(PATH_SEGMENT - 1);
+        DIRECTION = paths.get(currentSegment);
+//        LinkedList<Double> keys = new LinkedList<>(currentSegment.keySet());
+//        LinkedList<Double> values = new LinkedList<>(currentSegment.values());
 
-        switch (direction) {
+        switch (DIRECTION) {
             case RIGHT: {
-                if (trackingPose.getX() >= keys.getLast()) {
-                    if (pathSegment == segments.size()) {
-                        pathState = PathState.END;
+                if (TRACKING_POSE.getX() >= currentSegment.getLast().X) {
+                    if (PATH_SEGMENT == segments.size()) {
+                        PATH_STATE = PathState.END;
                         return;
                     }
-                    pathSegment++;
+                    PATH_SEGMENT++;
 //                    zIndex++;
                     splineSegment = 1;
-                    pathState = PathState.SUSTAIN;
+                    PATH_STATE = PathState.SUSTAIN;
                     return;
                 }
 
@@ -178,30 +184,42 @@ public class Path {
 //                    return;
 //                }
 
-                double[] x = new double[keys.size()];
-                double[] y = new double[keys.size()];
-                for (int i = 0; i < currentSegment.size(); i++) {
-                    x[i] = keys.get(i);
-                    y[i] = values.get(i);
+                // re-interpolate points
+                // only performed once a switch in direction occurs
+                // path is usually not being followed whenever a switch occurs
+                if (PATH_STATE != PathState.FOLLOW) {
+                    double[] x = new double[currentSegment.size()];
+                    double[] y = new double[currentSegment.size()];
+
+                    for (int i = 0; i < currentSegment.size(); i++) {
+                        x[i] = currentSegment.get(i).X;
+                        y[i] = currentSegment.get(i).Y;
+                    }
+                    spline = splineInterpolator.interpolate(x, y);
+                    SEGMENT_START = new Pose(currentSegment.getFirst().X, currentSegment.getFirst().Y, currentSegment.getFirst().Z);
+                    SEGMENT_END = new Pose(currentSegment.getLast().X, currentSegment.getLast().Y, currentSegment.getLast().Z);
                 }
-                spline = splineInterpolator.interpolate(x, y);
+
+                // update
                 double TPX = findTrackingPointRight(CoM);
                 double TPY = spline.value(TPX);
-                zIndex = Range.clip(zIndex, 0, z.length - 1);
-                trackingPose.setPose(TPX, TPY, z[zIndex]);
-                pathState = PathState.FOLLOW;
+                splineSegment = Range.clip(splineSegment,1,currentSegment.size()-1);
+                double TPZ = currentSegment.get(splineSegment).Z;
+
+                TRACKING_POSE.setPose(TPX, TPY, TPZ);
+                PATH_STATE = PathState.FOLLOW;
                 break;
             }
             case LEFT: {
-                if (trackingPose.getX() <= keys.getLast()) {
-                    if (pathSegment == segments.size()) {
-                        pathState = PathState.END;
+                if (TRACKING_POSE.getX() <= currentSegment.getLast().X) {
+                    if (PATH_SEGMENT == segments.size()) {
+                        PATH_STATE = PathState.END;
                         return;
                     }
-                    pathSegment++;
+                    PATH_SEGMENT++;
 //                    zIndex++;
                     splineSegment = 1;
-                    pathState = PathState.SUSTAIN;
+                    PATH_STATE = PathState.SUSTAIN;
                     return;
                 }
 
@@ -216,34 +234,45 @@ public class Path {
 //                    pathState = PathState.SUSTAIN;
 //                    return;
 //                }
-                Collections.reverse(keys);
-                Collections.reverse(values);
-                double[] x = new double[keys.size()];
-                double[] y = new double[keys.size()];
-                for (int i = 0; i < currentSegment.size(); i++) {
-                    x[i] = keys.get(i);
-                    y[i] = values.get(i);
+
+                // re-interpolate points
+                // only performed once a switch in direction occurs
+                // path is usually not being followed whenever a switch occurs
+                if (PATH_STATE != PathState.FOLLOW) {
+                    LinkedList<WayPoint> copy = new LinkedList<>(currentSegment);
+                    Collections.reverse(copy);
+
+                    double[] x = new double[currentSegment.size()];
+                    double[] y = new double[currentSegment.size()];
+                    for (int i = 0; i < currentSegment.size(); i++) {
+                        x[i] = currentSegment.get(i).X;
+                        y[i] = currentSegment.get(i).Y;
+                    }
+                    spline = splineInterpolator.interpolate(x, y);
+                    SEGMENT_START = new Pose(currentSegment.getFirst().X, currentSegment.getFirst().Y, currentSegment.getFirst().Z);
+                    SEGMENT_END = new Pose(currentSegment.getLast().X, currentSegment.getLast().Y, currentSegment.getLast().Z);
                 }
-                spline = splineInterpolator.interpolate(x, y);
+
+                // update
                 double TPX = findTrackingPointLeft(CoM);
                 double TPY = spline.value(TPX);
-                zIndex = Range.clip(zIndex, 0, z.length - 1);
-                trackingPose.setPose(TPX, TPY, z[zIndex]);
-                pathState = PathState.FOLLOW;
+                splineSegment = Range.clip(splineSegment,1,currentSegment.size()-1);
+                double TPZ = currentSegment.get(splineSegment).Z;
+                TRACKING_POSE.setPose(TPX, TPY, TPZ);
+                PATH_STATE = PathState.FOLLOW;
                 break;
             }
             case FORWARD: {
-                LinkedHashMap<Double, Double> prevSegment = segments.get(pathSegment - 2);
-                LinkedList<Double> prevValues = new LinkedList<>(prevSegment.values());
+//                LinkedList<WayPoint> prevSegment = segments.get(PATH_SEGMENT - 2);
+//                LinkedList<Double> prevValues = new LinkedList<>(prevSegment.values());
 
-                if (trackingPose.getY() >= values.getLast()) {
-                    if (pathSegment == segments.size()) {
-                        pathState = PathState.END;
+                if (TRACKING_POSE.getY() >= currentSegment.getLast().Y) {
+                    if (PATH_SEGMENT == segments.size()) {
+                        PATH_STATE = PathState.END;
                     }
-                    pathSegment++;
-                    zIndex++;
+                    PATH_SEGMENT++;
                     splineSegment = 1;
-                    pathState = PathState.SUSTAIN;
+                    PATH_STATE = PathState.SUSTAIN;
                 }
 
 //                if (trackingPose.getY() < prevValues.getLast()) {
@@ -255,22 +284,22 @@ public class Path {
 //                    splineSegment = 1;
 //                    pathState = PathState.SUSTAIN;
 //                }
-                zIndex = Range.clip(zIndex, 0, z.length - 1);
-                trackingPose.setPose(keys.getFirst(), CoM.getY(), z[zIndex]);
-                pathState = PathState.FOLLOW;
+                TRACKING_POSE.setPose(currentSegment.getFirst().X, CoM.getY(), currentSegment.getLast().Z);
+                SEGMENT_START = new Pose(currentSegment.getFirst().X, currentSegment.getFirst().Y, currentSegment.getFirst().Z);
+                SEGMENT_END = new Pose(currentSegment.getLast().X, currentSegment.getLast().Y, currentSegment.getLast().Z);
+                PATH_STATE = PathState.FOLLOW;
                 break;
             }
             case REVERSE: {
-                LinkedHashMap<Double, Double> prevSegment = segments.get(pathSegment - 2);
-                LinkedList<Double> prevValues = new LinkedList<>(prevSegment.values());
+//                LinkedList<WayPoint> prevSegment = segments.get(PATH_SEGMENT - 2);
+//                LinkedList<Double> prevValues = new LinkedList<>(prevSegment.values());
 
-                if (trackingPose.getY() <= values.getLast()) {
-                    if (pathSegment == segments.size())
-                        pathState = PathState.END;
-                    pathSegment++;
-                    zIndex++;
+                if (TRACKING_POSE.getY() <= currentSegment.getLast().Y) {
+                    if (PATH_SEGMENT == segments.size())
+                        PATH_STATE = PathState.END;
+                    PATH_SEGMENT++;
                     splineSegment = 1;
-                    pathState = PathState.SUSTAIN;
+                    PATH_STATE = PathState.SUSTAIN;
                 }
 
 //                if (trackingPose.getY() > prevValues.getLast()) {
@@ -281,21 +310,19 @@ public class Path {
 //                    splineSegment = 1;
 //                    pathState = PathState.SUSTAIN;
 //                }
-                zIndex = Range.clip(zIndex, 0, z.length - 1);
-                trackingPose.setPose(keys.getFirst(), CoM.getY(), z[zIndex]);
-                pathState = PathState.FOLLOW;
+                TRACKING_POSE.setPose(currentSegment.getFirst().X, CoM.getY(), currentSegment.getLast().Z);
+                PATH_STATE = PathState.FOLLOW;
                 break;
             }
             default:
-                if (pathSegment == segments.size())
-                    pathState = PathState.END;
-                pathSegment++;
-                zIndex++;
-                pathState = PathState.PAUSE;
+                if (PATH_SEGMENT == segments.size())
+                    PATH_STATE = PathState.END;
+                PATH_SEGMENT++;
+                PATH_STATE = PathState.PAUSE;
         }
 
         if (!ROBOT_STATUS.equals(RELEASE)) {
-            debugger.addData("Path State", pathState.name());
+            debugger.addData("Path State", PATH_STATE.name());
         }
     }
 
@@ -306,9 +333,9 @@ public class Path {
         int currentSegment = splineSegment;
 
         if (currentSegment > spline.getN())
-            return trackingPose.getX();
+            return TRACKING_POSE.getX();
 
-        double dTrackingPoint = Math.hypot(CoM.getX() - trackingPose.getX(), CoM.getY() - trackingPose.getY());
+        double dTrackingPoint = Math.hypot(CoM.getX() - TRACKING_POSE.getX(), CoM.getY() - TRACKING_POSE.getY());
         Double knotA = spline.getKnots()[currentSegment - 1];
         Double knotB = spline.getKnots()[currentSegment];
         Double shift = -knotA;
@@ -322,14 +349,14 @@ public class Path {
 
         PolynomialFunction fx = rx.add(dp.multiply(p.subtract(ry))); // Distance formula to optimize
 
-        Complex[] all = ls.solveAllComplex(fx.getCoefficients(), trackingPose.getX() + shift);
+        Complex[] all = ls.solveAllComplex(fx.getCoefficients(), TRACKING_POSE.getX() + shift);
         ArrayList<Double> real = new ArrayList<>();
         ArrayList<Double> realDistances = new ArrayList<>();
 
         for (Complex c : all) {
             if (c.getImaginary() == 0) {
                 double r = c.getReal() - shift;
-                if (r > trackingPose.getX() && r < knotB) {
+                if (r > TRACKING_POSE.getX() && r < knotB) {
                     real.add(r);
                     realDistances.add(Math.hypot(CoM.getX() - r, CoM.getY() - spline.value(r)));
                 }
@@ -345,10 +372,9 @@ public class Path {
         }
 
         if (Double.compare(min, dTrackingPoint) == 0)
-            return trackingPose.getX();
+            return TRACKING_POSE.getX();
         else if (Double.compare(min, dKnotB) == 0) {
             splineSegment++;
-            zIndex++;
             return knotB;
         } else
             return real.get(realDistances.indexOf(min));
@@ -361,9 +387,9 @@ public class Path {
         int currentSegment = spline.getN() - splineSegment + 1;
 
         if (currentSegment > spline.getN())
-            return trackingPose.getX();
+            return TRACKING_POSE.getX();
 
-        double dTrackingPoint = Math.hypot(CoM.getX() - trackingPose.getX(), CoM.getY() - trackingPose.getY());
+        double dTrackingPoint = Math.hypot(CoM.getX() - TRACKING_POSE.getX(), CoM.getY() - TRACKING_POSE.getY());
         Double knotB = spline.getKnots()[currentSegment - 1];
         Double knotA = spline.getKnots()[currentSegment];
         Double shift = -knotB;
@@ -377,14 +403,14 @@ public class Path {
 
         PolynomialFunction fx = rx.add(dp.multiply(p.subtract(ry))); // Distance formula to optimize
 
-        Complex[] all = ls.solveAllComplex(fx.getCoefficients(), trackingPose.getX() + shift);
+        Complex[] all = ls.solveAllComplex(fx.getCoefficients(), TRACKING_POSE.getX() + shift);
         ArrayList<Double> real = new ArrayList<>();
         ArrayList<Double> realDistances = new ArrayList<>();
 
         for (Complex c : all) {
             if (c.getImaginary() == 0) {
                 double r = c.getReal() - shift;
-                if (r < trackingPose.getX() && r > knotB) {
+                if (r < TRACKING_POSE.getX() && r > knotB) {
                     real.add(r);
                     realDistances.add(Math.hypot(CoM.getX() - r, CoM.getY() - spline.value(r)));
                 }
@@ -400,10 +426,9 @@ public class Path {
         }
 
         if (Double.compare(min, dTrackingPoint) == 0)
-            return trackingPose.getX();
+            return TRACKING_POSE.getX();
         else if (Double.compare(min, dKnotB) == 0) {
             splineSegment++;
-            zIndex++;
             return knotB;
         } else
             return real.get(realDistances.indexOf(min));
@@ -417,22 +442,8 @@ public class Path {
     }
 
     public Pose getStartLocation() {
-        LinkedHashMap<Double, Double> currentSegment = segments.get(0);
-        LinkedList<Double> keys = new LinkedList<>(currentSegment.keySet());
-        LinkedList<Double> values = new LinkedList<>(currentSegment.values());
-        return new Pose(keys.getFirst(), values.getFirst(), 0);
-    }
-
-    public PathState getPathState() {
-        return pathState;
-    }
-
-    public Pose getTrackingPose() {
-        return trackingPose;
-    }
-
-    public Direction getDirection() {
-        return direction;
+        LinkedList<WayPoint> currentSegment = segments.getFirst();
+        return new Pose(currentSegment.getFirst().X, currentSegment.getFirst().Y, currentSegment.getFirst().Z);
     }
 
     @Override

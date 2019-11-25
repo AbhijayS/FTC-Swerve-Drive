@@ -1,6 +1,7 @@
-package org.firstinspires.ftc.teamcode.opmodes.auto.blue;
+package org.firstinspires.ftc.teamcode.opmodes.auto.red;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -16,12 +17,13 @@ import org.firstinspires.ftc.teamcode.modules.swerve.SwerveDrive;
 
 import java.util.ArrayList;
 
-@Autonomous(name = "Blue Dead Partner")
-public class BlueDeadPartner extends LinearOpMode {
+//@Autonomous(name = "Red Dead Partner")
+@Disabled
+public class RedDeadPartner extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         Debugger robotDebugger = new Debugger(Util.getContext(), this, (ArrayList<String>) UniversalConstants.Debugging.getDebuggingMarkers());
-        robotDebugger.initialize("Auto_Dead_Dead_Partner");
+        robotDebugger.initialize("Auto_Red_Dead_Partner");
 
         SwerveDrive swerveDrive = new SwerveDrive(this, robotDebugger);
         Clamp clamp = new Clamp(this);
@@ -38,6 +40,10 @@ public class BlueDeadPartner extends LinearOpMode {
         while(opModeIsActive() && stonePosition.equals("Unknown")){
             tensorFlowLite.twoStone();
             stonePosition = tensorFlowLite.getPattern();
+            if (stonePosition.equals("A"))
+                stonePosition = "C";
+            else if (stonePosition.equals("C"))
+                stonePosition = "A";
             if (!stonePosition.equals("Unknown") || elapsedTime.time() > 3.0) {
                 break;
             }
@@ -45,7 +51,7 @@ public class BlueDeadPartner extends LinearOpMode {
         tensorFlowLite.shutDownTfod();
 
         switch (stonePosition) {
-            default:
+
             case "C": {
                 double[] x = {0, 0, 0};
                 double[] y = {0, -12.5, -22};
@@ -55,13 +61,14 @@ public class BlueDeadPartner extends LinearOpMode {
                 swerveDrive.setPath(interpolant, .3);
                 swerveDrive.requestState(SwerveState.PATH_FOLLOWING);
 
+                telemetry.addData("Stone", "A");
                 //Moves towards quarry
                 while (opModeIsActive()) {
                     if (swerveDrive.getState() == SwerveState.PATH_FOLLOWING_COMPLETE) {
                         break;
                     }
                     //Opens left clamp
-                    jewelSwatter.requestState(JewelSwatter.JewelSwatterState.DOCK_LEFT);
+                    jewelSwatter.requestState(JewelSwatter.JewelSwatterState.DOCK_RIGHT);
                     swerveDrive.swerveKinematics.update();
                     swerveDrive.stanleyPursuit();
                     robotDebugger.log();
@@ -69,7 +76,7 @@ public class BlueDeadPartner extends LinearOpMode {
 
                 // Clamps the sky stone
                 clamp.requestState(Clamp.ClampState.CLAMP);
-                jewelSwatter.requestState(JewelSwatter.JewelSwatterState.POSSESS_LEFT);
+                jewelSwatter.requestState(JewelSwatter.JewelSwatterState.POSSESS_RIGHT);
                 Thread.sleep(500);
 
                 x = new double[]{0, 0, 0};
@@ -86,7 +93,7 @@ public class BlueDeadPartner extends LinearOpMode {
                         break;
                     }
                     //Raises sky stone
-                    jewelSwatter.requestState(JewelSwatter.JewelSwatterState.RIDE_LOW_LEFT);
+                    jewelSwatter.requestState(JewelSwatter.JewelSwatterState.RIDE_LOW_RIGHT);
                     swerveDrive.swerveKinematics.update();
                     swerveDrive.stanleyPursuit();
                     robotDebugger.log();
@@ -94,8 +101,7 @@ public class BlueDeadPartner extends LinearOpMode {
 
                 clamp.requestState(Clamp.ClampState.COAST);
 
-//                x = new double[]{0, 25, 45, 46};
-                x = new double[]{0, -25, -44, -45};
+                x = new double[]{0, 25, 45, 46};
                 y = new double[]{-18, -19, -19, -19};
                 z = new double[]{90, 90, 90, 90};
 
@@ -108,19 +114,18 @@ public class BlueDeadPartner extends LinearOpMode {
                     if (swerveDrive.getState() == SwerveState.PATH_FOLLOWING_COMPLETE) {
                         break;
                     }
-                    jewelSwatter.requestState(JewelSwatter.JewelSwatterState.RIDE_LOW_LEFT);
+                    jewelSwatter.requestState(JewelSwatter.JewelSwatterState.RIDE_LOW_RIGHT);
                     swerveDrive.swerveKinematics.update();
                     swerveDrive.stanleyPursuit();
                     robotDebugger.log();
                 }
 
                 //Releases sky stone
-                jewelSwatter.requestState(JewelSwatter.JewelSwatterState.DOCK_LEFT);
+                jewelSwatter.requestState(JewelSwatter.JewelSwatterState.DOCK_RIGHT);
                 Thread.sleep(500);
 
-//                x = new double[]{46, 45, 25, 0};
-                x = new double[]{-45, -43, -25, 0};
-                y = new double[]{-19, -19, -21, -23};
+                x = new double[]{46, 45, 25, 0};
+                y = new double[]{-19, -19, -20, -21};
                 z = new double[]{90, 90, 90, 90};
 
                 interpolant = new Path(robotDebugger, x, y, z);
@@ -138,10 +143,8 @@ public class BlueDeadPartner extends LinearOpMode {
                     robotDebugger.log();
                 }
 
-                UniversalConstants.kS = 5;
-//                x = new double[]{0, -10, -22};
-                x = new double[]{0, 10, 18};
-                y = new double[]{-23, -26, -29};
+                x = new double[]{0, -10, -16};
+                y = new double[]{-21, -26, -30};
                 z = new double[]{90, 90, 90};
 
                 interpolant = new Path(robotDebugger, x, y, z);
@@ -153,22 +156,18 @@ public class BlueDeadPartner extends LinearOpMode {
                     if (swerveDrive.getState() == SwerveState.PATH_FOLLOWING_COMPLETE) {
                         break;
                     }
-                    jewelSwatter.requestState(JewelSwatter.JewelSwatterState.DOCK_LEFT);
+                    jewelSwatter.requestState(JewelSwatter.JewelSwatterState.DOCK_RIGHT);
                     swerveDrive.swerveKinematics.update();
                     swerveDrive.stanleyPursuit();
                     robotDebugger.log();
                 }
 
-                jewelSwatter.requestState(JewelSwatter.JewelSwatterState.POSSESS_LEFT);
-                Thread.sleep(500);
-                jewelSwatter.requestState(JewelSwatter.JewelSwatterState.RIDE_HIGH_LEFT);
+                jewelSwatter.requestState(JewelSwatter.JewelSwatterState.POSSESS_RIGHT);
                 Thread.sleep(500);
 
-                UniversalConstants.kS = 0.75;
-//                x = new double[]{-22, -15, 0};
-                x = new double[]{18, 15, 0};
-                y = new double[]{-29, -28, -28};
-                z = new double[]{90, 0, 0};
+                x = new double[]{-16, -12, 0};
+                y = new double[]{-30, -30, -30};
+                z = new double[]{90, 180, 180};
 
                 interpolant = new Path(robotDebugger, x, y, z);
                 swerveDrive.setPath(interpolant, 0.3);
@@ -179,7 +178,7 @@ public class BlueDeadPartner extends LinearOpMode {
                     if (swerveDrive.getState() == SwerveState.PATH_FOLLOWING_COMPLETE) {
                         break;
                     }
-                    jewelSwatter.requestState(JewelSwatter.JewelSwatterState.RIDE_HIGH_LEFT);
+                    jewelSwatter.requestState(JewelSwatter.JewelSwatterState.RIDE_HIGH_RIGHT);
                     swerveDrive.swerveKinematics.update();
                     swerveDrive.stanleyPursuit();
                     robotDebugger.log();
@@ -187,10 +186,9 @@ public class BlueDeadPartner extends LinearOpMode {
 
 
                 // ride low
-//                x = new double[]{0, 25, 50};
-                x = new double[]{0, -25, -50};
-                y = new double[]{-28, -29, -30};
-                z = new double[]{0, 0, 0};
+                x = new double[]{0, 25, 50};
+                y = new double[]{-30, -31, -31};
+                z = new double[]{180, 180, 180};
 
                 interpolant = new Path(robotDebugger, x, y, z);
                 swerveDrive.setPath(interpolant, 0.3);
@@ -201,7 +199,7 @@ public class BlueDeadPartner extends LinearOpMode {
                     if (swerveDrive.getState() == SwerveState.PATH_FOLLOWING_COMPLETE) {
                         break;
                     }
-                    jewelSwatter.requestState(JewelSwatter.JewelSwatterState.RIDE_LOW_LEFT);
+                    jewelSwatter.requestState(JewelSwatter.JewelSwatterState.RIDE_LOW_RIGHT);
                     swerveDrive.swerveKinematics.update();
                     swerveDrive.stanleyPursuit();
                     robotDebugger.log();
@@ -209,13 +207,12 @@ public class BlueDeadPartner extends LinearOpMode {
 
 
                 // park
-                jewelSwatter.requestState(JewelSwatter.JewelSwatterState.DOCK_LEFT);
+                jewelSwatter.requestState(JewelSwatter.JewelSwatterState.DOCK_RIGHT);
                 Thread.sleep(500);
 
-//                x = new double[]{50, 47, 45};
-                x = new double[]{-50, -47, -45};
-                y = new double[]{-30, -30, -30};
-                z = new double[]{0, 0, 0};
+                x = new double[]{50, 47, 45};
+                y = new double[]{-31, -31, -31};
+                z = new double[]{180, 180, 180};
 
                 interpolant = new Path(robotDebugger, x, y, z);
                 swerveDrive.setPath(interpolant, 0.3);
@@ -243,8 +240,8 @@ public class BlueDeadPartner extends LinearOpMode {
                 UniversalConstants.kS = 10;
                 clamp.requestState(Clamp.ClampState.CLAMP);
                 double[] x = {0, 0, 0};
-                double[] y = {0, -10, -17};
-                double[] z = {90, 90, 90};
+                double[] y = {0, -15,-18};
+                double[] z = {90, 90, 90, 90};
 
                 Path interpolant = new Path(robotDebugger, x, y, z);
                 swerveDrive.setPath(interpolant, .3);
@@ -256,14 +253,14 @@ public class BlueDeadPartner extends LinearOpMode {
                         break;
                     }
                     //Opens left clamp
-                    jewelSwatter.requestState(JewelSwatter.JewelSwatterState.RIDE_LOW_RIGHT_OPEN);
+                    jewelSwatter.requestState(JewelSwatter.JewelSwatterState.RIDE_LOW_LEFT);
                     swerveDrive.swerveKinematics.update();
                     swerveDrive.stanleyPursuit();
                     robotDebugger.log();
                 }
 
-                x = new double[]{0, -1.5, -3};
-                y = new double[]{-17, -17, -17};
+                x = new double[]{0, 2, 4};
+                y = new double[]{-18, -18,-18};
                 z = new double[]{90, 90, 90};
 
                 interpolant = new Path(robotDebugger, x, y, z);
@@ -276,7 +273,7 @@ public class BlueDeadPartner extends LinearOpMode {
                         break;
                     }
                     //Opens left clamp
-                    jewelSwatter.requestState(JewelSwatter.JewelSwatterState.RIDE_LOW_RIGHT_OPEN);
+                    jewelSwatter.requestState(JewelSwatter.JewelSwatterState.RIDE_LOW_LEFT);
                     swerveDrive.swerveKinematics.update();
                     swerveDrive.stanleyPursuit();
                     robotDebugger.log();
@@ -284,10 +281,10 @@ public class BlueDeadPartner extends LinearOpMode {
 
                 swerveDrive.swivel(90);
                 Thread.sleep(500);
-                jewelSwatter.requestState(JewelSwatter.JewelSwatterState.DOCK_RIGHT);
+                jewelSwatter.requestState(JewelSwatter.JewelSwatterState.DOCK_LEFT);
 
-                x = new double[]{-3, -3, -3};
-                y = new double[]{-17, -18, -19};
+                x = new double[]{4,4,4};
+                y = new double[]{-18, -19, -20};
                 z = new double[]{90, 90, 90};
 
                 interpolant = new Path(robotDebugger, x, y, z);
@@ -300,17 +297,17 @@ public class BlueDeadPartner extends LinearOpMode {
                         break;
                     }
                     //Raises sky stone
-                    jewelSwatter.requestState(JewelSwatter.JewelSwatterState.DOCK_RIGHT);
+                    jewelSwatter.requestState(JewelSwatter.JewelSwatterState.DOCK_LEFT);
                     swerveDrive.swerveKinematics.update();
                     swerveDrive.stanleyPursuit();
                     robotDebugger.log();
                 }
 
-                jewelSwatter.requestState(JewelSwatter.JewelSwatterState.POSSESS_RIGHT);
+                jewelSwatter.requestState(JewelSwatter.JewelSwatterState.POSSESS_LEFT);
                 Thread.sleep(500);
 
-                x = new double[]{-3, -3, -3};
-                y = new double[]{-19, -16, -14};
+                x = new double[]{4,4,4};
+                y = new double[]{-20, -18, -15};
                 z = new double[]{90, 90, 90};
 
                 interpolant = new Path(robotDebugger, x, y, z);
@@ -323,18 +320,16 @@ public class BlueDeadPartner extends LinearOpMode {
                         break;
                     }
                     //Raises sky stone
-                    jewelSwatter.requestState(JewelSwatter.JewelSwatterState.RIDE_LOW_RIGHT);
+                    jewelSwatter.requestState(JewelSwatter.JewelSwatterState.RIDE_LOW_LEFT);
                     swerveDrive.swerveKinematics.update();
                     swerveDrive.stanleyPursuit();
                     robotDebugger.log();
                 }
-
-                UniversalConstants.kS = 0.75;
 
                 clamp.requestState(Clamp.ClampState.COAST);
 
-                x = new double[]{-3, -25, -41, -45};
-                y = new double[]{-14, -13, -14, -16};
+                x = new double[]{4, 25, 41, 45};
+                y = new double[]{-15, -14, -14, -16};
                 z = new double[]{90, 90, 90, 90};
 
                 interpolant = new Path(robotDebugger, x, y, z);
@@ -346,7 +341,7 @@ public class BlueDeadPartner extends LinearOpMode {
                     if (swerveDrive.getState() == SwerveState.PATH_FOLLOWING_COMPLETE) {
                         break;
                     }
-                    jewelSwatter.requestState(JewelSwatter.JewelSwatterState.RIDE_LOW_RIGHT);
+                    jewelSwatter.requestState(JewelSwatter.JewelSwatterState.RIDE_LOW_LEFT);
                     swerveDrive.swerveKinematics.update();
                     swerveDrive.stanleyPursuit();
                     robotDebugger.log();
@@ -354,11 +349,13 @@ public class BlueDeadPartner extends LinearOpMode {
 
                 UniversalConstants.kS = 0.75;
                 //Releases sky stone
-                jewelSwatter.requestState(JewelSwatter.JewelSwatterState.DOCK_RIGHT);
+                jewelSwatter.requestState(JewelSwatter.JewelSwatterState.DOCK_LEFT);
+                Thread.sleep(500);
+                jewelSwatter.requestState(JewelSwatter.JewelSwatterState.STOW_ALL);
                 Thread.sleep(500);
 
-                x = new double[]{-45, -41, -25, 0};
-                y = new double[]{-16, -19, -21, -23};
+                x = new double[]{45, 41, 25, 0};
+                y = new double[]{-16, -16, -16, -18};
                 z = new double[]{90, 90, 90, 90};
 
                 interpolant = new Path(robotDebugger, x, y, z);
@@ -375,12 +372,10 @@ public class BlueDeadPartner extends LinearOpMode {
                     swerveDrive.stanleyPursuit();
                     robotDebugger.log();
                 }
-
-                UniversalConstants.kS = 5;
-
-                x = new double[]{0, 7, 16};
-                y = new double[]{-23, -25, -30};
-                z = new double[]{90, 90, 90};
+                UniversalConstants.kS = 10;
+                x = new double[]{0, -5, -10, -16};
+                y = new double[]{-18, -19, -20, -24};
+                z = new double[]{90, 90, 90,90};
 
                 interpolant = new Path(robotDebugger, x, y, z);
                 swerveDrive.setPath(interpolant, .3);
@@ -391,20 +386,20 @@ public class BlueDeadPartner extends LinearOpMode {
                     if (swerveDrive.getState() == SwerveState.PATH_FOLLOWING_COMPLETE) {
                         break;
                     }
-                    jewelSwatter.requestState(JewelSwatter.JewelSwatterState.DOCK_RIGHT);
+                    jewelSwatter.requestState(JewelSwatter.JewelSwatterState.DOCK_LEFT);
                     swerveDrive.swerveKinematics.update();
                     swerveDrive.stanleyPursuit();
                     robotDebugger.log();
                 }
-
-                jewelSwatter.requestState(JewelSwatter.JewelSwatterState.POSSESS_RIGHT);
+                swerveDrive.module3.swivel(-20);
                 Thread.sleep(500);
-
+                jewelSwatter.requestState(JewelSwatter.JewelSwatterState.POSSESS_LEFT);
+                Thread.sleep(500);
                 UniversalConstants.kS = 0.75;
 
-                x = new double[]{16, 7, 0};
-                y = new double[]{-30, -28, -25};
-                z = new double[]{90, 0, 0};
+                x = new double[]{-16, -5, 0};
+                y = new double[]{-24, -23, -23};
+                z = new double[]{90, 180, 180};
 
                 interpolant = new Path(robotDebugger, x, y, z);
                 swerveDrive.setPath(interpolant, 1);
@@ -415,16 +410,16 @@ public class BlueDeadPartner extends LinearOpMode {
                     if (swerveDrive.getState() == SwerveState.PATH_FOLLOWING_COMPLETE) {
                         break;
                     }
-                    jewelSwatter.requestState(JewelSwatter.JewelSwatterState.RIDE_HIGH_RIGHT);
+                    jewelSwatter.requestState(JewelSwatter.JewelSwatterState.RIDE_HIGH_LEFT);
                     swerveDrive.swerveKinematics.update();
                     swerveDrive.stanleyPursuit();
                     robotDebugger.log();
                 }
 
                 // ride low
-                x = new double[]{0, -25, -47};
-                y = new double[]{-25, -28, -28};
-                z = new double[]{0, 0, 0};
+                x = new double[]{0, 25, 47};
+                y = new double[]{-23, -23, -23};
+                z = new double[]{180, 180, 180};
 
                 interpolant = new Path(robotDebugger, x, y, z);
                 swerveDrive.setPath(interpolant, .3);
@@ -435,7 +430,7 @@ public class BlueDeadPartner extends LinearOpMode {
                     if (swerveDrive.getState() == SwerveState.PATH_FOLLOWING_COMPLETE) {
                         break;
                     }
-                    jewelSwatter.requestState(JewelSwatter.JewelSwatterState.RIDE_LOW_RIGHT);
+                    jewelSwatter.requestState(JewelSwatter.JewelSwatterState.RIDE_LOW_LEFT);
                     swerveDrive.swerveKinematics.update();
                     swerveDrive.stanleyPursuit();
                     robotDebugger.log();
@@ -443,12 +438,12 @@ public class BlueDeadPartner extends LinearOpMode {
 
 
                 // park
-                jewelSwatter.requestState(JewelSwatter.JewelSwatterState.DOCK_RIGHT);
+                jewelSwatter.requestState(JewelSwatter.JewelSwatterState.DOCK_LEFT);
                 Thread.sleep(500);
 
-                x = new double[]{-47, -45, -42};
-                y = new double[]{-28, -28, -28};
-                z = new double[]{0, 0, 0};
+                x = new double[]{47, 45, 42};
+                y = new double[]{-23, -23, -23};
+                z = new double[]{180, 180, 180};
 
                 interpolant = new Path(robotDebugger, x, y, z);
                 swerveDrive.setPath(interpolant, .3);
@@ -474,7 +469,8 @@ public class BlueDeadPartner extends LinearOpMode {
             }
 
             // Case A or Unknown
-            case "A": {
+                // make the robot go forward a little bit for the second stone
+            default: {
                 double[] x = {0, 0, 0};
                 double[] y = {0, -12.5, -22};
                 double[] z = {90, 90, 90};
@@ -489,7 +485,7 @@ public class BlueDeadPartner extends LinearOpMode {
                         break;
                     }
                     //Opens left clamp
-                    jewelSwatter.requestState(JewelSwatter.JewelSwatterState.DOCK_RIGHT);
+                    jewelSwatter.requestState(JewelSwatter.JewelSwatterState.DOCK_LEFT);
                     swerveDrive.swerveKinematics.update();
                     swerveDrive.stanleyPursuit();
                     robotDebugger.log();
@@ -497,7 +493,7 @@ public class BlueDeadPartner extends LinearOpMode {
 
                 // Clamps the sky stone
                 clamp.requestState(Clamp.ClampState.CLAMP);
-                jewelSwatter.requestState(JewelSwatter.JewelSwatterState.POSSESS_RIGHT);
+                jewelSwatter.requestState(JewelSwatter.JewelSwatterState.POSSESS_LEFT);
                 Thread.sleep(500);
 
                 x = new double[]{0, 0, 0};
@@ -514,7 +510,7 @@ public class BlueDeadPartner extends LinearOpMode {
                         break;
                     }
                     //Raises sky stone
-                    jewelSwatter.requestState(JewelSwatter.JewelSwatterState.RIDE_LOW_RIGHT);
+                    jewelSwatter.requestState(JewelSwatter.JewelSwatterState.RIDE_LOW_LEFT);
                     swerveDrive.swerveKinematics.update();
                     swerveDrive.stanleyPursuit();
                     robotDebugger.log();
@@ -522,8 +518,8 @@ public class BlueDeadPartner extends LinearOpMode {
 
                 clamp.requestState(Clamp.ClampState.COAST);
 
-                x = new double[]{0, -25, -41, -43};
-                y = new double[]{-18, -16, -17, -18};
+                x = new double[]{0, 25, 41, 43};
+                y = new double[]{-18, -16, -16, -18};
                 z = new double[]{90, 90, 90, 90};
 
                 interpolant = new Path(robotDebugger, x, y, z);
@@ -535,20 +531,18 @@ public class BlueDeadPartner extends LinearOpMode {
                     if (swerveDrive.getState() == SwerveState.PATH_FOLLOWING_COMPLETE) {
                         break;
                     }
-                    jewelSwatter.requestState(JewelSwatter.JewelSwatterState.RIDE_LOW_RIGHT);
+                    jewelSwatter.requestState(JewelSwatter.JewelSwatterState.RIDE_LOW_LEFT);
                     swerveDrive.swerveKinematics.update();
                     swerveDrive.stanleyPursuit();
                     robotDebugger.log();
                 }
 
                 //Releases sky stone
-                jewelSwatter.requestState(JewelSwatter.JewelSwatterState.DOCK_RIGHT);
-                Thread.sleep(500);
-                jewelSwatter.requestState(JewelSwatter.JewelSwatterState.STOW_ALL);
+                jewelSwatter.requestState(JewelSwatter.JewelSwatterState.DOCK_LEFT);
                 Thread.sleep(500);
 
-                x = new double[]{-43, -41, -25, 0};
-                y = new double[]{-18, -19, -21, -23};
+                x = new double[]{43, 41, 25, 0};
+                y = new double[]{-18, -16, -16, -18};
                 z = new double[]{90, 90, 90, 90};
 
                 interpolant = new Path(robotDebugger, x, y, z);
@@ -566,10 +560,8 @@ public class BlueDeadPartner extends LinearOpMode {
                     robotDebugger.log();
                 }
 
-                UniversalConstants.kS = 3;
-
-                x = new double[]{0, 10, 22};
-                y = new double[]{-23, -25, -34};
+                x = new double[]{0, -10, -22};
+                y = new double[]{-18, -25, -35};
                 z = new double[]{90, 90, 90};
 
                 interpolant = new Path(robotDebugger, x, y, z);
@@ -581,22 +573,20 @@ public class BlueDeadPartner extends LinearOpMode {
                     if (swerveDrive.getState() == SwerveState.PATH_FOLLOWING_COMPLETE) {
                         break;
                     }
-                    jewelSwatter.requestState(JewelSwatter.JewelSwatterState.DOCK_RIGHT);
+                    jewelSwatter.requestState(JewelSwatter.JewelSwatterState.DOCK_LEFT);
                     swerveDrive.swerveKinematics.update();
                     swerveDrive.stanleyPursuit();
                     robotDebugger.log();
                 }
 
-//                swerveDrive.module3.swivel(-20);
-//                Thread.sleep(500);
-                jewelSwatter.requestState(JewelSwatter.JewelSwatterState.POSSESS_RIGHT);
+                swerveDrive.module3.swivel(-20);
+                Thread.sleep(500);
+                jewelSwatter.requestState(JewelSwatter.JewelSwatterState.POSSESS_LEFT);
                 Thread.sleep(500);
 
-                UniversalConstants.kS = 0.75;
-
-                x = new double[]{22, 15, 0};
-                y = new double[]{-34, -28, -25};
-                z = new double[]{90, 0, 0};
+                x = new double[]{-22, -15, 0};
+                y = new double[]{-35, -28, -28};
+                z = new double[]{90, 180, 180};
 
                 interpolant = new Path(robotDebugger, x, y, z);
                 swerveDrive.setPath(interpolant, 0.3);
@@ -607,7 +597,7 @@ public class BlueDeadPartner extends LinearOpMode {
                     if (swerveDrive.getState() == SwerveState.PATH_FOLLOWING_COMPLETE) {
                         break;
                     }
-                    jewelSwatter.requestState(JewelSwatter.JewelSwatterState.RIDE_HIGH_RIGHT);
+                    jewelSwatter.requestState(JewelSwatter.JewelSwatterState.RIDE_HIGH_LEFT);
                     swerveDrive.swerveKinematics.update();
                     swerveDrive.stanleyPursuit();
                     robotDebugger.log();
@@ -615,9 +605,9 @@ public class BlueDeadPartner extends LinearOpMode {
 
 
                 // ride low
-                x = new double[]{0, -25, -50};
-                y = new double[]{-25, -28, -28};
-                z = new double[]{0, 0, 0};
+                x = new double[]{0, 25, 50};
+                y = new double[]{-28, -29, -29};
+                z = new double[]{180, 180, 180};
 
                 interpolant = new Path(robotDebugger, x, y, z);
                 swerveDrive.setPath(interpolant, 0.3);
@@ -628,7 +618,7 @@ public class BlueDeadPartner extends LinearOpMode {
                     if (swerveDrive.getState() == SwerveState.PATH_FOLLOWING_COMPLETE) {
                         break;
                     }
-                    jewelSwatter.requestState(JewelSwatter.JewelSwatterState.RIDE_LOW_RIGHT);
+                    jewelSwatter.requestState(JewelSwatter.JewelSwatterState.RIDE_LOW_LEFT);
                     swerveDrive.swerveKinematics.update();
                     swerveDrive.stanleyPursuit();
                     robotDebugger.log();
@@ -636,12 +626,12 @@ public class BlueDeadPartner extends LinearOpMode {
 
 
                 // park
-                jewelSwatter.requestState(JewelSwatter.JewelSwatterState.DOCK_RIGHT);
+                jewelSwatter.requestState(JewelSwatter.JewelSwatterState.DOCK_LEFT);
                 Thread.sleep(500);
 
-                x = new double[]{-50, -47, -45};
-                y = new double[]{-28, -28, -28};
-                z = new double[]{0, 0, 0};
+                x = new double[]{50, 47, 45};
+                y = new double[]{-29, -29, -29};
+                z = new double[]{180, 180, 180};
 
                 interpolant = new Path(robotDebugger, x, y, z);
                 swerveDrive.setPath(interpolant, 0.3);

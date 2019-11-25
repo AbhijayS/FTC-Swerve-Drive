@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.ServoImplEx;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.ServoConfigurationType;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.teamcode.common.UniversalConstants;
 import org.firstinspires.ftc.teamcode.common.utilities.Pose;
 
 import java.util.Locale;
@@ -117,15 +118,7 @@ public class SwerveModule {
             double distance = Math.abs(toAngle - internalServoPosition);
             internalServoPosition = toAngle;
 
-            switch (ROBOT_STATUS) {
-                case RELEASE:
-                    turnServo.setPosition(Math.abs((toAngle - MAX_DEGREES)) / servoRange);
-                    break;
-
-                default:
-                    turnServo.setPosition(Math.abs((toAngle - MAX_DEGREES)) / servoRange);
-                    linearOpMode.telemetry.addData(swerveModule.servoID.toUpperCase(), toAngle);
-            }
+            turnServo.setPosition(Math.abs((toAngle - MAX_DEGREES)) / servoRange);
             return distance;
         }
 
@@ -137,16 +130,9 @@ public class SwerveModule {
     public void setPower(double power) {
         power = Range.clip(power, 0, ROBOT_MAX_SPEED);
         power = motorDirection.assignDirection(power);
-        switch (ROBOT_STATUS) {
-            case RELEASE:
-                driveMotor.setPower(power);
-                break;
-            case TESTING:
-                driveMotor.setPower(power);
-            case DEBUGGING:
-                linearOpMode.telemetry.addData("Motor Direction", motorDirection.toString());
-                linearOpMode.telemetry.addLine(String.format(Locale.US, "%s : %f %s", swerveModule.motorID.toUpperCase(), power, motorDirection.getAbbreviation()));
-        }
+
+        if (ROBOT_STATUS != UniversalConstants.Status.DEBUGGING)
+            driveMotor.setPower(power);
     }
 
     public double getDisplacement() {

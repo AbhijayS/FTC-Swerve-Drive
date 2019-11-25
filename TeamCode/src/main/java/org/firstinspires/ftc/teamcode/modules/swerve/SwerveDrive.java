@@ -173,12 +173,12 @@ public class SwerveDrive {
             speed3 = Range.scale(speed3, 0, max, 0, ROBOT_MAX_SPEED * slow);
         }
 
-        if (ROBOT_STATUS != RELEASE) {
-            linearOpMode.telemetry.addData("DELTA:", delta);
-            linearOpMode.telemetry.addData("OMEGA:", OMEGA);
-            linearOpMode.telemetry.addData("STRAFE SPEED:", STR);
-            linearOpMode.telemetry.addData("STRAFE ANGLE:", STR_ANGLE);
-        }
+//        if (ROBOT_STATUS != RELEASE) {
+//            linearOpMode.telemetry.addData("DELTA:", delta);
+//            linearOpMode.telemetry.addData("OMEGA:", OMEGA);
+//            linearOpMode.telemetry.addData("STRAFE SPEED:", STR);
+//            linearOpMode.telemetry.addData("STRAFE ANGLE:", STR_ANGLE);
+//        }
 
         swivel(swivel0, swivel1, swivel2, swivel3);
         setPower(speed0, speed1, speed2, speed3);
@@ -348,7 +348,7 @@ public class SwerveDrive {
 
         path.pathFollowing(CoM);
 
-        switch (path.getPathState()) {
+        switch (path.PATH_STATE) {
             case END:
                 swerveState = PATH_FOLLOWING_COMPLETE;
                 setPower(0);
@@ -364,16 +364,16 @@ public class SwerveDrive {
 
             default:
                 // Calculate cross-track error
-                Pose trackingPose = path.getTrackingPose();
+                Pose trackingPose = path.TRACKING_POSE;
                 double distance = Math.hypot(trackingPose.getX() - CoM.getX(), trackingPose.getY() - CoM.getY());
                 double crossTrackAngle;
 
-                if (path.getDirection() == Direction.LEFT || path.getDirection() == Direction.RIGHT) {
+                if (path.DIRECTION == Direction.LEFT || path.DIRECTION == Direction.RIGHT) {
                     distance = Math.copySign(distance, trackingPose.getY() - CoM.getY());
-                    crossTrackAngle = Math.toDegrees(Math.atan2(distance, path.getDirection().assignDirection(velocity / kS)));
+                    crossTrackAngle = Math.toDegrees(Math.atan2(distance, path.DIRECTION.assignDirection(velocity / kS)));
                 } else {
                     distance = Math.copySign(distance, trackingPose.getX() - CoM.getX());
-                    crossTrackAngle = Math.toDegrees(Math.atan2(path.getDirection().assignDirection(velocity / kS), distance));
+                    crossTrackAngle = Math.toDegrees(Math.atan2(path.DIRECTION.assignDirection(velocity / kS), distance));
                 }
 
                 if (!Double.isNaN(trackingPose.getDegrees()))
@@ -383,10 +383,9 @@ public class SwerveDrive {
 
                 if (!ROBOT_STATUS.equals(RELEASE)) {
                     debugger.addData(PATH.toString(), path.toString());
-                    debugger.addData(PX.toString(), Double.toString(path.getTrackingPose().getX()));
-                    debugger.addData(PY.toString(), Double.toString(path.getTrackingPose().getY()));
-                    debugger.addData(VELOCITY.toString(), Double.toString(velocity));
-                    debugger.addData(PATH.toString(), path.toString());
+                    debugger.addData(PX.toString(), Double.toString(path.TRACKING_POSE.getX()));
+                    debugger.addData(PY.toString(), Double.toString(path.TRACKING_POSE.getY()));
+                    debugger.addData("HEADING GOAL",Double.toString(headingGoal));
                     debugger.addData(VELOCITY.toString(), Double.toString(velocity));
                 }
         }

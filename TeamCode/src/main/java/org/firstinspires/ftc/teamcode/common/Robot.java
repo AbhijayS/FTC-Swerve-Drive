@@ -43,15 +43,7 @@ public class Robot {
     public void setWayPoints(WayPoint[] wayPoints) {
         this.wayPoints.addAll(Arrays.asList(wayPoints));
         this.size = this.wayPoints.size();
-        double rx[] = new double[this.size];
-        double ry[] = new double[this.size];
-        double rz[] = new double[this.size];
-        for (int i = 0; i < this.size; i++) {
-            rx[i] = this.wayPoints.get(i).POSE.getX();
-            ry[i] = this.wayPoints.get(i).POSE.getY();
-            rz[i] = this.wayPoints.get(i).POSE.getDegrees();
-        }
-        path = new Path(debugger,rx,ry,rz);
+        path = new Path(debugger,wayPoints);
         swerveDrive.setPath(path,0.3);
         swerveDrive.requestState(SwerveState.PATH_FOLLOWING);
     }
