@@ -235,9 +235,11 @@ public class SwerveKinematics {
                 temp[3]
         };
 
-        debugger.addData(UniversalConstants.Debugging.RX.toString(), Double.toString(centerOfMass.getX()));
-        debugger.addData(UniversalConstants.Debugging.RY.toString(), Double.toString(centerOfMass.getY()));
-        debugger.addData(UniversalConstants.Debugging.HEADING.toString(), Double.toString(centerOfMass.getDegrees()));
+        try {
+            debugger.addData(UniversalConstants.Debugging.RX.toString(), Double.toString(centerOfMass.getX()));
+            debugger.addData(UniversalConstants.Debugging.RY.toString(), Double.toString(centerOfMass.getY()));
+            debugger.addData(UniversalConstants.Debugging.HEADING.toString(), Double.toString(centerOfMass.getDegrees()));
+        } catch (Exception e) {}
     }
 
     public double getVelocity() {
