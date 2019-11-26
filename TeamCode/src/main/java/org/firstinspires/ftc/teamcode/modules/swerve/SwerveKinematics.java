@@ -22,7 +22,7 @@ public class SwerveKinematics {
     public SwerveModule[] swerveModules;
     private Pose centerOfMass;
     public Pose[] modulesPose; // Describes pose (position & direction) of each module in the global reference frame
-    private Double[] wheelStamps; // Save the position of each module wheel for later calculations
+    public Double[] wheelStamps; // Save the position of each module wheel for later calculations
     private double yawStamp; // Save the drivetrain's yaw
     private Double[] dS;
     private double dT;
@@ -237,7 +237,7 @@ public class SwerveKinematics {
 
         debugger.addData(UniversalConstants.Debugging.RX.toString(), Double.toString(centerOfMass.getX()));
         debugger.addData(UniversalConstants.Debugging.RY.toString(), Double.toString(centerOfMass.getY()));
-//        debugger.addData(UniversalConstants.Debugging.HEADING.toString(), Double.toString(centerOfMass.getDegrees()));
+        debugger.addData(UniversalConstants.Debugging.HEADING.toString(), Double.toString(centerOfMass.getDegrees()));
     }
 
     public double getVelocity() {

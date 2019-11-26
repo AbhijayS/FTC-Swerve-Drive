@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.testers;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.common.Robot;
 import org.firstinspires.ftc.teamcode.common.UniversalConstants;
 import org.firstinspires.ftc.teamcode.common.states.SwerveState;
 import org.firstinspires.ftc.teamcode.common.utilities.Debugger;
@@ -16,51 +17,37 @@ import org.firstinspires.ftc.teamcode.modules.swerve.SwerveDrive;
 
 import java.util.ArrayList;
 
-@TeleOp(name = "TestOp: Heading follower Right")
+@TeleOp(name = "TestOp: WayPoint Tester")
 public class WayPointTester extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         Debugger robotDebugger = new Debugger(Util.getContext(), this, (ArrayList<String>) UniversalConstants.Debugging.getDebuggingMarkers());
         robotDebugger.initialize("WayPoint Tester");
 
-        SwerveDrive swerveDrive = new SwerveDrive(this, robotDebugger);
         WayPoint[] wayPoints = {
-//                // moving right
-//                new WayPoint(new Pose(0,0,90),1, Clamp.ClampState.COAST, JewelSwatter.JewelSwatterState.STOW_ALL,0),
-//                new WayPoint(new Pose(12,0,0),1, Clamp.ClampState.COAST, JewelSwatter.JewelSwatterState.STOW_ALL,0),
-//                new WayPoint(new Pose(24,0,90),1, Clamp.ClampState.COAST, JewelSwatter.JewelSwatterState.STOW_ALL,0),
-//                new WayPoint(new Pose(36,0,45),1, Clamp.ClampState.COAST, JewelSwatter.JewelSwatterState.STOW_ALL,0),
-//                new WayPoint(new Pose(48,0,180),1, Clamp.ClampState.COAST, JewelSwatter.JewelSwatterState.STOW_ALL,0),
-//
-//                // moving left
-//                new WayPoint(new Pose(48,0,180),1, Clamp.ClampState.COAST, JewelSwatter.JewelSwatterState.STOW_ALL,0),
-//                new WayPoint(new Pose(36,0,45),1, Clamp.ClampState.COAST, JewelSwatter.JewelSwatterState.STOW_ALL,0),
-//                new WayPoint(new Pose(24,0,90),1, Clamp.ClampState.COAST, JewelSwatter.JewelSwatterState.STOW_ALL,0),
-//                new WayPoint(new Pose(12,0,0),1, Clamp.ClampState.COAST, JewelSwatter.JewelSwatterState.STOW_ALL,0),
-//                new WayPoint(new Pose(0,0,90),1, Clamp.ClampState.COAST, JewelSwatter.JewelSwatterState.STOW_ALL,0),
+            // moving backward
+//            new WayPoint(new Pose(0,0,90),0.5, Clamp.ClampState.COAST, JewelSwatter.JewelSwatterState.STOW_ALL,0, true),
+//            new WayPoint(new Pose(0,12,90),0.5, Clamp.ClampState.COAST, JewelSwatter.JewelSwatterState.STOW_ALL,0, false),
+//            new WayPoint(new Pose(5,12,90),0.5, Clamp.ClampState.COAST, JewelSwatter.JewelSwatterState.STOW_ALL,0, false),
+//            new WayPoint(new Pose(10,12,90),0.5, Clamp.ClampState.COAST, JewelSwatter.JewelSwatterState.STOW_ALL,0, true),
+//            new WayPoint(new Pose(10,0,90),0.5, Clamp.ClampState.COAST, JewelSwatter.JewelSwatterState.STOW_ALL,0, false),
 
-                // moving forward
-                new WayPoint(new Pose(0,0,90),1, Clamp.ClampState.COAST, JewelSwatter.JewelSwatterState.STOW_ALL,0),
-                new WayPoint(new Pose(0,12,0),1, Clamp.ClampState.COAST, JewelSwatter.JewelSwatterState.STOW_ALL,0),
-                new WayPoint(new Pose(0,24,45),1, Clamp.ClampState.COAST, JewelSwatter.JewelSwatterState.STOW_ALL,0),
-
-                // moving forward
-                new WayPoint(new Pose(0,24,45),1, Clamp.ClampState.COAST, JewelSwatter.JewelSwatterState.STOW_ALL,0),
-                new WayPoint(new Pose(0,12,0),1, Clamp.ClampState.COAST, JewelSwatter.JewelSwatterState.STOW_ALL,0),
-                new WayPoint(new Pose(0,0,90),1, Clamp.ClampState.COAST, JewelSwatter.JewelSwatterState.STOW_ALL,0),
+            new WayPoint(new Pose(0,0,90),0.5, Clamp.ClampState.COAST, JewelSwatter.JewelSwatterState.STOW_ALL,0, true),
+            new WayPoint(new Pose(0,12,90),0.5, Clamp.ClampState.COAST, JewelSwatter.JewelSwatterState.STOW_ALL,0, false),
+            new WayPoint(new Pose(5,12,90),0.5, Clamp.ClampState.COAST, JewelSwatter.JewelSwatterState.STOW_ALL,0, false),
+            new WayPoint(new Pose(10,12,90),0.5, Clamp.ClampState.COAST, JewelSwatter.JewelSwatterState.STOW_ALL,0, false)
         };
 
-        Path interpolant = new Path(robotDebugger, wayPoints);
-        swerveDrive.setPath(interpolant, .3);
-        swerveDrive.requestState(SwerveState.PATH_FOLLOWING);
+        Robot robot = new Robot(this, robotDebugger);
+        robot.setWayPoints(wayPoints);
+        robot.updateAll();
 
-        telemetry.update();
+
         waitForStart();
 
         while (opModeIsActive()) {
-            swerveDrive.swerveKinematics.update();
-            swerveDrive.stanleyPursuit();
-            robotDebugger.log();
+            robot.parallelManeuvers();
+            robot.updateAll();
         }
 
         robotDebugger.stopLogging();

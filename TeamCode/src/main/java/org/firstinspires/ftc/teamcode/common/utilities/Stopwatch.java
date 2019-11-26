@@ -37,13 +37,11 @@ public class Stopwatch {
     }
 
     public int reset() {
-        if (state == STATE.STOPPED) {
-            currentTime = System.currentTimeMillis();
-            timestamp = currentTime;
-            delta = 0;
-            return 0;
-        }
-        return -1;
+        int status = stop();
+        currentTime = System.currentTimeMillis();
+        timestamp = currentTime;
+        delta = 0;
+        return status;
     }
 
     public double millis() {
@@ -54,6 +52,10 @@ public class Stopwatch {
 
     public double seconds() {
         return millis()/1000;
+    }
+
+    public boolean isRunning() {
+        return state == STATE.RUNNING;
     }
 
     /*

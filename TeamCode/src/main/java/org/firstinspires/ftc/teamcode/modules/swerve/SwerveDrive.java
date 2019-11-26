@@ -63,10 +63,10 @@ public class SwerveDrive {
         this.motionState = MotionState.STOPPED;
 
         // Define and Initialize Swerve Modules
-        module0 = new SwerveModule(l, ModuleConfig.MODULE_ZERO);
-        module1 = new SwerveModule(l, ModuleConfig.MODULE_ONE);
-        module2 = new SwerveModule(l, ModuleConfig.MODULE_TWO);
-        module3 = new SwerveModule(l, ModuleConfig.MODULE_THREE);
+        module0 = new SwerveModule(l, ModuleConfig.MODULE_ZERO, this);
+        module1 = new SwerveModule(l, ModuleConfig.MODULE_ONE, this);
+        module2 = new SwerveModule(l, ModuleConfig.MODULE_TWO, this);
+        module3 = new SwerveModule(l, ModuleConfig.MODULE_THREE, this);
 
         CoM = new Pose();
 
@@ -398,11 +398,32 @@ public class SwerveDrive {
         module3.enablePID();
     }
 
-    public void movePID(int position, double power) {
-        position = (int)(Math.round(position * ticksPerRevolution / wheelCircumference / driveGearRatio));
-        module0.movePID(position, power);
-        module1.movePID(position, power);
-        module2.movePID(position, power);
-        module3.movePID(position, power);
+    public void disablePID() {
+        module0.disablePID();
+        module1.disablePID();
+        module2.disablePID();
+        module3.disablePID();
+    }
+
+    public void movePID(double position, double power) {
+        int encoder = SwerveModule.convertInchesToTicks(position);
+        module0.movePID(encoder, power);
+        module1.movePID(encoder, power);
+        module2.movePID(encoder, power);
+        module3.movePID(encoder, power);
+    }
+
+    public void resetMotorDirections() {
+        module0.resetMotorDirection();
+        module1.resetMotorDirection();
+        module2.resetMotorDirection();
+        module3.resetMotorDirection();
+    }
+
+    public void reverseMotorDirections() {
+        module0.reverseMotorDirection();
+        module1.reverseMotorDirection();
+        module2.reverseMotorDirection();
+        module3.reverseMotorDirection();
     }
 }

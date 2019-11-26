@@ -44,10 +44,13 @@ public class SwerveModule {
     private boolean disabled = false;
     private MotorDirection motorDirection;
     private Pose pose;
+    private double target;
+    private SwerveDrive swerveDrive;
 
 
-    public SwerveModule(LinearOpMode l, ModuleConfig module) {
+    public SwerveModule(LinearOpMode l, ModuleConfig module, SwerveDrive swerveDrive) {
         swerveModule = module;
+        this.swerveDrive = swerveDrive;
 
         // Save reference to LinearOpMode
         linearOpMode = l;
@@ -173,11 +176,11 @@ public class SwerveModule {
         driveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
-    private void reverseMotorDirection() {
+    public void reverseMotorDirection() {
         motorDirection = swerveModule.motorDirection.getOpposite();
     }
 
-    private void resetMotorDirection() {
+    public void resetMotorDirection() {
         motorDirection = swerveModule.motorDirection;
     }
 
@@ -186,12 +189,22 @@ public class SwerveModule {
     }
 
     public void enablePID() {
-        driveMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         driveMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
+    public void disablePID() {
+        driveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
+    public static int convertInchesToTicks(double inches) {
+        return (int) Math.round(inches * ticksPerRevolution / wheelCircumference / driveGearRatio);
+    }
+
     public void movePID(int position, double power) {
-        driveMotor.setTargetPosition((int) motorDirection.assignDirection(position));
+        double wheelStamp = swerveDrive.swerveKinematics.wheelStamps[swerveModule.ordinal()];
+        int ticks = convertInchesToTicks(wheelStamp);
+        int target = ticks + (int) motorDirection.assignDirection(position);
+        driveMotor.setTargetPosition(target);
         driveMotor.setPower(power);
     }
 

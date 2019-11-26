@@ -7,6 +7,7 @@ import org.apache.commons.math3.analysis.polynomials.PolynomialFunction;
 import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
 import org.apache.commons.math3.analysis.solvers.LaguerreSolver;
 import org.apache.commons.math3.complex.Complex;
+import org.firstinspires.ftc.robotcore.internal.android.dx.rop.code.ThrowingInsn;
 import org.firstinspires.ftc.teamcode.common.states.PathState;
 
 import java.util.ArrayList;
@@ -25,9 +26,9 @@ public class Path {
     public PathState PATH_STATE;
     public int PATH_SEGMENT;
     public Pose TRACKING_POSE;
-    // start and end points of the current path segment
-    public Pose SEGMENT_START;
-    public Pose SEGMENT_END;
+    public WayPoint CURRENT_WAYPOINT;
+    public WayPoint SEGMENT_START; // start point of the current path segment
+    public WayPoint SEGMENT_END; // end point of the current path segment
 
     // private variables
     private PolynomialSplineFunction spline;
@@ -46,7 +47,7 @@ public class Path {
         this.debugger = debugger;
 
         // waypoints can't be changed after initialization
-        this.wayPoints = Arrays.copyOf(wayPoints, wayPoints.length);
+        this.wayPoints = wayPoints;
 
         int length = wayPoints.length;
         TRACKING_POSE = new Pose(
@@ -127,6 +128,9 @@ public class Path {
         DIRECTION = Direction.UNKOWN;
         splineSegment = 1;
         PATH_SEGMENT = 1;
+        this.CURRENT_WAYPOINT = wayPoints[0];
+        this.SEGMENT_START = wayPoints[0];
+        this.SEGMENT_END = wayPoints[1];
     }
 
     /**
@@ -166,8 +170,8 @@ public class Path {
                         return;
                     }
                     PATH_SEGMENT++;
-//                    zIndex++;
                     splineSegment = 1;
+                    SEGMENT_START = currentSegment.getLast();
                     PATH_STATE = PathState.SUSTAIN;
                     return;
                 }
@@ -188,6 +192,7 @@ public class Path {
                 // only performed once a switch in direction occurs
                 // path is usually not being followed whenever a switch occurs
                 if (PATH_STATE != PathState.FOLLOW) {
+                    debugger.addData("Path change", "REEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
                     double[] x = new double[currentSegment.size()];
                     double[] y = new double[currentSegment.size()];
 
@@ -196,17 +201,18 @@ public class Path {
                         y[i] = currentSegment.get(i).Y;
                     }
                     spline = splineInterpolator.interpolate(x, y);
-                    SEGMENT_START = new Pose(currentSegment.getFirst().X, currentSegment.getFirst().Y, currentSegment.getFirst().Z);
-                    SEGMENT_END = new Pose(currentSegment.getLast().X, currentSegment.getLast().Y, currentSegment.getLast().Z);
+                    SEGMENT_START = currentSegment.getFirst();
+                    SEGMENT_END = currentSegment.getLast();
                 }
 
+                debugger.addData("Inside", "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
                 // update
                 double TPX = findTrackingPointRight(CoM);
                 double TPY = spline.value(TPX);
                 splineSegment = Range.clip(splineSegment,1,currentSegment.size()-1);
                 double TPZ = currentSegment.get(splineSegment).Z;
-
                 TRACKING_POSE.setPose(TPX, TPY, TPZ);
+                CURRENT_WAYPOINT = currentSegment.get(splineSegment-1);
                 PATH_STATE = PathState.FOLLOW;
                 break;
             }
@@ -217,8 +223,8 @@ public class Path {
                         return;
                     }
                     PATH_SEGMENT++;
-//                    zIndex++;
                     splineSegment = 1;
+                    SEGMENT_START = currentSegment.getLast();
                     PATH_STATE = PathState.SUSTAIN;
                     return;
                 }
@@ -249,16 +255,16 @@ public class Path {
                         y[i] = currentSegment.get(i).Y;
                     }
                     spline = splineInterpolator.interpolate(x, y);
-                    SEGMENT_START = new Pose(currentSegment.getFirst().X, currentSegment.getFirst().Y, currentSegment.getFirst().Z);
-                    SEGMENT_END = new Pose(currentSegment.getLast().X, currentSegment.getLast().Y, currentSegment.getLast().Z);
+                    SEGMENT_END = currentSegment.getLast();
                 }
 
                 // update
+                splineSegment = Range.clip(splineSegment,1,currentSegment.size()-1);
                 double TPX = findTrackingPointLeft(CoM);
                 double TPY = spline.value(TPX);
-                splineSegment = Range.clip(splineSegment,1,currentSegment.size()-1);
                 double TPZ = currentSegment.get(splineSegment).Z;
                 TRACKING_POSE.setPose(TPX, TPY, TPZ);
+                CURRENT_WAYPOINT = currentSegment.get(splineSegment-1);
                 PATH_STATE = PathState.FOLLOW;
                 break;
             }
@@ -269,10 +275,13 @@ public class Path {
                 if (TRACKING_POSE.getY() >= currentSegment.getLast().Y) {
                     if (PATH_SEGMENT == segments.size()) {
                         PATH_STATE = PathState.END;
+                        return;
                     }
                     PATH_SEGMENT++;
                     splineSegment = 1;
+                    SEGMENT_START = currentSegment.getLast();
                     PATH_STATE = PathState.SUSTAIN;
+                    return;
                 }
 
 //                if (trackingPose.getY() < prevValues.getLast()) {
@@ -285,8 +294,8 @@ public class Path {
 //                    pathState = PathState.SUSTAIN;
 //                }
                 TRACKING_POSE.setPose(currentSegment.getFirst().X, CoM.getY(), currentSegment.getLast().Z);
-                SEGMENT_START = new Pose(currentSegment.getFirst().X, currentSegment.getFirst().Y, currentSegment.getFirst().Z);
-                SEGMENT_END = new Pose(currentSegment.getLast().X, currentSegment.getLast().Y, currentSegment.getLast().Z);
+                CURRENT_WAYPOINT = SEGMENT_START;
+                SEGMENT_END = currentSegment.getLast();
                 PATH_STATE = PathState.FOLLOW;
                 break;
             }
@@ -295,11 +304,15 @@ public class Path {
 //                LinkedList<Double> prevValues = new LinkedList<>(prevSegment.values());
 
                 if (TRACKING_POSE.getY() <= currentSegment.getLast().Y) {
-                    if (PATH_SEGMENT == segments.size())
+                    if (PATH_SEGMENT == segments.size()) {
                         PATH_STATE = PathState.END;
+                        return;
+                    }
                     PATH_SEGMENT++;
                     splineSegment = 1;
+                    SEGMENT_START = currentSegment.getLast();
                     PATH_STATE = PathState.SUSTAIN;
+                    return;
                 }
 
 //                if (trackingPose.getY() > prevValues.getLast()) {
@@ -311,6 +324,8 @@ public class Path {
 //                    pathState = PathState.SUSTAIN;
 //                }
                 TRACKING_POSE.setPose(currentSegment.getFirst().X, CoM.getY(), currentSegment.getLast().Z);
+                CURRENT_WAYPOINT = SEGMENT_START;
+                SEGMENT_END = currentSegment.getLast();
                 PATH_STATE = PathState.FOLLOW;
                 break;
             }

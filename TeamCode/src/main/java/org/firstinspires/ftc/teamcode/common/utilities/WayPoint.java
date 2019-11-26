@@ -16,8 +16,9 @@ public class WayPoint {
     public final double WAIT_MILLIS;
     public final Pose POSE;
     public final double X, Y, Z;
+    public boolean enablePID;
 
-    public WayPoint(Pose pose, double power, Clamp.ClampState clampState, JewelSwatter.JewelSwatterState jewelSwatterState, double waitMillis) {
+    public WayPoint(Pose pose, double power, Clamp.ClampState clampState, JewelSwatter.JewelSwatterState jewelSwatterState, double waitMillis, boolean enablePID) {
         this.POSE = pose;
         this.X = POSE.getX();
         this.Y = POSE.getY();
@@ -26,5 +27,17 @@ public class WayPoint {
         this.CLAMP_STATE = clampState;
         this.JEWEL_SWATTER_STATE = jewelSwatterState;
         this.WAIT_MILLIS = waitMillis;
+        this.enablePID = enablePID;
+    }
+
+    public boolean equals(WayPoint wayPoint) {
+        return (JEWEL_SWATTER_STATE == wayPoint.JEWEL_SWATTER_STATE) &&
+                (CLAMP_STATE == wayPoint.CLAMP_STATE) &&
+                (POWER == wayPoint.POWER) &&
+                (WAIT_MILLIS == wayPoint.WAIT_MILLIS) &&
+                (X == wayPoint.X) &&
+                (Y == wayPoint.Y) &&
+                (Z == wayPoint.Z) &&
+                (enablePID == wayPoint.enablePID);
     }
 }
