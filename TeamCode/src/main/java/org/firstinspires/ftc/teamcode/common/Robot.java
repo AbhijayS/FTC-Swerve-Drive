@@ -6,6 +6,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.common.states.SwerveState;
 import org.firstinspires.ftc.teamcode.common.utilities.Debugger;
 import org.firstinspires.ftc.teamcode.common.utilities.Direction;
+import org.firstinspires.ftc.teamcode.common.utilities.Gamepad;
 import org.firstinspires.ftc.teamcode.common.utilities.Path;
 import org.firstinspires.ftc.teamcode.common.utilities.Stopwatch;
 import org.firstinspires.ftc.teamcode.common.utilities.WayPoint;
@@ -33,6 +34,12 @@ public class Robot {
     private Debugger debugger;
     private int size;
     private Stopwatch stopwatch;
+    private RobotState robotState;
+    private Gamepad gamepad;
+
+    public enum RobotState {
+        PATH_FOLLOWING, HUMAN_OPERATOR
+    }
 
     public Robot(LinearOpMode linearOpMode, Debugger debugger) {
         this.telemetry = linearOpMode.telemetry;
@@ -43,7 +50,8 @@ public class Robot {
         this.swerveDrive = new SwerveDrive(linearOpMode, debugger);
         this.stopwatch = new Stopwatch();
         this.pidOverride = false;
-//        swerveDrive.enablePID();
+        this.robotState = null;
+        this.gamepad = new Gamepad(linearOpMode);
     }
 
     public void setWayPoints(WayPoint[] wayPoints) {
@@ -55,20 +63,36 @@ public class Robot {
         this.wayPoint = path.CURRENT_WAYPOINT;
     }
 
-    public void updateAll() {
-        if (!wayPoint.equals(path.CURRENT_WAYPOINT)) {
-            stopwatch.reset();
-            pidOverride = false;
-            swerveDrive.disablePID();
+    public void requestState(RobotState newState) {
+        if (newState != robotState) {
+            if (newState == RobotState.HUMAN_OPERATOR)
+                swerveDrive.requestState(SwerveState.HUMAN_INPUT);
+            else
+                swerveDrive.requestState(SwerveState.PATH_FOLLOWING);
+            robotState = newState;
         }
-        wayPoint = path.CURRENT_WAYPOINT;
+    }
+
+    public void updateAll() {
+        if (robotState == RobotState.HUMAN_OPERATOR)
+            swerveDrive.fod(gamepad);
+        else if (robotState == RobotState.PATH_FOLLOWING){
+            parallelManeuvers();
+            if (!wayPoint.equals(path.CURRENT_WAYPOINT)) {
+                stopwatch.reset();
+                pidOverride = false;
+                swerveDrive.disablePID();
+                wayPoint = path.CURRENT_WAYPOINT;
+                telemetry.addLine("NOT SAME");
+            }
+        }
         swerveDrive.swerveKinematics.update();
         jewelSwatter.update();
         clamp.update();
         debugger.log();
     }
 
-    public void parallelManeuvers() {
+    private void parallelManeuvers() {
         if (stopwatch.millis() >= wayPoint.WAIT_MILLIS) {
             // continue movement
             if (wayPoint.enablePID) {

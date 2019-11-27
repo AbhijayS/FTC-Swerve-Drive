@@ -79,6 +79,7 @@ public class SwerveDrive {
     }
 
     public void requestState(SwerveState swerveState) {
+        setPower(0);
         this.swerveState = swerveState;
     }
 

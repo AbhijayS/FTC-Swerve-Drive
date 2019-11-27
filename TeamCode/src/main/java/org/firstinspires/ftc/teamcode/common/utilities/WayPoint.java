@@ -16,7 +16,7 @@ public class WayPoint {
     public final double WAIT_MILLIS;
     public final Pose POSE;
     public final double X, Y, Z;
-    public boolean enablePID;
+    public final boolean enablePID;
 
     public WayPoint(Pose pose, double power, Clamp.ClampState clampState, JewelSwatter.JewelSwatterState jewelSwatterState, double waitMillis, boolean enablePID) {
         this.POSE = pose;

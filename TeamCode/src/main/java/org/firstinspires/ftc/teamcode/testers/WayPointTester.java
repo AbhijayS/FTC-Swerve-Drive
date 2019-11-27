@@ -40,13 +40,13 @@ public class WayPointTester extends LinearOpMode {
 
         Robot robot = new Robot(this, robotDebugger);
         robot.setWayPoints(wayPoints);
+        robot.requestState(Robot.RobotState.PATH_FOLLOWING);
         robot.updateAll();
 
 
         waitForStart();
 
         while (opModeIsActive()) {
-            robot.parallelManeuvers();
             robot.updateAll();
         }
 
