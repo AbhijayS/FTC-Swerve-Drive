@@ -24,6 +24,7 @@ import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ROBOT_WID
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.Status.RELEASE;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.clipAngle;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.driveGearRatio;
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.kI;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.kP;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.kS;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.roundTo2DecimalPlaces;
@@ -55,6 +56,7 @@ public class SwerveDrive {
     private double headingGoal;
     private boolean headingGoalSet;
     private double maxPower; // path following power
+    private double cerr;
 
     public SwerveDrive(LinearOpMode l, Debugger debugger) {
         linearOpMode = l;
@@ -237,7 +239,8 @@ public class SwerveDrive {
         double setAngle = roundTo2DecimalPlaces(clipAngle(targetAngle));
         double err = roundTo2DecimalPlaces(heading - setAngle);
         err += (err > 180) ? -360 : (err < -180) ? 360 : 0;
-        double power = Math.abs(err) <= tolerance ? 0 : err * kP;
+        cerr += err;
+        double power = Math.abs(err) <= tolerance ? 0 : err * kP + cerr * kI;
         return power;
     }
 

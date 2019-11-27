@@ -192,7 +192,6 @@ public class Path {
                 // only performed once a switch in direction occurs
                 // path is usually not being followed whenever a switch occurs
                 if (PATH_STATE != PathState.FOLLOW) {
-                    debugger.addData("Path change", "REEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
                     double[] x = new double[currentSegment.size()];
                     double[] y = new double[currentSegment.size()];
 
@@ -205,7 +204,6 @@ public class Path {
                     SEGMENT_END = currentSegment.getLast();
                 }
 
-                debugger.addData("Inside", "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
                 // update
                 double TPX = findTrackingPointRight(CoM);
                 double TPY = spline.value(TPX);

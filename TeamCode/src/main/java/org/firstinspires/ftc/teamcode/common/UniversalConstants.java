@@ -124,8 +124,8 @@ public class UniversalConstants {
     }
 
     public enum JewelSwatterConfig {
-        LEFT("JSLA1", "JSLA2", Servo.Direction.REVERSE, Servo.Direction.REVERSE, 0),
-        RIGHT("JSRA1", "JSRA2", Servo.Direction.FORWARD, Servo.Direction.FORWARD, 0.1);
+        LEFT("JSLA1", "JSLA2", Servo.Direction.REVERSE, Servo.Direction.REVERSE, -0.1),
+        RIGHT("JSRA1", "JSRA2", Servo.Direction.FORWARD, Servo.Direction.FORWARD, 0);
 
         public String nameAxis1, nameAxis2;
         public double delta;
@@ -165,7 +165,7 @@ public class UniversalConstants {
     public static final String clampServoBottom = "CSB";
     public static final String clampServo = "CS";
 
-    public static double kS =   0.75; // Steering gain (path following only)
+    public static double kS =   10; // Steering gain (path following only)
     public static final double kP =   0.4/90; // Proportional gain
     public static final double kI =   0.00005; // Integral gain
     public static final double kD =   0; // Derivative gain

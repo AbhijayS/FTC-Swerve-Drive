@@ -58,7 +58,7 @@ public class Robot {
         this.wayPoints = wayPoints;
         this.size = wayPoints.length;
         this.path = new Path(debugger, wayPoints);
-        swerveDrive.setPath(path, 0.25);
+        swerveDrive.setPath(path, 0.5);
         swerveDrive.requestState(SwerveState.PATH_FOLLOWING);
         this.wayPoint = path.CURRENT_WAYPOINT;
     }
@@ -83,7 +83,6 @@ public class Robot {
                 pidOverride = false;
                 swerveDrive.disablePID();
                 wayPoint = path.CURRENT_WAYPOINT;
-                telemetry.addLine("NOT SAME");
             }
         }
         swerveDrive.swerveKinematics.update();
@@ -113,9 +112,6 @@ public class Robot {
                         pidOverride = true;
                     }
                 }
-                telemetry.addLine("Waiting for PID");
-                telemetry.addData("Start", path.SEGMENT_START.Y);
-                telemetry.addData("End", path.SEGMENT_END.Y);
                 path.pathFollowing(swerveDrive.swerveKinematics.getCenterOfMass());
             } else {
                 swerveDrive.stanleyPursuit();
