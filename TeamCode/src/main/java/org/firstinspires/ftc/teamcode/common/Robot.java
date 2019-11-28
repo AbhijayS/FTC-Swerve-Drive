@@ -58,9 +58,10 @@ public class Robot {
         this.wayPoints = wayPoints;
         this.size = wayPoints.length;
         this.path = new Path(debugger, wayPoints);
+        this.wayPoint = path.CURRENT_WAYPOINT;
+        debugger.addData("Current WayPoint",this.wayPoint.JEWEL_SWATTER_STATE.name());
         swerveDrive.setPath(path, 0.5);
         swerveDrive.requestState(SwerveState.PATH_FOLLOWING);
-        this.wayPoint = path.CURRENT_WAYPOINT;
     }
 
     public void requestState(RobotState newState) {
@@ -74,9 +75,15 @@ public class Robot {
     }
 
     public void updateAll() {
-        if (robotState == RobotState.HUMAN_OPERATOR)
+        if (robotState == RobotState.HUMAN_OPERATOR) {
             swerveDrive.fod(gamepad);
-        else if (robotState == RobotState.PATH_FOLLOWING){
+            clamp.updateByGamepad(gamepad);
+            swerveDrive.swerveKinematics.update();
+            gamepad.update();
+            debugger.log();
+        }
+
+        else if (robotState == RobotState.PATH_FOLLOWING) {
             parallelManeuvers();
             if (!wayPoint.equals(path.CURRENT_WAYPOINT)) {
                 stopwatch.reset();
@@ -84,11 +91,11 @@ public class Robot {
                 swerveDrive.disablePID();
                 wayPoint = path.CURRENT_WAYPOINT;
             }
+            swerveDrive.swerveKinematics.update();
+            jewelSwatter.update();
+            clamp.update();
+            debugger.log();
         }
-        swerveDrive.swerveKinematics.update();
-        jewelSwatter.update();
-        clamp.update();
-        debugger.log();
     }
 
     private void parallelManeuvers() {
@@ -114,6 +121,9 @@ public class Robot {
                 }
                 path.pathFollowing(swerveDrive.swerveKinematics.getCenterOfMass());
             } else {
+                swerveDrive.setPivotX(wayPoint.PIVOT_X);
+                swerveDrive.setPivotX(wayPoint.PIVOT_Y);
+//                swerveDrive.setMaxPower(wayPoint.POWER);
                 swerveDrive.stanleyPursuit();
             }
         } else { // still waiting
@@ -122,7 +132,6 @@ public class Robot {
             // stop dt movement
             swerveDrive.setPower(0);
         }
-
         jewelSwatter.requestState(wayPoint.JEWEL_SWATTER_STATE);
         clamp.requestState(wayPoint.CLAMP_STATE);
         // lift stuff

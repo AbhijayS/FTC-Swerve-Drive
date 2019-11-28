@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.opmodes.teleop;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.common.Robot;
 import org.firstinspires.ftc.teamcode.common.UniversalConstants;
 import org.firstinspires.ftc.teamcode.common.utilities.Debugger;
 import org.firstinspires.ftc.teamcode.common.utilities.Gamepad;
@@ -19,38 +20,14 @@ public class FullTeleOp extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         Debugger robotDebugger = new Debugger(Util.getContext(), this, (ArrayList<String>) UniversalConstants.Debugging.getDebuggingMarkers());
         robotDebugger.initialize("TeleOp");
-        SwerveDrive swerveDrive = new SwerveDrive(this, robotDebugger);
-        Elevator elevator = new Elevator(this);
-        Clamp clamp = new Clamp(this);
-        Gamepad gamepad = new Gamepad(this);
-        double liftPower = 0;
-        gamepad.update();
+        Robot robot = new Robot(this,robotDebugger);
+        robot.requestState(Robot.RobotState.HUMAN_OPERATOR);
+        robot.updateAll();
 
-        telemetry.update();
         waitForStart();
 
-        while (opModeIsActive()){
-//            telemetry.addData("Clamp Status", elevator.clamp.getStatus());
-
-            //clamp.updateByGamepad(gamepad);
-            telemetry.addData("Clamp status", elevator.clamp.getStatus());
-
-
-            elevator.updateByGamepad(gamepad, liftPower);
-
-            swerveDrive.fod(gamepad);
-
-            if (gamepad.fod)
-                swerveDrive.swerveKinematics.update();
-
-            if (gamepad.reset_gyro) {
-                swerveDrive.swerveKinematics.resetGyro();
-                gamepad.reset_gyro = false;
-            }
-
-            gamepad.update();
-            liftPower = gamepad.lift;
-            telemetry.update();
+        while (opModeIsActive()) {
+            robot.updateAll();
         }
     }
 }

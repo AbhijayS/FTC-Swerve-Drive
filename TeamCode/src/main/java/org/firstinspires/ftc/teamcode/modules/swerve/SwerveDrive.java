@@ -23,14 +23,11 @@ import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ROBOT_STA
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ROBOT_WIDTH;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.Status.RELEASE;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.clipAngle;
-import static org.firstinspires.ftc.teamcode.common.UniversalConstants.driveGearRatio;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.kI;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.kP;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.kS;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.roundTo2DecimalPlaces;
-import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ticksPerRevolution;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.tolerance;
-import static org.firstinspires.ftc.teamcode.common.UniversalConstants.wheelCircumference;
 import static org.firstinspires.ftc.teamcode.common.states.SwerveState.HUMAN_INPUT;
 import static org.firstinspires.ftc.teamcode.common.states.SwerveState.PATH_FOLLOWING;
 import static org.firstinspires.ftc.teamcode.common.states.SwerveState.PATH_FOLLOWING_COMPLETE;
@@ -57,6 +54,9 @@ public class SwerveDrive {
     private boolean headingGoalSet;
     private double maxPower; // path following power
     private double cerr;
+    private double lastTargetAngle;
+    private double FAKE_COM_X;
+    private double FAKE_COM_Y;
 
     public SwerveDrive(LinearOpMode l, Debugger debugger) {
         linearOpMode = l;
@@ -71,12 +71,15 @@ public class SwerveDrive {
         module3 = new SwerveModule(l, ModuleConfig.MODULE_THREE, this);
 
         CoM = new Pose();
+        FAKE_COM_X = 0;
+        FAKE_COM_Y = 0;
 
         this.swerveKinematics = new SwerveKinematics(l, debugger, this);
         this.kinematicsDelta = new Pose(0, 0, 0);
         this.IMU_ZERO = swerveKinematics.getIMU_ZERO();
         this.headingGoal = 90;
         this.headingGoalSet = true;
+        this.lastTargetAngle = 90;
         linearOpMode.telemetry.addLine(String.format("Swerve Drive Calibrated in %s status", ROBOT_STATUS));
     }
 
@@ -138,10 +141,10 @@ public class SwerveDrive {
 
         double STR = Range.scale(Math.abs(Math.hypot(x_left, y_left)), 0, 1, 0, ROBOT_MAX_SPEED * slow); // Strafing speed
         double STR_ANGLE = Math.toDegrees(Math.atan2(y_left, x_left)); // Strafing angle
-        double corner0 = Math.atan2(ROBOT_LENGTH / 2, ROBOT_WIDTH / 2);
-        double corner1 = corner0 - (HALF_PI);
-        double corner2 = corner1 - (HALF_PI);
-        double corner3 = corner2 - (HALF_PI);
+        double corner0 = Math.atan2(ModuleConfig.MODULE_ZERO.rawY()-FAKE_COM_Y, ModuleConfig.MODULE_ZERO.rawX()-FAKE_COM_X) - HALF_PI;
+        double corner1 = Math.atan2(ModuleConfig.MODULE_ONE.rawY()-FAKE_COM_Y, ModuleConfig.MODULE_ONE.rawX()-FAKE_COM_X) - HALF_PI;
+        double corner2 = Math.atan2(ModuleConfig.MODULE_TWO.rawY()-FAKE_COM_Y, ModuleConfig.MODULE_TWO.rawX()-FAKE_COM_X) - HALF_PI;
+        double corner3 = Math.atan2(ModuleConfig.MODULE_THREE.rawY()-FAKE_COM_Y, ModuleConfig.MODULE_THREE.rawX()-FAKE_COM_X) - HALF_PI;
 
         /* Make angles field-oriented */
         double delta = swerveKinematics.getYaw();
@@ -193,10 +196,10 @@ public class SwerveDrive {
         double OMEGA = turn_power; // Rotational speed: Clockwise is positive and Anti-Clockwise is negative
         double STR = strafe_power; // Strafing speed
         double STR_ANGLE = strafe_angle; // Strafing angle
-        double corner0 = Math.atan2(ROBOT_LENGTH / 2, ROBOT_WIDTH / 2);
-        double corner1 = corner0 - (HALF_PI);
-        double corner2 = corner1 - (HALF_PI);
-        double corner3 = corner2 - (HALF_PI);
+        double corner0 = Math.atan2(ModuleConfig.MODULE_ZERO.rawY()-FAKE_COM_Y, ModuleConfig.MODULE_ZERO.rawX()-FAKE_COM_X) - HALF_PI;
+        double corner1 = Math.atan2(ModuleConfig.MODULE_ONE.rawY()-FAKE_COM_Y, ModuleConfig.MODULE_ONE.rawX()-FAKE_COM_X) - HALF_PI;
+        double corner2 = Math.atan2(ModuleConfig.MODULE_TWO.rawY()-FAKE_COM_Y, ModuleConfig.MODULE_TWO.rawX()-FAKE_COM_X) - HALF_PI;
+        double corner3 = Math.atan2(ModuleConfig.MODULE_THREE.rawY()-FAKE_COM_Y, ModuleConfig.MODULE_THREE.rawX()-FAKE_COM_X) - HALF_PI;
 
         /* Make angles field-oriented */
         STR_ANGLE -= yaw;
@@ -235,12 +238,21 @@ public class SwerveDrive {
     }
 
     public double turnPID(double targetAngle) {
+        if (lastTargetAngle != targetAngle)
+            cerr = 0;
         double heading = roundTo2DecimalPlaces(swerveKinematics.getCenterOfMass().getDegrees());
         double setAngle = roundTo2DecimalPlaces(clipAngle(targetAngle));
         double err = roundTo2DecimalPlaces(heading - setAngle);
         err += (err > 180) ? -360 : (err < -180) ? 360 : 0;
-        cerr += err;
-        double power = Math.abs(err) <= tolerance ? 0 : err * kP + cerr * kI;
+        double power;
+        if (Math.abs(err) <= tolerance)
+            power = 0;
+        else {
+            cerr += err;
+            power = err * kP + cerr * kI;
+        }
+        debugger.addData("CERR", Double.toString(cerr));
+        lastTargetAngle = targetAngle;
         return power;
     }
 
@@ -305,6 +317,10 @@ public class SwerveDrive {
         module3.setPower(power);
     }
 
+    public void setMaxPower(double power) {
+        this.maxPower = power;
+    }
+
     public void setPower(double power0, double power1, double power2, double power3) {
         power0 = Range.clip(power0, 0, ROBOT_MAX_SPEED);
         power1 = Range.clip(power1, 0, ROBOT_MAX_SPEED);
@@ -315,6 +331,14 @@ public class SwerveDrive {
         module1.setPower(power1);
         module2.setPower(power2);
         module3.setPower(power3);
+    }
+
+    public void setPivotX(double inches) {
+        FAKE_COM_X = inches;
+    }
+
+    public void setPivotY(double inches) {
+        FAKE_COM_Y = inches;
     }
 
     public void setPath(Path path, double maxPower) {
@@ -336,13 +360,15 @@ public class SwerveDrive {
      */
     public void stanleyPursuit() {
 
-        if (swerveState == PATH_FOLLOWING_COMPLETE ||
-                swerveState == HUMAN_INPUT) {
+        double yaw = roundTo2DecimalPlaces(swerveKinematics.getYaw());
+        if (swerveState == HUMAN_INPUT) {
+            return;
+        } else if (swerveState == PATH_FOLLOWING){
+            fod(90,0,turnPID(headingGoal), yaw);
             return;
         }
 
         // Update robot pose
-        double yaw = roundTo2DecimalPlaces(swerveKinematics.getYaw());
         double velocity = roundTo2DecimalPlaces(swerveKinematics.getVelocity());
         double roundedComX = roundTo2DecimalPlaces(swerveKinematics.getCenterOfMass().getX() + kinematicsDelta.getX());
         double roundedComY = roundTo2DecimalPlaces(swerveKinematics.getCenterOfMass().getY() + kinematicsDelta.getY());
@@ -355,7 +381,8 @@ public class SwerveDrive {
         switch (path.PATH_STATE) {
             case END:
                 swerveState = PATH_FOLLOWING_COMPLETE;
-                setPower(0);
+                headingGoal = trackingPose.getDegrees();
+                fod(90,0,turnPID(headingGoal), yaw);
                 linearOpMode.telemetry.addLine("Path following done!");
                 break;
 
@@ -364,6 +391,8 @@ public class SwerveDrive {
                 break;
 
             case SUSTAIN:
+                headingGoal = trackingPose.getDegrees();
+                fod(90,0,turnPID(headingGoal), yaw);
                 break;
 
             default:

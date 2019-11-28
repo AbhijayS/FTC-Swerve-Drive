@@ -121,11 +121,18 @@ public class UniversalConstants {
             this.y = y;
         }
 
+        public double rawX() {
+            return x+ROBOT_COM_X;
+        }
+
+        public double rawY() {
+            return y+ROBOT_COM_Y;
+        }
     }
 
     public enum JewelSwatterConfig {
         LEFT("JSLA1", "JSLA2", Servo.Direction.REVERSE, Servo.Direction.REVERSE, -0.1),
-        RIGHT("JSRA1", "JSRA2", Servo.Direction.FORWARD, Servo.Direction.FORWARD, 0);
+        RIGHT("JSRA1", "JSRA2", Servo.Direction.FORWARD, Servo.Direction.FORWARD, 0.1);
 
         public String nameAxis1, nameAxis2;
         public double delta;
@@ -166,10 +173,10 @@ public class UniversalConstants {
     public static final String clampServo = "CS";
 
     public static double kS =   10; // Steering gain (path following only)
-    public static final double kP =   0.4/90; // Proportional gain
-    public static final double kI =   0.00005; // Integral gain
+    public static final double kP =   0.5/90; // Proportional gain
+    public static final double kI =   0.00001; // Integral gain
     public static final double kD =   0; // Derivative gain
-    public static final double tolerance = 0.5; // degrees
+    public static final double tolerance = 1; // degrees
 
     public static final PwmControl.PwmRange pwmRange = new PwmControl.PwmRange(500, 2500);
 

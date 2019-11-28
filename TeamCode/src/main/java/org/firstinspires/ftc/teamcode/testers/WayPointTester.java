@@ -32,10 +32,10 @@ public class WayPointTester extends LinearOpMode {
 //            new WayPoint(new Pose(10,12,90),0.5, Clamp.ClampState.COAST, JewelSwatter.JewelSwatterState.STOW_ALL,0, true),
 //            new WayPoint(new Pose(10,0,90),0.5, Clamp.ClampState.COAST, JewelSwatter.JewelSwatterState.STOW_ALL,0, false),
 
-            new WayPoint(new Pose(0,0,90),0.5, Clamp.ClampState.COAST, JewelSwatter.JewelSwatterState.STOW_ALL,0, true),
-            new WayPoint(new Pose(0,12,90),0.5, Clamp.ClampState.COAST, JewelSwatter.JewelSwatterState.STOW_ALL,0, false),
-            new WayPoint(new Pose(5,12,90),0.5, Clamp.ClampState.COAST, JewelSwatter.JewelSwatterState.STOW_ALL,0, false),
-            new WayPoint(new Pose(10,12,90),0.5, Clamp.ClampState.COAST, JewelSwatter.JewelSwatterState.STOW_ALL,0, false)
+            new WayPoint(new Pose(0,0,90),0.5, Clamp.ClampState.COAST, JewelSwatter.JewelSwatterState.STOW_ALL,0, true,0,0),
+            new WayPoint(new Pose(0,12,90),0.5, Clamp.ClampState.COAST, JewelSwatter.JewelSwatterState.STOW_ALL,0, false,0,0),
+            new WayPoint(new Pose(5,12,90),0.5, Clamp.ClampState.COAST, JewelSwatter.JewelSwatterState.STOW_ALL,0, false,0,0),
+            new WayPoint(new Pose(10,12,90),0.5, Clamp.ClampState.COAST, JewelSwatter.JewelSwatterState.STOW_ALL,0, false,0,0)
         };
 
         Robot robot = new Robot(this, robotDebugger);

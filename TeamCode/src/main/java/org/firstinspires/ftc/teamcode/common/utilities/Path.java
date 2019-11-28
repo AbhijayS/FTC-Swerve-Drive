@@ -18,6 +18,7 @@ import java.util.LinkedList;
 
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ROBOT_STATUS;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.Status.RELEASE;
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.tolerance;
 
 // TODO: Re-write paths using WayPoints
 public class Path {
@@ -128,9 +129,9 @@ public class Path {
         DIRECTION = Direction.UNKOWN;
         splineSegment = 1;
         PATH_SEGMENT = 1;
-        this.CURRENT_WAYPOINT = wayPoints[0];
-        this.SEGMENT_START = wayPoints[0];
-        this.SEGMENT_END = wayPoints[1];
+        this.CURRENT_WAYPOINT = this.wayPoints[0];
+        this.SEGMENT_START = this.wayPoints[0];
+        this.SEGMENT_END = this.wayPoints[1];
     }
 
     /**
@@ -165,13 +166,13 @@ public class Path {
         switch (DIRECTION) {
             case RIGHT: {
                 if (TRACKING_POSE.getX() >= currentSegment.getLast().X) {
+                    SEGMENT_START = currentSegment.getLast();
                     if (PATH_SEGMENT == segments.size()) {
                         PATH_STATE = PathState.END;
                         return;
                     }
                     PATH_SEGMENT++;
                     splineSegment = 1;
-                    SEGMENT_START = currentSegment.getLast();
                     PATH_STATE = PathState.SUSTAIN;
                     return;
                 }
@@ -216,13 +217,13 @@ public class Path {
             }
             case LEFT: {
                 if (TRACKING_POSE.getX() <= currentSegment.getLast().X) {
+                    SEGMENT_START = currentSegment.getLast();
                     if (PATH_SEGMENT == segments.size()) {
                         PATH_STATE = PathState.END;
                         return;
                     }
                     PATH_SEGMENT++;
                     splineSegment = 1;
-                    SEGMENT_START = currentSegment.getLast();
                     PATH_STATE = PathState.SUSTAIN;
                     return;
                 }
@@ -270,14 +271,14 @@ public class Path {
 //                LinkedList<WayPoint> prevSegment = segments.get(PATH_SEGMENT - 2);
 //                LinkedList<Double> prevValues = new LinkedList<>(prevSegment.values());
 
-                if (TRACKING_POSE.getY() >= currentSegment.getLast().Y) {
+                if (TRACKING_POSE.getY() >= currentSegment.getLast().Y - tolerance) {
+                    SEGMENT_START = currentSegment.getLast();
                     if (PATH_SEGMENT == segments.size()) {
                         PATH_STATE = PathState.END;
                         return;
                     }
                     PATH_SEGMENT++;
                     splineSegment = 1;
-                    SEGMENT_START = currentSegment.getLast();
                     PATH_STATE = PathState.SUSTAIN;
                     return;
                 }
@@ -301,14 +302,14 @@ public class Path {
 //                LinkedList<WayPoint> prevSegment = segments.get(PATH_SEGMENT - 2);
 //                LinkedList<Double> prevValues = new LinkedList<>(prevSegment.values());
 
-                if (TRACKING_POSE.getY() <= currentSegment.getLast().Y) {
+                if (TRACKING_POSE.getY() <= currentSegment.getLast().Y + tolerance) {
+                    SEGMENT_START = currentSegment.getLast();
                     if (PATH_SEGMENT == segments.size()) {
                         PATH_STATE = PathState.END;
                         return;
                     }
                     PATH_SEGMENT++;
                     splineSegment = 1;
-                    SEGMENT_START = currentSegment.getLast();
                     PATH_STATE = PathState.SUSTAIN;
                     return;
                 }
