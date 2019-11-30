@@ -16,6 +16,7 @@ public class Gamepad {
     // operator controls
     public boolean clamp;
     public boolean stow;
+    public boolean approach;
     public double lift;
 
     public double x, y, z, lx, ly, rx, ry;
