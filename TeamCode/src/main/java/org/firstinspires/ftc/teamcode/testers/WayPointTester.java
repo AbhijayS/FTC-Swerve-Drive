@@ -17,6 +17,8 @@ import org.firstinspires.ftc.teamcode.modules.swerve.SwerveDrive;
 
 import java.util.ArrayList;
 
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ROBOT_LENGTH;
+
 @TeleOp(name = "TestOp: WayPoint Tester")
 public class WayPointTester extends LinearOpMode {
     @Override
@@ -24,27 +26,26 @@ public class WayPointTester extends LinearOpMode {
         Debugger robotDebugger = new Debugger(Util.getContext(), this, (ArrayList<String>) UniversalConstants.Debugging.getDebuggingMarkers());
         robotDebugger.initialize("WayPoint Tester");
 
-        WayPoint[] wayPoints = {
-            // moving backward
-//            new WayPoint(new Pose(0,0,90),0.5, Clamp.ClampState.COAST, JewelSwatter.JewelSwatterState.STOW_ALL,0, true),
-//            new WayPoint(new Pose(0,12,90),0.5, Clamp.ClampState.COAST, JewelSwatter.JewelSwatterState.STOW_ALL,0, false),
-//            new WayPoint(new Pose(5,12,90),0.5, Clamp.ClampState.COAST, JewelSwatter.JewelSwatterState.STOW_ALL,0, false),
-//            new WayPoint(new Pose(10,12,90),0.5, Clamp.ClampState.COAST, JewelSwatter.JewelSwatterState.STOW_ALL,0, true),
-//            new WayPoint(new Pose(10,0,90),0.5, Clamp.ClampState.COAST, JewelSwatter.JewelSwatterState.STOW_ALL,0, false),
-
-            new WayPoint(new Pose(0,0,90),0.5, Clamp.ClampState.COAST, JewelSwatter.JewelSwatterState.STOW_ALL,0, true,0,0),
-            new WayPoint(new Pose(0,12,90),0.5, Clamp.ClampState.COAST, JewelSwatter.JewelSwatterState.STOW_ALL,0, false,0,0),
-            new WayPoint(new Pose(5,12,90),0.5, Clamp.ClampState.COAST, JewelSwatter.JewelSwatterState.STOW_ALL,0, false,0,0),
-            new WayPoint(new Pose(10,12,90),0.5, Clamp.ClampState.COAST, JewelSwatter.JewelSwatterState.STOW_ALL,0, false,0,0)
-        };
-
         Robot robot = new Robot(this, robotDebugger);
-        robot.setWayPoints(wayPoints);
-        robot.requestState(Robot.RobotState.PATH_FOLLOWING);
         robot.updateAll();
 
 
         waitForStart();
+
+        WayPoint[] wayPoints = {
+                new WayPoint(new Pose(0,0,90),0.75, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.DOCK_LEFT,0, true,0,0),
+                new WayPoint(new Pose(0,-27,90),0.1, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.POSSESS_LEFT,100, true,0,0),
+                new WayPoint(new Pose(0,-27.5,90),0.5, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.RIDE_HIGH_LEFT,500, false,0,0),
+                // start heading to foundation
+                new WayPoint(new Pose(4,-26,180),0.5, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.RIDE_HIGH_LEFT,0, false,0,0),
+                new WayPoint(new Pose(8,-25,180),0.5, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.RIDE_LOW_LEFT,0, false,0,0),
+                new WayPoint(new Pose(11,-25,180),0.5, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.RIDE_LOW_LEFT,0, false,0,0),
+                new WayPoint(new Pose(50,-25,180),0.5, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.RIDE_LOW_LEFT,0, false,0,0),
+//                new WayPoint(new Pose(52,-25,90),0.5, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.RIDE_LOW_ALL,0, false,0,0),
+        };
+
+        robot.requestState(Robot.RobotState.PATH_FOLLOWING);
+        robot.setWayPoints(wayPoints);
 
         while (opModeIsActive()) {
             robot.updateAll();

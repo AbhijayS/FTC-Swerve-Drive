@@ -27,7 +27,7 @@ public class Path {
     public PathState PATH_STATE;
     public int PATH_SEGMENT;
     public Pose TRACKING_POSE;
-    public WayPoint CURRENT_WAYPOINT;
+//    public WayPoint CURRENT_WAYPOINT;
     public WayPoint SEGMENT_START; // start point of the current path segment
     public WayPoint SEGMENT_END; // end point of the current path segment
 
@@ -129,7 +129,6 @@ public class Path {
         DIRECTION = Direction.UNKOWN;
         splineSegment = 1;
         PATH_SEGMENT = 1;
-        this.CURRENT_WAYPOINT = this.wayPoints[0];
         this.SEGMENT_START = this.wayPoints[0];
         this.SEGMENT_END = this.wayPoints[1];
     }
@@ -167,6 +166,7 @@ public class Path {
             case RIGHT: {
                 if (TRACKING_POSE.getX() >= currentSegment.getLast().X) {
                     SEGMENT_START = currentSegment.getLast();
+                    TRACKING_POSE.setPose(currentSegment.getLast().X, currentSegment.getLast().Y, SEGMENT_END.Z);
                     if (PATH_SEGMENT == segments.size()) {
                         PATH_STATE = PathState.END;
                         return;
@@ -201,23 +201,22 @@ public class Path {
                         y[i] = currentSegment.get(i).Y;
                     }
                     spline = splineInterpolator.interpolate(x, y);
-                    SEGMENT_START = currentSegment.getFirst();
                     SEGMENT_END = currentSegment.getLast();
                 }
 
                 // update
+                SEGMENT_START = currentSegment.get(splineSegment-1);
                 double TPX = findTrackingPointRight(CoM);
                 double TPY = spline.value(TPX);
-                splineSegment = Range.clip(splineSegment,1,currentSegment.size()-1);
-                double TPZ = currentSegment.get(splineSegment).Z;
+                double TPZ = SEGMENT_START.Z;
                 TRACKING_POSE.setPose(TPX, TPY, TPZ);
-                CURRENT_WAYPOINT = currentSegment.get(splineSegment-1);
                 PATH_STATE = PathState.FOLLOW;
                 break;
             }
             case LEFT: {
                 if (TRACKING_POSE.getX() <= currentSegment.getLast().X) {
                     SEGMENT_START = currentSegment.getLast();
+                    TRACKING_POSE.setPose(currentSegment.getLast().X, currentSegment.getLast().Y, SEGMENT_END.Z);
                     if (PATH_SEGMENT == segments.size()) {
                         PATH_STATE = PathState.END;
                         return;
@@ -258,12 +257,11 @@ public class Path {
                 }
 
                 // update
-                splineSegment = Range.clip(splineSegment,1,currentSegment.size()-1);
+                SEGMENT_START = currentSegment.get(splineSegment-1);
                 double TPX = findTrackingPointLeft(CoM);
                 double TPY = spline.value(TPX);
-                double TPZ = currentSegment.get(splineSegment).Z;
+                double TPZ = SEGMENT_START.Z;
                 TRACKING_POSE.setPose(TPX, TPY, TPZ);
-                CURRENT_WAYPOINT = currentSegment.get(splineSegment-1);
                 PATH_STATE = PathState.FOLLOW;
                 break;
             }
@@ -273,6 +271,7 @@ public class Path {
 
                 if (TRACKING_POSE.getY() >= currentSegment.getLast().Y - tolerance) {
                     SEGMENT_START = currentSegment.getLast();
+                    TRACKING_POSE.setPose(currentSegment.getFirst().X, currentSegment.getLast().Y, SEGMENT_END.Z);
                     if (PATH_SEGMENT == segments.size()) {
                         PATH_STATE = PathState.END;
                         return;
@@ -292,8 +291,7 @@ public class Path {
 //                    splineSegment = 1;
 //                    pathState = PathState.SUSTAIN;
 //                }
-                TRACKING_POSE.setPose(currentSegment.getFirst().X, CoM.getY(), currentSegment.getLast().Z);
-                CURRENT_WAYPOINT = SEGMENT_START;
+                TRACKING_POSE.setPose(currentSegment.getFirst().X, CoM.getY(), SEGMENT_START.Z);
                 SEGMENT_END = currentSegment.getLast();
                 PATH_STATE = PathState.FOLLOW;
                 break;
@@ -304,6 +302,7 @@ public class Path {
 
                 if (TRACKING_POSE.getY() <= currentSegment.getLast().Y + tolerance) {
                     SEGMENT_START = currentSegment.getLast();
+                    TRACKING_POSE.setPose(currentSegment.getFirst().X, currentSegment.getLast().Y, SEGMENT_END.Z);
                     if (PATH_SEGMENT == segments.size()) {
                         PATH_STATE = PathState.END;
                         return;
@@ -322,8 +321,7 @@ public class Path {
 //                    splineSegment = 1;
 //                    pathState = PathState.SUSTAIN;
 //                }
-                TRACKING_POSE.setPose(currentSegment.getFirst().X, CoM.getY(), currentSegment.getLast().Z);
-                CURRENT_WAYPOINT = SEGMENT_START;
+                TRACKING_POSE.setPose(currentSegment.getFirst().X, CoM.getY(), SEGMENT_START.Z);
                 SEGMENT_END = currentSegment.getLast();
                 PATH_STATE = PathState.FOLLOW;
                 break;

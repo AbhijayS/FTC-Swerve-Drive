@@ -17,8 +17,6 @@ public class Potentiometer {
     public int returnAngle(){
         double voltage = a.getVoltage();
         int angle = (int) Math.rint(voltage*81.9423368741);
-        linearOpMode.telemetry.addData("Voltage: ",voltage);
-        linearOpMode.telemetry.addData("Pot Angle: ",angle);
         return angle;
     }
 }

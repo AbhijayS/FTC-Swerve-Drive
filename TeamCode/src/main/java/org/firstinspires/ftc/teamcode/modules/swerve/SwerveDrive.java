@@ -92,14 +92,14 @@ public class SwerveDrive {
         return swerveState;
     }
 
+    // TODO: Simplify field-oriented drive (fod) code
     public void fod(Gamepad g) {
-
-        // TODO: Simplify code
-
-
         if (swerveState == PATH_FOLLOWING || swerveState == PATH_FOLLOWING_COMPLETE) {
             return;
         }
+
+        if (g.x == 0 && g.y == 0)
+            return;
 
         double slow = 1;
         if (g.slowmo)
@@ -196,6 +196,8 @@ public class SwerveDrive {
         double OMEGA = turn_power; // Rotational speed: Clockwise is positive and Anti-Clockwise is negative
         double STR = strafe_power; // Strafing speed
         double STR_ANGLE = strafe_angle; // Strafing angle
+        debugger.addData("Fake X", Double.toString(FAKE_COM_X));
+        debugger.addData("Fake Y", Double.toString(FAKE_COM_Y));
         double corner0 = Math.atan2(ModuleConfig.MODULE_ZERO.rawY()-FAKE_COM_Y, ModuleConfig.MODULE_ZERO.rawX()-FAKE_COM_X) - HALF_PI;
         double corner1 = Math.atan2(ModuleConfig.MODULE_ONE.rawY()-FAKE_COM_Y, ModuleConfig.MODULE_ONE.rawX()-FAKE_COM_X) - HALF_PI;
         double corner2 = Math.atan2(ModuleConfig.MODULE_TWO.rawY()-FAKE_COM_Y, ModuleConfig.MODULE_TWO.rawX()-FAKE_COM_X) - HALF_PI;
@@ -251,7 +253,7 @@ public class SwerveDrive {
             cerr += err;
             power = err * kP + cerr * kI;
         }
-        debugger.addData("CERR", Double.toString(cerr));
+//        debugger.addData("CERR", Double.toString(cerr));
         lastTargetAngle = targetAngle;
         return power;
     }
@@ -360,10 +362,12 @@ public class SwerveDrive {
      */
     public void stanleyPursuit() {
 
+        debugger.addData("Heading Goal", Double.toString(headingGoal));
         double yaw = roundTo2DecimalPlaces(swerveKinematics.getYaw());
+
         if (swerveState == HUMAN_INPUT) {
             return;
-        } else if (swerveState == PATH_FOLLOWING){
+        } else if (swerveState == PATH_FOLLOWING_COMPLETE){
             fod(90,0,turnPID(headingGoal), yaw);
             return;
         }
@@ -397,8 +401,10 @@ public class SwerveDrive {
 
             default:
                 // Calculate cross-track error
-                Pose trackingPose = path.TRACKING_POSE;
+                trackingPose = path.TRACKING_POSE;
                 double distance = Math.hypot(trackingPose.getX() - CoM.getX(), trackingPose.getY() - CoM.getY());
+                if (Math.abs(distance) <= tolerance)
+                    distance = 0;
                 double crossTrackAngle;
 
                 if (path.DIRECTION == Direction.LEFT || path.DIRECTION == Direction.RIGHT) {

@@ -172,11 +172,11 @@ public class UniversalConstants {
     public static final String clampServoBottom = "CSB";
     public static final String clampServo = "CS";
 
-    public static double kS =   10; // Steering gain (path following only)
+    public static double kS =   5; // Steering gain (path following only)
     public static final double kP =   0.5/90; // Proportional gain
     public static final double kI =   0.00001; // Integral gain
     public static final double kD =   0; // Derivative gain
-    public static final double tolerance = 1; // degrees
+    public static final double tolerance = 1; // degrees or inches
 
     public static final PwmControl.PwmRange pwmRange = new PwmControl.PwmRange(500, 2500);
 

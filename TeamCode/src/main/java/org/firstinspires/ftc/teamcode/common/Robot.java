@@ -25,83 +25,114 @@ public class Robot {
     // path following variables
     private Path path;
     private WayPoint[] wayPoints;
-    private WayPoint wayPoint; // current waypoint
+    private WayPoint currentWaypoint; // current waypoint
     private boolean pidOverride; // PID target position used only when PID is enabled
 
     // private variables
     private SwerveDrive swerveDrive;
     private Telemetry telemetry;
     private Debugger debugger;
-    private int size;
     private Stopwatch stopwatch;
     private RobotState robotState;
     private Gamepad gamepad;
 
     public enum RobotState {
-        PATH_FOLLOWING, HUMAN_OPERATOR
+        HUMAN_OPERATOR, // default
+        PATH_FOLLOWING
     }
 
     public Robot(LinearOpMode linearOpMode, Debugger debugger) {
         this.telemetry = linearOpMode.telemetry;
         this.debugger = debugger;
-        this.clamp = new Clamp(linearOpMode);
-        this.lift = new LiftModule(linearOpMode);
-        this.jewelSwatter = new JewelSwatter(linearOpMode.hardwareMap);
-        this.swerveDrive = new SwerveDrive(linearOpMode, debugger);
         this.stopwatch = new Stopwatch();
         this.pidOverride = false;
-        this.robotState = null;
+        this.robotState = RobotState.HUMAN_OPERATOR;
+
+        this.clamp = new Clamp(linearOpMode);
+//        this.lift = new LiftModule(linearOpMode);
+        this.jewelSwatter = new JewelSwatter(linearOpMode.hardwareMap);
+        this.swerveDrive = new SwerveDrive(linearOpMode, debugger);
         this.gamepad = new Gamepad(linearOpMode);
     }
 
     public void setWayPoints(WayPoint[] wayPoints) {
-        this.wayPoints = wayPoints;
-        this.size = wayPoints.length;
+        // make sure paths can be set internally
         this.path = new Path(debugger, wayPoints);
-        this.wayPoint = path.CURRENT_WAYPOINT;
-        debugger.addData("Current WayPoint",this.wayPoint.JEWEL_SWATTER_STATE.name());
-        swerveDrive.setPath(path, 0.5);
         swerveDrive.requestState(SwerveState.PATH_FOLLOWING);
+        swerveDrive.setPath(path, 0.1);
+
+        // update private variables
+        this.wayPoints = wayPoints;
+        this.currentWaypoint = path.SEGMENT_START;
     }
 
     public void requestState(RobotState newState) {
         if (newState != robotState) {
-            if (newState == RobotState.HUMAN_OPERATOR)
-                swerveDrive.requestState(SwerveState.HUMAN_INPUT);
-            else
-                swerveDrive.requestState(SwerveState.PATH_FOLLOWING);
-            robotState = newState;
+            switch (newState) {
+                case PATH_FOLLOWING: {
+                    swerveDrive.requestState(SwerveState.PATH_FOLLOWING);
+                    robotState = newState;
+                    break;
+                }
+
+                case HUMAN_OPERATOR: {
+                    this.path = null;
+                    this.wayPoints = null;
+                    this.currentWaypoint = null;
+                    swerveDrive.requestState(SwerveState.HUMAN_INPUT);
+                    robotState = newState;
+                    break;
+                }
+
+                default:
+                    break;
+            }
         }
     }
 
     public void updateAll() {
-        if (robotState == RobotState.HUMAN_OPERATOR) {
-            swerveDrive.fod(gamepad);
-            clamp.updateByGamepad(gamepad);
-            swerveDrive.swerveKinematics.update();
-            gamepad.update();
-            debugger.log();
-        }
-
-        else if (robotState == RobotState.PATH_FOLLOWING) {
-            parallelManeuvers();
-            if (!wayPoint.equals(path.CURRENT_WAYPOINT)) {
-                stopwatch.reset();
-                pidOverride = false;
-                swerveDrive.disablePID();
-                wayPoint = path.CURRENT_WAYPOINT;
+        switch (robotState) {
+            case PATH_FOLLOWING: {
+                if (wayPoints == null)
+                    throw new RuntimeException("Way Points have not been set up yet!");
+                parallelManeuvers();
+                if (!currentWaypoint.equals(path.SEGMENT_START)) {
+                    stopwatch.reset();
+                    pidOverride = false;
+                    swerveDrive.disablePID();
+                    currentWaypoint = path.SEGMENT_START;
+                }
+                swerveDrive.swerveKinematics.update();
+                jewelSwatter.update();
+                clamp.update();
+                debugger.log();
+                break;
             }
-            swerveDrive.swerveKinematics.update();
-            jewelSwatter.update();
-            clamp.update();
-            debugger.log();
+
+            case HUMAN_OPERATOR: {
+                swerveDrive.fod(gamepad);
+                clamp.updateByGamepad(gamepad);
+                swerveDrive.swerveKinematics.update();
+                gamepad.update();
+                debugger.log();
+                break;
+            }
+
+            default: {
+                swerveDrive.fod(gamepad);
+                clamp.updateByGamepad(gamepad);
+                swerveDrive.swerveKinematics.update();
+                gamepad.update();
+                debugger.log();
+                break;
+            }
         }
     }
 
     private void parallelManeuvers() {
-        if (stopwatch.millis() >= wayPoint.WAIT_MILLIS) {
+        if (stopwatch.millis() >= currentWaypoint.WAIT_MILLIS) {
             // continue movement
-            if (wayPoint.enablePID) {
+            if (currentWaypoint.enablePID) {
                 if (path.DIRECTION == Direction.FORWARD || path.DIRECTION == Direction.REVERSE) {
                     if (!pidOverride) {
                         if (path.DIRECTION == Direction.FORWARD)
@@ -114,16 +145,16 @@ public class Robot {
                             throw new RuntimeException(e.getMessage());
                         }
                         double distance = path.SEGMENT_END.Y - path.SEGMENT_START.Y;
-                        swerveDrive.movePID(distance, wayPoint.POWER);
+                        swerveDrive.movePID(distance, currentWaypoint.POWER);
                         swerveDrive.enablePID();
                         pidOverride = true;
                     }
                 }
                 path.pathFollowing(swerveDrive.swerveKinematics.getCenterOfMass());
             } else {
-                swerveDrive.setPivotX(wayPoint.PIVOT_X);
-                swerveDrive.setPivotX(wayPoint.PIVOT_Y);
-//                swerveDrive.setMaxPower(wayPoint.POWER);
+                swerveDrive.setPivotX(currentWaypoint.PIVOT_X);
+                swerveDrive.setPivotY(currentWaypoint.PIVOT_Y);
+                swerveDrive.setMaxPower(currentWaypoint.POWER);
                 swerveDrive.stanleyPursuit();
             }
         } else { // still waiting
@@ -132,8 +163,8 @@ public class Robot {
             // stop dt movement
             swerveDrive.setPower(0);
         }
-        jewelSwatter.requestState(wayPoint.JEWEL_SWATTER_STATE);
-        clamp.requestState(wayPoint.CLAMP_STATE);
+        jewelSwatter.requestState(currentWaypoint.JEWEL_SWATTER_STATE);
+        clamp.requestState(currentWaypoint.CLAMP_STATE);
         // lift stuff
     }
 }
