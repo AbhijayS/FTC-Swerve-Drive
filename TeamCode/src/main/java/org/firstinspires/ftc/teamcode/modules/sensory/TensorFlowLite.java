@@ -10,7 +10,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
-import org.firstinspires.ftc.teamcode.UniversalConstants;
+import org.firstinspires.ftc.teamcode.common.UniversalConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +26,23 @@ public class TensorFlowLite {
     private LinearOpMode linearOpMode;
     private HardwareMap hardwareMap;
     private double confidence;
-    String pattern;
+    private String pattern;
 
+
+    /*
+    an example of scanning from last year, do not use this exact one.
+    String Position = "Unknown";
+            tensorFlowLite.activateTfod();
+            ElapsedTime elapsedTime = new ElapsedTime();
+            while (opModeIsActive() && Position == "Unknown") {
+                tensorFlowLite.updateTensorFlowExp();
+                Position = tensorFlowLite.getPosition();
+                if (Position != "Unknown" || elapsedTime.time() > 3.0) {
+                    break;
+                }
+            }
+            tensorFlowLite.shutDownTfod();
+     */
 
     public void status(String s) {
         telemetry.addLine(s);
@@ -79,12 +94,98 @@ public class TensorFlowLite {
         }
     }
 
+    /**
+     * This function is used to determine the SkyStone Arrangement Pattern seeing only two stones.
+     * Use this function primarily in code.
+     * It will set the pattern variable to A, B or C depending on SkyStone arrangement.
+     * The function has a background elimination method based off of the one implemented in Rover Ruckus
+     */
+    public void twoStone(){
+        if(tfod != null){
+            List<Recognition> updateRecognitions = tfod.getUpdatedRecognitions();
+            if(updateRecognitions != null){
+                telemetry.addData("Objects Detected", updateRecognitions.size());
+                if(updateRecognitions.size() >= 2){
+                    int SkyStoneX = -1;
+                    int Stone1X = -1;
+                    int Stone2X = -1;
+                    for(Recognition recognition: updateRecognitions){
+                        if(recognition.getLabel().equals(LABEL_SECOND_ELEMENT)){
+                            SkyStoneX = (int) recognition.getLeft();
+                        }
+                        else if(recognition.getLabel().equals(LABEL_FIRST_ELEMENT)){
+                            Stone1X = (int) recognition.getLeft();
+                        }
+                        else{
+                            Stone2X = (int) recognition.getLeft();
+                        }
+                    }
+                    if(SkyStoneX != -1 && Stone1X != -1){
+                        if(SkyStoneX <= Stone1X){
+                            pattern = "B";
+                            telemetry.addData("Pattern: ","B");
+                        }else{
+                            pattern = "C";
+                            telemetry.addData("Pattern: ","C");
+                        }
+                    }
+                    else{
+                        pattern = "A";
+                        telemetry.addData("Pattern: ","A");
+                    }
+                }
+                telemetry.addData("Pattern Variable: ", pattern);
+                telemetry.update();
+            }
+        }
+    }
+
+    public void twoStoneB(){
+        if(tfod != null){
+            List<Recognition> updateRecognitions = tfod.getUpdatedRecognitions();
+            if(updateRecognitions != null){
+                telemetry.addData("Objects Detected", updateRecognitions.size());
+                if(updateRecognitions.size() >= 2){
+                    int SkyStoneX = -1;
+                    int Stone1X = -1;
+                    int Stone2X = -1;
+                    for(Recognition recognition: updateRecognitions){
+                        if(recognition.getLabel().equals(LABEL_SECOND_ELEMENT)){
+                            SkyStoneX = (int) recognition.getLeft();
+                        }
+                        else if(recognition.getLabel().equals(LABEL_FIRST_ELEMENT)){
+                            Stone1X = (int) recognition.getLeft();
+                        }
+                        else{
+                            Stone2X = (int) recognition.getLeft();
+                        }
+                    }
+                    if(SkyStoneX != -1 && Stone1X != -1){
+                        if(Stone1X <= SkyStoneX){
+                            pattern = "A";
+                            telemetry.addData("Pattern: ","A");
+                        }else{
+                            pattern = "B";
+                            telemetry.addData("Pattern: ","B");
+                        }
+                    }
+                    else{
+                        pattern = "C";
+                        telemetry.addData("Pattern: ","C");
+                    }
+                }
+                telemetry.addData("Pattern Variable: ", pattern);
+                telemetry.update();
+            }
+        }
+    }
 
     /**
      * This function is used to determine the SkyStone Arrangement Pattern.
      * It will set the pattern variable to A, B or C depending on SkyStone arrangement.
      * The function has a background elimination method based off of the one implemented in Rover Ruckus
      */
+    @Deprecated
     public void determinePattern() {
         if (tfod != null) {
             List<Recognition> updateRecognitions = tfod.getUpdatedRecognitions();
@@ -113,7 +214,7 @@ public class TensorFlowLite {
                     }
                     int indexToRemove = 0;
                     for (int i = 0; i < SkystoneYvals.size(); i++) {
-                        if (SkyStoneY <= SkystoneYvals.get(i) || SkyStoneX < SkystoneXvals.get(i)) {
+                        if (SkyStoneY <= SkystoneYvals.get(i)) {
                             SkyStoneY = SkystoneXvals.get(i);
                             SkyStoneX = SkystoneXvals.get(i);
                         }
@@ -155,7 +256,7 @@ public class TensorFlowLite {
             }
         }
     }
-
+    @Deprecated
     public void updateTensorFlowSingle() {
         if (tfod != null) {
             List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
@@ -208,7 +309,7 @@ public class TensorFlowLite {
         }
     }
 
-
+    @Deprecated
     public void detectAbsence() {
         if (tfod != null) {
             List<Recognition> updateRecognitions = tfod.getUpdatedRecognitions();
@@ -244,7 +345,7 @@ public class TensorFlowLite {
 
 
     /**
-     * Acccesses the private variable pattern which is set by determinePattern() function
+     * Accesses the private variable pattern which is set by determinePattern() function
      *
      * @return pattern
      */
@@ -255,6 +356,7 @@ public class TensorFlowLite {
     /**
      * This function initializes Vuforia to use camera on phones for object detection.
      */
+    @Deprecated
     private void initVuforia() {
         //This method will create all neccessary vuforia parameters and set them
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
@@ -296,6 +398,7 @@ public class TensorFlowLite {
         //Change these parameters when loading a new model asset for object detection. Set appropriate labels
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
         //allows you to crop the image view in the camera
-        tfod.setClippingMargins(0,0,0,0);
+        tfod.setClippingMargins(210,200,0,0);
+
     }
 }

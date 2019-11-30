@@ -5,17 +5,23 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.modules.sensory.TensorFlowLite;
 
-@TeleOp(name = "TensorFlow Tester")
-public class TensorFlowTester extends LinearOpMode {
+
+@TeleOp (name = "TensorFlow Tester Blue")
+public class TensorFlowTesterB extends LinearOpMode {
+
     @Override
     public void runOpMode() throws InterruptedException {
-        TensorFlowLite tensorFlowLite = new TensorFlowLite(this,.25);
+        TensorFlowLite tensorFlowLite = new TensorFlowLite(this,.5);
 
         tensorFlowLite.activateTfod();
         waitForStart();
 
         while (opModeIsActive()){
-            tensorFlowLite.determinePattern();
+            tensorFlowLite.twoStone();
+            //String stonePosition = tensorFlowLite.getPattern();
+            //telemetry.addData("Pattern", stonePosition);
+            //telemetry.update();
         }
+        tensorFlowLite.shutDownTfod();
     }
 }
