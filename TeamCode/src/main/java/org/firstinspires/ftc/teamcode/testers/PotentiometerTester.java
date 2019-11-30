@@ -12,7 +12,7 @@ public class PotentiometerTester extends LinearOpMode {
         Potentiometer potentiometer = new Potentiometer("P",this);
         waitForStart();
         while (opModeIsActive()){
-            telemetry.addData("Angle", potentiometer.returnAngle());
+            int angle = potentiometer.returnAngle();
             telemetry.update();
         }
     }

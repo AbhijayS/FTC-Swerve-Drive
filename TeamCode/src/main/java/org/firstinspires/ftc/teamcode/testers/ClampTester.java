@@ -18,7 +18,7 @@ public class ClampTester extends LinearOpMode {
 
         while (opModeIsActive()) {
             clamp.updateByGamepad(gamepad);
-            telemetry.addData("Clamp status", clamp.getState());
+            telemetry.addData("Clamp status", clamp.getStatus());
             gamepad.update();
             telemetry.update();
         }
