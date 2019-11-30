@@ -246,11 +246,11 @@ public class Path {
                     LinkedList<WayPoint> copy = new LinkedList<>(currentSegment);
                     Collections.reverse(copy);
 
-                    double[] x = new double[currentSegment.size()];
-                    double[] y = new double[currentSegment.size()];
-                    for (int i = 0; i < currentSegment.size(); i++) {
-                        x[i] = currentSegment.get(i).X;
-                        y[i] = currentSegment.get(i).Y;
+                    double[] x = new double[copy.size()];
+                    double[] y = new double[copy.size()];
+                    for (int i = 0; i < copy.size(); i++) {
+                        x[i] = copy.get(i).X;
+                        y[i] = copy.get(i).Y;
                     }
                     spline = splineInterpolator.interpolate(x, y);
                     SEGMENT_END = currentSegment.getLast();

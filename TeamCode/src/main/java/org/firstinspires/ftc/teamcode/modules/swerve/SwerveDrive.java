@@ -17,11 +17,10 @@ import static org.firstinspires.ftc.teamcode.common.UniversalConstants.Debugging
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.Debugging.VELOCITY;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.HALF_PI;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ModuleConfig;
-import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ROBOT_LENGTH;
-import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ROBOT_MAX_SPEED;
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.AUTO_MAX_SPEED;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ROBOT_STATUS;
-import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ROBOT_WIDTH;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.Status.RELEASE;
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.TELEOP_MAX_SPEED;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.clipAngle;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.kI;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.kP;
@@ -98,17 +97,12 @@ public class SwerveDrive {
             return;
         }
 
-        if (g.x == 0 && g.y == 0)
-            return;
-
         double slow = 1;
         if (g.slowmo)
             slow = 0.25;
 
-        double x_left = g.x;
-        double y_left = g.y;
 
-        double OMEGA = Range.scale(g.z, 0, 1, 0, ROBOT_MAX_SPEED * slow); // Rotational speed: Clockwise is positive and Anti-Clockwise is negative
+        double OMEGA = Range.scale(g.z, 0, 1, 0, TELEOP_MAX_SPEED * slow); // Rotational speed: Clockwise is positive and Anti-Clockwise is negative
         if (Double.compare(OMEGA, 0.0) == 0) {
             if (!headingGoalSet) {
                 headingGoal = roundTo2DecimalPlaces(swerveKinematics.getCenterOfMass().getDegrees());
@@ -120,26 +114,37 @@ public class SwerveDrive {
         }
 
         if (g.heading) {
-            if (g._45)
+            if (g._45) {
                 headingGoal = 45;
-            else if (g._135)
+            }
+            else if (g._135) {
                 headingGoal = 135;
-            else if (g._225)
+            }
+            else if (g._225) {
                 headingGoal = 225;
-            else if (g._315)
+            }
+            else if (g._315) {
                 headingGoal = 315;
-            else if (g._0)
+            }
+            else if (g._0) {
                 headingGoal = 0;
-            else if (g._90)
+            }
+            else if (g._90) {
                 headingGoal = 90;
-            else if (g._180)
+            }
+            else if (g._180) {
                 headingGoal = 180;
-            else if (g._270)
+            }
+            else if (g._270) {
                 headingGoal = 270;
+            }
             headingGoalSet = true;
         }
 
-        double STR = Range.scale(Math.abs(Math.hypot(x_left, y_left)), 0, 1, 0, ROBOT_MAX_SPEED * slow); // Strafing speed
+        double x_left = g.x;
+        double y_left = g.y;
+
+        double STR = Range.scale(Math.abs(Math.hypot(x_left, y_left)), 0, 1, 0, TELEOP_MAX_SPEED * slow); // Strafing speed
         double STR_ANGLE = Math.toDegrees(Math.atan2(y_left, x_left)); // Strafing angle
         double corner0 = Math.atan2(ModuleConfig.MODULE_ZERO.rawY()-FAKE_COM_Y, ModuleConfig.MODULE_ZERO.rawX()-FAKE_COM_X) - HALF_PI;
         double corner1 = Math.atan2(ModuleConfig.MODULE_ONE.rawY()-FAKE_COM_Y, ModuleConfig.MODULE_ONE.rawX()-FAKE_COM_X) - HALF_PI;
@@ -172,11 +177,11 @@ public class SwerveDrive {
         if (speed3 > max) {
             max = speed3;
         }
-        if (max > ROBOT_MAX_SPEED) {
-            speed0 = Range.scale(speed0, 0, max, 0, ROBOT_MAX_SPEED * slow);
-            speed1 = Range.scale(speed1, 0, max, 0, ROBOT_MAX_SPEED * slow);
-            speed2 = Range.scale(speed2, 0, max, 0, ROBOT_MAX_SPEED * slow);
-            speed3 = Range.scale(speed3, 0, max, 0, ROBOT_MAX_SPEED * slow);
+        if (max > TELEOP_MAX_SPEED) {
+            speed0 = Range.scale(speed0, 0, max, 0, TELEOP_MAX_SPEED * slow);
+            speed1 = Range.scale(speed1, 0, max, 0, TELEOP_MAX_SPEED * slow);
+            speed2 = Range.scale(speed2, 0, max, 0, TELEOP_MAX_SPEED * slow);
+            speed3 = Range.scale(speed3, 0, max, 0, TELEOP_MAX_SPEED * slow);
         }
 
 //        if (ROBOT_STATUS != RELEASE) {
@@ -186,8 +191,8 @@ public class SwerveDrive {
 //            linearOpMode.telemetry.addData("STRAFE ANGLE:", STR_ANGLE);
 //        }
 
-        swivel(swivel0, swivel1, swivel2, swivel3);
         setPower(speed0, speed1, speed2, speed3);
+        swivel(swivel0, swivel1, swivel2, swivel3);
     }
 
     public void fod(double strafe_angle, double strafe_power, double turn_power, double yaw) {
@@ -228,11 +233,11 @@ public class SwerveDrive {
         if (speed3 > max) {
             max = speed3;
         }
-        if (max > ROBOT_MAX_SPEED) {
-            speed0 = Range.scale(speed0, 0, max, 0, ROBOT_MAX_SPEED);
-            speed1 = Range.scale(speed1, 0, max, 0, ROBOT_MAX_SPEED);
-            speed2 = Range.scale(speed2, 0, max, 0, ROBOT_MAX_SPEED);
-            speed3 = Range.scale(speed3, 0, max, 0, ROBOT_MAX_SPEED);
+        if (max > AUTO_MAX_SPEED) {
+            speed0 = Range.scale(speed0, 0, max, 0, AUTO_MAX_SPEED);
+            speed1 = Range.scale(speed1, 0, max, 0, AUTO_MAX_SPEED);
+            speed2 = Range.scale(speed2, 0, max, 0, AUTO_MAX_SPEED);
+            speed3 = Range.scale(speed3, 0, max, 0, AUTO_MAX_SPEED);
         }
 
         swivel(swivel0, swivel1, swivel2, swivel3);
@@ -312,7 +317,7 @@ public class SwerveDrive {
 
 
     public void setPower(double power) {
-        power = Range.clip(power, 0, ROBOT_MAX_SPEED);
+        power = Range.clip(power, 0, AUTO_MAX_SPEED);
         module0.setPower(power);
         module1.setPower(power);
         module2.setPower(power);
@@ -324,10 +329,10 @@ public class SwerveDrive {
     }
 
     public void setPower(double power0, double power1, double power2, double power3) {
-        power0 = Range.clip(power0, 0, ROBOT_MAX_SPEED);
-        power1 = Range.clip(power1, 0, ROBOT_MAX_SPEED);
-        power2 = Range.clip(power2, 0, ROBOT_MAX_SPEED);
-        power3 = Range.clip(power3, 0, ROBOT_MAX_SPEED);
+        power0 = Range.clip(power0, 0, AUTO_MAX_SPEED);
+        power1 = Range.clip(power1, 0, AUTO_MAX_SPEED);
+        power2 = Range.clip(power2, 0, AUTO_MAX_SPEED);
+        power3 = Range.clip(power3, 0, AUTO_MAX_SPEED);
 
         module0.setPower(power0);
         module1.setPower(power1);

@@ -37,8 +37,10 @@ public class Robot {
     private Gamepad gamepad;
 
     public enum RobotState {
-        HUMAN_OPERATOR, // default
-        PATH_FOLLOWING
+        FIELD_ORIENTED, // default
+        ROBOT_ORIENTED,
+        PATH_FOLLOWING,
+
     }
 
     public Robot(LinearOpMode linearOpMode, Debugger debugger) {
@@ -46,7 +48,7 @@ public class Robot {
         this.debugger = debugger;
         this.stopwatch = new Stopwatch();
         this.pidOverride = false;
-        this.robotState = RobotState.HUMAN_OPERATOR;
+        this.robotState = RobotState.FIELD_ORIENTED;
 
         this.clamp = new Clamp(linearOpMode);
 //        this.lift = new LiftModule(linearOpMode);
@@ -75,16 +77,12 @@ public class Robot {
                     break;
                 }
 
-                case HUMAN_OPERATOR: {
+                default:
                     this.path = null;
                     this.wayPoints = null;
                     this.currentWaypoint = null;
                     swerveDrive.requestState(SwerveState.HUMAN_INPUT);
                     robotState = newState;
-                    break;
-                }
-
-                default:
                     break;
             }
         }
@@ -109,10 +107,9 @@ public class Robot {
                 break;
             }
 
-            case HUMAN_OPERATOR: {
+            case ROBOT_ORIENTED: {
                 swerveDrive.fod(gamepad);
                 clamp.updateByGamepad(gamepad);
-                swerveDrive.swerveKinematics.update();
                 gamepad.update();
                 debugger.log();
                 break;
@@ -161,7 +158,7 @@ public class Robot {
             if (!stopwatch.isRunning())
                 stopwatch.start();
             // stop dt movement
-            swerveDrive.setPower(0);
+            swerveDrive.fod(90,0,swerveDrive.turnPID(currentWaypoint.Z),swerveDrive.swerveKinematics.getYaw());
         }
         jewelSwatter.requestState(currentWaypoint.JEWEL_SWATTER_STATE);
         clamp.requestState(currentWaypoint.CLAMP_STATE);

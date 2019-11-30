@@ -12,11 +12,9 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.teamcode.common.UniversalConstants;
 import org.firstinspires.ftc.teamcode.common.utilities.Pose;
 
-import java.util.Locale;
-
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ModuleConfig;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.MotorDirection;
-import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ROBOT_MAX_SPEED;
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.AUTO_MAX_SPEED;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ROBOT_STATUS;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.clipAngle;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.driveGearRatio;
@@ -131,7 +129,7 @@ public class SwerveModule {
     }
 
     public void setPower(double power) {
-        power = Range.clip(power, 0, ROBOT_MAX_SPEED);
+        power = Range.clip(power, 0, AUTO_MAX_SPEED);
         power = motorDirection.assignDirection(power);
 
         if (ROBOT_STATUS != UniversalConstants.Status.DEBUGGING)
