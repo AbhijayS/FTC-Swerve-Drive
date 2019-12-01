@@ -17,8 +17,8 @@ public class hardStops{
         HardwareMap hardwareMap = l.hardwareMap;
         leftStop = hardwareMap.servo.get(UniversalConstants.leftStop);
         rightStop = hardwareMap.servo.get(UniversalConstants.rightStop);
-        leftStop.setDirection(Servo.Direction.FORWARD);
-        rightStop.setDirection(Servo.Direction.REVERSE);
+        leftStop.setDirection(Servo.Direction.REVERSE);
+        rightStop.setDirection(Servo.Direction.FORWARD);
         state = hardStopState.STOW;
     }
 
