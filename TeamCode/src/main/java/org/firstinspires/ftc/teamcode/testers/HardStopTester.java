@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.modules.hardStops;
 
-@TeleOp(name = "hardStopTester")
+@TeleOp(name = "Hard Stop Tester")
 public class HardStopTester extends LinearOpMode {
 
 
@@ -15,11 +15,11 @@ public class HardStopTester extends LinearOpMode {
         waitForStart();
 
         while(opModeIsActive()) {
-            if (this.gamepad2.a) {
+            if (this.gamepad2.x) {
                 stops.setState(hardStops.hardStopState.STOW);
-            } else if (this.gamepad2.b) {
+            } else if (this.gamepad2.a) {
                 stops.setState(hardStops.hardStopState.PARTIAL_DEPLOY);
-            } else if (this.gamepad2.x) {
+            } else if (this.gamepad2.b) {
                 stops.setState(hardStops.hardStopState.DEPLOY);
             }
             stops.update();
