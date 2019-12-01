@@ -51,7 +51,7 @@ public class Robot {
         this.robotState = RobotState.FIELD_ORIENTED;
 
         this.clamp = new Clamp(linearOpMode);
-//        this.lift = new LiftModule(linearOpMode);
+        this.lift = new LiftModule(linearOpMode);
         this.jewelSwatter = new JewelSwatter(linearOpMode.hardwareMap);
         this.swerveDrive = new SwerveDrive(linearOpMode, debugger);
         this.gamepad = new Gamepad(linearOpMode);
@@ -111,6 +111,7 @@ public class Robot {
                 swerveDrive.fod(gamepad);
                 clamp.updateByGamepad(gamepad);
                 gamepad.update();
+                lift.updateByGamepad(gamepad,gamepad.lift);
                 debugger.log();
                 break;
             }
@@ -120,6 +121,7 @@ public class Robot {
                 clamp.updateByGamepad(gamepad);
                 swerveDrive.swerveKinematics.update();
                 gamepad.update();
+                lift.updateByGamepad(gamepad,gamepad.lift);
                 debugger.log();
                 break;
             }

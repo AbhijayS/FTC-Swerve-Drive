@@ -23,7 +23,7 @@ public class BlueFoundation2SkystonePark extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         Debugger robotDebugger = new Debugger(Util.getContext(), this, (ArrayList<String>) UniversalConstants.Debugging.getDebuggingMarkers());
         robotDebugger.initialize("Auto_Blue_Main");
-        String stonePosition = "C";
+        String stonePosition = "A";
         Robot robot = new Robot(this, robotDebugger);
         robot.updateAll();
 
@@ -57,8 +57,10 @@ public class BlueFoundation2SkystonePark extends LinearOpMode {
                         new WayPoint(new Pose(-22,-28,90),0.5, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.DOCK_LEFT,500, true,0,0),
                         new WayPoint(new Pose(-22,-35,90),0.1, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.POSSESS_LEFT,500, true,0,0),
                         new WayPoint(new Pose(-22,-35.5,90),0.5, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.RIDE_HIGH_LEFT,0, false,0,0),
-                        new WayPoint(new Pose(-10,-35.5,180),0.5, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.RIDE_HIGH_LEFT,0, false,0,0),
-                        new WayPoint(new Pose(0,-35.5,180),0.5, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.RIDE_LOW_LEFT,0, false,0,0),
+                        new WayPoint(new Pose(-10,-33,180),0.5, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.RIDE_HIGH_LEFT,0, false,0,0),
+                        new WayPoint(new Pose(0,-30,180),0.5, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.RIDE_LOW_LEFT,0, false,0,0),
+                        new WayPoint(new Pose(75,-30,180),0.5, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.DOCK_LEFT,0, false,0,0),
+                        new WayPoint(new Pose(50,-30,180),0.5, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.DOCK_LEFT,0, false,0,0),
                 };
                 break;
             }
@@ -72,8 +74,8 @@ public class BlueFoundation2SkystonePark extends LinearOpMode {
                 wayPoints = new WayPoint[]{
                         // pick up first skystone
                         new WayPoint(new Pose(0,0,90),0.75, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.DOCK_RIGHT,0, true,0,0),
-                        new WayPoint(new Pose(0,-27,90),0.1, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.POSSESS_RIGHT,100, true,0,0),
-                        new WayPoint(new Pose(0,-27.5,90),0.5, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.RIDE_HIGH_RIGHT,0, false,0,0),
+                        new WayPoint(new Pose(0,-26,90),0.1, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.POSSESS_RIGHT,100, true,0,0),
+                        new WayPoint(new Pose(0,-26.5,90),0.5, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.RIDE_HIGH_RIGHT,0, false,0,0),
                         // start heading to foundation
                         new WayPoint(new Pose(0,-23,180),0.5, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.RIDE_LOW_RIGHT,0, false,0,0),
                         new WayPoint(new Pose(11,-27,180),0.5, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.RIDE_LOW_RIGHT,0, false,0,0),
