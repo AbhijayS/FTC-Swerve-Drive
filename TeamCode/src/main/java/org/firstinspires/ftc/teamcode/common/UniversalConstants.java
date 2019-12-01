@@ -173,7 +173,7 @@ public class UniversalConstants {
     public static final String clampServoBottom = "CSB";
     public static final String clampServo = "CS";
 
-    public static double kS =   5; // Steering gain (path following only)
+    public static double kS =   6; // Steering gain (path following only)
     public static final double kP =   0.5/90; // Proportional gain
     public static final double kI =   0.00001; // Integral gain
     public static final double kD =   0; // Derivative gain
