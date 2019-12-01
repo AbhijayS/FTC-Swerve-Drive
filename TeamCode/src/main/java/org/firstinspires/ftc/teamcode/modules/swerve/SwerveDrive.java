@@ -142,7 +142,9 @@ public class SwerveDrive {
 
         if (g.x == 0 && g.y == 0) {
             setPower(0);
-            fod(90,0,turnPID(headingGoal),swerveKinematics.getYaw());
+            if (turnPID(headingGoal) != 0) {
+                fod(90,0,turnPID(headingGoal),swerveKinematics.getYaw());
+            }
             return;
         }
 
@@ -264,7 +266,6 @@ public class SwerveDrive {
             cerr += err;
             power = err * kP + cerr * kI;
         }
-//        debugger.addData("CERR", Double.toString(cerr));
         lastTargetAngle = targetAngle;
         return power;
     }
