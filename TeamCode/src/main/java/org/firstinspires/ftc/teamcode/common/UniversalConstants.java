@@ -172,6 +172,8 @@ public class UniversalConstants {
     public static final String clampServoTop = "CST";
     public static final String clampServoBottom = "CSB";
     public static final String clampServo = "CS";
+    public static final String leftStop = "leftStop";
+    public static final String rightStop = "rightStop";
 
     public static double kS =   6; // Steering gain (path following only)
     public static final double kP =   0.5/90; // Proportional gain
