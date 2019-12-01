@@ -101,11 +101,10 @@ public class SwerveDrive {
         if (g.slowmo)
             slow = 0.25;
 
-
         double OMEGA = Range.scale(g.z, 0, 1, 0, TELEOP_MAX_SPEED * slow); // Rotational speed: Clockwise is positive and Anti-Clockwise is negative
-        if (Double.compare(OMEGA, 0.0) == 0) {
+        if (Double.compare(OMEGA, 0) == 0) {
             if (!headingGoalSet) {
-                headingGoal = roundTo2DecimalPlaces(swerveKinematics.getCenterOfMass().getDegrees());
+                headingGoal = Math.rint(swerveKinematics.getCenterOfMass().getDegrees());
                 headingGoalSet = true;
             }
             OMEGA = turnPID(headingGoal);
@@ -139,6 +138,11 @@ public class SwerveDrive {
                 headingGoal = 270;
             }
             headingGoalSet = true;
+        }
+
+        if (g.x == 0 && g.y == 0) {
+            fod(90,0,turnPID(headingGoal),swerveKinematics.getYaw());
+            return;
         }
 
         double x_left = g.x;
@@ -196,13 +200,14 @@ public class SwerveDrive {
     }
 
     public void fod(double strafe_angle, double strafe_power, double turn_power, double yaw) {
-
+        // save computation time if no movement is necessary
+        if (strafe_power == 0 && turn_power == 0) {
+            return;
+        }
 
         double OMEGA = turn_power; // Rotational speed: Clockwise is positive and Anti-Clockwise is negative
         double STR = strafe_power; // Strafing speed
         double STR_ANGLE = strafe_angle; // Strafing angle
-        debugger.addData("Fake X", Double.toString(FAKE_COM_X));
-        debugger.addData("Fake Y", Double.toString(FAKE_COM_Y));
         double corner0 = Math.atan2(ModuleConfig.MODULE_ZERO.rawY()-FAKE_COM_Y, ModuleConfig.MODULE_ZERO.rawX()-FAKE_COM_X) - HALF_PI;
         double corner1 = Math.atan2(ModuleConfig.MODULE_ONE.rawY()-FAKE_COM_Y, ModuleConfig.MODULE_ONE.rawX()-FAKE_COM_X) - HALF_PI;
         double corner2 = Math.atan2(ModuleConfig.MODULE_TWO.rawY()-FAKE_COM_Y, ModuleConfig.MODULE_TWO.rawX()-FAKE_COM_X) - HALF_PI;
