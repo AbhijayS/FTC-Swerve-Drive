@@ -141,6 +141,7 @@ public class SwerveDrive {
         }
 
         if (g.x == 0 && g.y == 0) {
+            setPower(0);
             fod(90,0,turnPID(headingGoal),swerveKinematics.getYaw());
             return;
         }
