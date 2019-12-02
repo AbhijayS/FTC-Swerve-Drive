@@ -6,20 +6,20 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.common.UniversalConstants;
 
-public class hardStops{
+public class HardStops {
     private LinearOpMode linearOpMode;
     private Servo leftStop;
     private Servo rightStop;
-    private hardStopState state;
+    private HardStopState state;
 
-    public hardStops(LinearOpMode l){
+    public HardStops(LinearOpMode l){
         linearOpMode = l;
         HardwareMap hardwareMap = l.hardwareMap;
         leftStop = hardwareMap.servo.get(UniversalConstants.leftStop);
         rightStop = hardwareMap.servo.get(UniversalConstants.rightStop);
         leftStop.setDirection(Servo.Direction.FORWARD);
         rightStop.setDirection(Servo.Direction.REVERSE);
-        state = hardStopState.STOW;
+        state = HardStopState.STOW;
     }
 
     public void update(){
@@ -27,19 +27,19 @@ public class hardStops{
         this.rightStop.setPosition(state.rightPos);
     }
 
-    public void setState(hardStopState newState){
+    public void requestState(HardStopState newState){
         state = newState;
     }
 
-    public hardStopState getState(){
+    public HardStopState getState(){
         return state;
     }
 
-    public enum hardStopState{
+    public enum HardStopState {
         STOW(0, 0), DEPLOY(.5, .5), PARTIAL_DEPLOY(.15, .15);
 
         public double leftPos, rightPos;
-        hardStopState(double leftPosition, double rightPosition){
+        HardStopState(double leftPosition, double rightPosition){
             leftPos = leftPosition;
             rightPos = rightPosition;
         }

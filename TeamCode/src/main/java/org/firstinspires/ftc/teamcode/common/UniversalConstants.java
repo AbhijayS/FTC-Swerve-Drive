@@ -167,6 +167,7 @@ public class UniversalConstants {
     public static final double  wheelCircumference  = wheelDiameter*Math.PI; //inches
     public static final double  driveGearRatio      = 24.0/18.0; // Output rate : Input rate
 
+    // various hardware names
     public static final String expansionHubBottom = "Expansion Hub 1";
     public static final String expansionHubTop = "Expansion Hub 2";
     public static final String clampServoTop = "CST";
@@ -174,6 +175,9 @@ public class UniversalConstants {
     public static final String clampServo = "CS";
     public static final String leftStop = "leftStop";
     public static final String rightStop = "rightStop";
+    public static final String liftMotorA = "liftA";
+    public static final String liftMotorB = "liftB";
+
 
     public static double kS =   6; // Steering gain (path following only)
     public static final double kP =   0.5/90; // Proportional gain

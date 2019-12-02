@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.common.utilities;
 
+import org.firstinspires.ftc.teamcode.modules.HardStops;
 import org.firstinspires.ftc.teamcode.modules.elevator.Clamp;
 import org.firstinspires.ftc.teamcode.modules.jewelswatter.JewelSwatter;
 
@@ -12,6 +13,7 @@ import org.firstinspires.ftc.teamcode.modules.jewelswatter.JewelSwatter;
 public class WayPoint {
     public final JewelSwatter.JewelSwatterState JEWEL_SWATTER_STATE;
     public final Clamp.ClampState CLAMP_STATE;
+    public final HardStops.HardStopState HARD_STOP_STATE;
     public final double POWER;
     public final double WAIT_MILLIS;
     public final Pose POSE;
@@ -20,7 +22,7 @@ public class WayPoint {
     public final double PIVOT_X;
     public final double PIVOT_Y;
 
-    public WayPoint(Pose pose, double power, Clamp.ClampState clampState, JewelSwatter.JewelSwatterState jewelSwatterState, double waitMillis, boolean enablePID, double pivotX, double pivotY) {
+    public WayPoint(Pose pose, double power, Clamp.ClampState clampState, JewelSwatter.JewelSwatterState jewelSwatterState, double waitMillis, boolean enablePID, double pivotX, double pivotY, HardStops.HardStopState hardStopState) {
         this.POSE = pose;
         this.X = POSE.getX();
         this.Y = POSE.getY();
@@ -28,6 +30,7 @@ public class WayPoint {
         this.POWER = power;
         this.CLAMP_STATE = clampState;
         this.JEWEL_SWATTER_STATE = jewelSwatterState;
+        this.HARD_STOP_STATE = hardStopState;
         this.WAIT_MILLIS = waitMillis;
         this.enablePID = enablePID;
         this.PIVOT_X = pivotX;

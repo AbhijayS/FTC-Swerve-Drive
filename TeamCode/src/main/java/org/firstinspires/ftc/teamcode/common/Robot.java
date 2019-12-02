@@ -10,6 +10,7 @@ import org.firstinspires.ftc.teamcode.common.utilities.Gamepad;
 import org.firstinspires.ftc.teamcode.common.utilities.Path;
 import org.firstinspires.ftc.teamcode.common.utilities.Stopwatch;
 import org.firstinspires.ftc.teamcode.common.utilities.WayPoint;
+import org.firstinspires.ftc.teamcode.modules.HardStops;
 import org.firstinspires.ftc.teamcode.modules.elevator.Clamp;
 import org.firstinspires.ftc.teamcode.modules.elevator.LiftModule;
 import org.firstinspires.ftc.teamcode.modules.jewelswatter.JewelSwatter;
@@ -35,6 +36,7 @@ public class Robot {
     private Stopwatch stopwatch;
     private RobotState robotState;
     private Gamepad gamepad;
+    private HardStops hardStops;
 
     public enum RobotState {
         FIELD_ORIENTED, // default
@@ -55,6 +57,7 @@ public class Robot {
         this.jewelSwatter = new JewelSwatter(linearOpMode.hardwareMap);
         this.swerveDrive = new SwerveDrive(linearOpMode, debugger);
         this.gamepad = new Gamepad(linearOpMode);
+        this.hardStops = new HardStops(linearOpMode);
     }
 
     public void setWayPoints(WayPoint[] wayPoints) {
@@ -103,6 +106,7 @@ public class Robot {
                 swerveDrive.swerveKinematics.update();
                 jewelSwatter.update();
                 clamp.update();
+                hardStops.update();
                 debugger.log();
                 break;
             }
@@ -112,6 +116,7 @@ public class Robot {
                 clamp.updateByGamepad(gamepad);
                 gamepad.update();
                 lift.updateByGamepad(gamepad,gamepad.lift);
+                hardStops.update();
                 debugger.log();
                 break;
             }
@@ -122,6 +127,7 @@ public class Robot {
                 swerveDrive.swerveKinematics.update();
                 gamepad.update();
                 lift.updateByGamepad(gamepad,gamepad.lift);
+                hardStops.update();
                 debugger.log();
                 break;
             }
@@ -164,6 +170,8 @@ public class Robot {
         }
         jewelSwatter.requestState(currentWaypoint.JEWEL_SWATTER_STATE);
         clamp.requestState(currentWaypoint.CLAMP_STATE);
+        hardStops.requestState(currentWaypoint.HARD_STOP_STATE);
+
         // lift stuff
     }
 }
