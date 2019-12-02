@@ -35,7 +35,25 @@ public class Lift {
     // make sure target height is within bounds
     // implement a saved position that the lift can go back to
     public int setTargetHeight(int height) {
+        if (height >= MIN_LEVEL && height <= MAX_LEVEL) {
+            targetHeight = height:
+            return 0;
+        }
         return -1;
+    }
+    
+    public void update() {
+        double targetPosition;
+        double targetEncoder;
+        if (targetHeight == 0) {
+            targetPosition = 0;
+            targetEncoder = 0;
+        } else {
+            targetPosition = (targetHeight-1)*STEP_OVER + LEVEL_1_HEIGHT;
+            targetEncoder = convertToTicks(targetPosition);
+        }
+        motorA.setTargetPosition(targetEncoder);
+        motorB.setTargetPosition(targetEncoder);
     }
 
     // TODO: Write an update function
@@ -45,4 +63,11 @@ public class Lift {
     // goes to position using PID
 
     // TODO: Implement bulk reading
+    
+    public double convertToTicks(double inches) {
+        double tickValue = 0;
+        double linear_conversion = inches / 4.0;
+        tickValue = linear_conversion * (1.0 / (2.3 * Math.PI)) * 62 * (38.0 / 62.0) * (1.0 / 38.0) * 560.0;
+        return tickValue;
+    }
 }
