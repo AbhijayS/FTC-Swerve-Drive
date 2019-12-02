@@ -177,6 +177,7 @@ public class UniversalConstants {
     public static final String rightStop = "rightStop";
     public static final String liftMotorA = "liftA";
     public static final String liftMotorB = "liftB";
+    public static final String webcamName = "Webcam 1";
 
 
     public static double kS =   6; // Steering gain (path following only)
