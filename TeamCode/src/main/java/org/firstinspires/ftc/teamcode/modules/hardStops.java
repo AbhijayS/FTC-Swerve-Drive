@@ -36,7 +36,7 @@ public class HardStops {
     }
 
     public enum HardStopState {
-        STOW(0, 0), DEPLOY(.5, .5), PARTIAL_DEPLOY(.15, .15);
+        STOW(0, 0), DEPLOY(.8, .8), PARTIAL_DEPLOY(.4, .4);
 
         public double leftPos, rightPos;
         HardStopState(double leftPosition, double rightPosition){

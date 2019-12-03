@@ -136,10 +136,6 @@ public class SwerveModule {
             driveMotor.setPower(power);
     }
 
-    public double getDisplacement() {
-        return driveMotor.getCurrentPosition() * wheelCircumference * driveGearRatio / ticksPerRevolution;
-    }
-
     // position is in inches
     public void hubPID(double position) {
         int encoder =  (int)(Math.round(position * ticksPerRevolution / wheelCircumference / driveGearRatio));
