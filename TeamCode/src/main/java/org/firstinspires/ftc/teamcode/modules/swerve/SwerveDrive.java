@@ -372,6 +372,9 @@ public class SwerveDrive {
      * 2. Find robot location on path
      * 3. Steer to close the gap - this includes all the math
      */
+    // TODO: The cross track angle needs to consider the current heading of the robot or implement
+    // some kind of PID so that the robot doesn't approach the path too aggressively.
+    // Ignoring the current heading of the robot might be leading to the jittery motion.
     public void stanleyPursuit() {
 
         debugger.addData("Heading Goal", Double.toString(headingGoal));
