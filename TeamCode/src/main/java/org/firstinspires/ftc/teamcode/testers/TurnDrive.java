@@ -5,7 +5,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.common.utilities.Gamepad;
 import org.firstinspires.ftc.teamcode.modules.swerve.SwerveDrive;
-import org.firstinspires.ftc.teamcode.common.UniversalConstants;
 import org.firstinspires.ftc.teamcode.common.utilities.Util;
 import org.firstinspires.ftc.teamcode.common.utilities.Debugger;
 
@@ -15,7 +14,7 @@ import java.util.ArrayList;
 public class TurnDrive extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
-        Debugger robotDebugger = new Debugger(Util.getContext(), this, (ArrayList<String>) UniversalConstants.Debugging.getDebuggingMarkers());
+        Debugger robotDebugger = new Debugger(Util.getContext(), this, (ArrayList<String>) Debugger.Marker.getDebuggingMarkers());
         robotDebugger.initialize("turn drive");
         Gamepad gamepad = new Gamepad(this);
         SwerveDrive swerveDrive = new SwerveDrive(this, robotDebugger);

@@ -16,16 +16,17 @@ public class Lift {
     // TODO: Test if step over is accurate
     private final int STEP_OVER = 5; // inches
 
-    // Level 0 = Stowed
-    // Level 1 = 1st Stone
-    // Level N = Nth Stone
-    private final int MIN_LEVEL = 0; // number of levels
-    private final int MAX_LEVEL = 6; // number of levels
-
     // TODO: Determine level 1 height imperically
     private final int LEVEL_1_HEIGHT = 2; // inches
 
+    // Level 1 = 1st Stone
+    // Level N = Nth Stone
+    private final int MIN_LEVEL = 1; // number of levels
+    private final int MAX_LEVEL = 6; // number of levels
+
     private int targetLevel; // number of levels
+    private State state; // lift state
+
     public enum State {
         STOW,
         EXTEND
@@ -36,6 +37,7 @@ public class Lift {
         this.motorA = hardwareMap.dcMotor.get(UniversalConstants.liftMotorA);
         this.motorA = hardwareMap.dcMotor.get(UniversalConstants.liftMotorB);
         this.targetLevel = 0;
+        this.state = State.STOW;
     }
 
     // TODO: finish this function
@@ -48,16 +50,27 @@ public class Lift {
         }
         return -1;
     }
+
+    public void requestState(State newState) {
+        this.state = newState;
+    }
     
     public void update() {
         int targetEncoder;
-        if (targetLevel == 0) {
-            targetEncoder = 0;
-        } else {
-            int targetHeight;
-            targetHeight = (targetLevel-1) * STEP_OVER + LEVEL_1_HEIGHT;
-            targetEncoder = convertToTicks(targetHeight);
+
+        switch (state) {
+            case EXTEND: {
+                int targetHeight = (targetLevel-1) * STEP_OVER + LEVEL_1_HEIGHT;
+                targetEncoder = convertToTicks(targetHeight);
+                break;
+            }
+
+            default: {
+                targetEncoder = 0;
+                break;
+            }
         }
+
         motorA.setTargetPosition(targetEncoder);
         motorB.setTargetPosition(targetEncoder);
     }
@@ -90,6 +103,8 @@ public class Lift {
     // goes to position using PID
 
     // TODO: Implement bulk reading
+
+    // TODO: Test verify convertToTicks method
     private int convertToTicks(double inches) {
         double tickValue = 0;
         double linear_conversion = inches / 4.0;

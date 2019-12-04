@@ -11,6 +11,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ROBOT_STATUS;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.Status;
@@ -30,6 +31,36 @@ public class Debugger {
     private Stopwatch stopwatch;
     private boolean initialized;
     private Telemetry telemetry;
+
+    public enum Marker {
+        RX("Robot X"),
+        RY("Robot Y"),
+        PX("Tracking Pose X"),
+        PY("Tracking Pose Y"),
+        HEADING("Heading"),
+        VELOCITY("Velocity"),
+        PATH("Path");
+
+        private final String name;
+
+        Marker(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return name;
+        }
+
+        public static List<String> getDebuggingMarkers() {
+            ArrayList<String> result = new ArrayList<>();
+            for (Marker d : Marker.values()) {
+                result.add(d.toString());
+            }
+            return result;
+        }
+
+    }
 
     public Debugger(Context context, LinearOpMode linearOpMode, ArrayList<String> categories) {
         this.context = context;

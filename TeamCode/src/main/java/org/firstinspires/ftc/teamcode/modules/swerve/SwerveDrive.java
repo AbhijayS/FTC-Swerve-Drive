@@ -11,10 +11,10 @@ import org.firstinspires.ftc.teamcode.common.utilities.Gamepad;
 import org.firstinspires.ftc.teamcode.common.utilities.Path;
 import org.firstinspires.ftc.teamcode.common.utilities.Pose;
 
-import static org.firstinspires.ftc.teamcode.common.UniversalConstants.Debugging.PATH;
-import static org.firstinspires.ftc.teamcode.common.UniversalConstants.Debugging.PX;
-import static org.firstinspires.ftc.teamcode.common.UniversalConstants.Debugging.PY;
-import static org.firstinspires.ftc.teamcode.common.UniversalConstants.Debugging.VELOCITY;
+import static org.firstinspires.ftc.teamcode.common.utilities.Debugger.Marker.PATH;
+import static org.firstinspires.ftc.teamcode.common.utilities.Debugger.Marker.PX;
+import static org.firstinspires.ftc.teamcode.common.utilities.Debugger.Marker.PY;
+import static org.firstinspires.ftc.teamcode.common.utilities.Debugger.Marker.VELOCITY;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.HALF_PI;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ModuleConfig;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.AUTO_MAX_SPEED;
@@ -418,8 +418,11 @@ public class SwerveDrive {
                 // Calculate cross-track error
                 trackingPose = path.TRACKING_POSE;
                 double distance = Math.hypot(trackingPose.getX() - CoM.getX(), trackingPose.getY() - CoM.getY());
+
                 if (Math.abs(distance) <= tolerance)
                     distance = 0;
+
+                double pathAngle = path.heading(trackingPose.getX());
                 double crossTrackAngle;
 
                 if (path.DIRECTION == Direction.LEFT || path.DIRECTION == Direction.RIGHT) {
@@ -430,10 +433,12 @@ public class SwerveDrive {
                     crossTrackAngle = Math.toDegrees(Math.atan2(path.DIRECTION.assignDirection(velocity / kS), distance));
                 }
 
+                double strafeAngle = pathAngle + crossTrackAngle;
+
                 if (!Double.isNaN(trackingPose.getDegrees()))
                     headingGoal = trackingPose.getDegrees();
 
-                fod(crossTrackAngle, maxPower, turnPID(headingGoal), yaw);
+                fod(strafeAngle, maxPower, turnPID(headingGoal), yaw);
 
                 if (!ROBOT_STATUS.equals(RELEASE)) {
                     debugger.addData(PATH.toString(), path.toString());

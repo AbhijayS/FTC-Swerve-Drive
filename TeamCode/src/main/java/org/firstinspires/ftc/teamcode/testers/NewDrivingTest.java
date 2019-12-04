@@ -18,7 +18,7 @@ public class NewDrivingTest extends LinearOpMode {
         Gamepad g = new Gamepad(this);
         MODULE modules[] = {MODULE.LEFT_FRONT, MODULE.RIGHT_FRONT, MODULE.RIGHT_REAR, MODULE.LEFT_REAR};
 
-//        Debugger robotDebugger = new Debugger(Util.getContext(), this, (ArrayList<String>) UniversalConstants.Debugging.getDebuggingMarkers());
+//        Debugger robotDebugger = new Debugger(Util.getContext(), this, (ArrayList<String>) UniversalConstants.Marker.getDebuggingMarkers());
 //        SwerveDrive swerveDrive = new SwerveDrive(this, null);
 
         // modules 0 and 2 are normal

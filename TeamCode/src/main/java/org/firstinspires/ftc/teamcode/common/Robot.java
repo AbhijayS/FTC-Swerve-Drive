@@ -41,8 +41,7 @@ public class Robot {
     public enum RobotState {
         FIELD_ORIENTED, // default
         ROBOT_ORIENTED,
-        PATH_FOLLOWING,
-
+        PATH_FOLLOWING
     }
 
     public Robot(LinearOpMode linearOpMode, Debugger debugger) {

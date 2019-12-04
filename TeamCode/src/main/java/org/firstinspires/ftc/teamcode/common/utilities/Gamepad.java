@@ -17,6 +17,7 @@ public class Gamepad {
     public boolean clamp;
     public boolean stow;
     public double lift;
+    public boolean stowLift, extendLift, incrementLift, decrementLift;
 
     public double x, y, z, lx, ly, rx, ry;
 

@@ -24,35 +24,6 @@ public class UniversalConstants {
 
     public static final DecimalFormat decimalFormat = new DecimalFormat("#.##");
 
-    public enum Debugging {
-        RX("Robot X"),
-        RY("Robot Y"),
-        PX("Tracking Pose X"),
-        PY("Tracking Pose Y"),
-        HEADING("Heading"),
-        VELOCITY("Velocity"),
-        PATH("Path");
-
-        private final String name;
-        Debugging(String name) {
-            this.name = name;
-        }
-
-        @Override
-        public String toString() {
-            return name;
-        }
-
-        public static List<String> getDebuggingMarkers() {
-            ArrayList<String> result = new ArrayList<>();
-            for (Debugging d : Debugging.values()) {
-                result.add(d.toString());
-            }
-            return result;
-        }
-
-    }
-
     public enum MotorDirection {
         FORWARD(1.0f,"Forward"),
         REVERSE(-1.0f,"Reverse");
@@ -132,7 +103,7 @@ public class UniversalConstants {
 
     public enum JewelSwatterConfig {
         LEFT("JSLA1", "JSLA2", Servo.Direction.FORWARD, Servo.Direction.REVERSE, 0),
-        RIGHT("JSRA1", "JSRA2", Servo.Direction.FORWARD, Servo.Direction.FORWARD, 0.1);
+        RIGHT("JSRA1", "JSRA2", Servo.Direction.FORWARD, Servo.Direction.FORWARD, 0);
 
         public String nameAxis1, nameAxis2;
         public double delta;
