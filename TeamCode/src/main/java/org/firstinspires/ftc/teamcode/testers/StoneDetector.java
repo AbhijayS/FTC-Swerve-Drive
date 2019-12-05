@@ -20,10 +20,9 @@ public class StoneDetector extends LinearOpMode {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
         parameters.vuforiaLicenseKey = UniversalConstants.vuforiaLicenceKey;
-        parameters.cameraName = webcamName;
+        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
 
         VuforiaLocalizer vuforia = ClassFactory.getInstance().createVuforia(parameters);
-        vuforia.enableConvertFrameToFormat(PIXEL_FORMAT.GRAYSCALE);
         Vuforia.setFrameFormat(PIXEL_FORMAT.RGB565,true);
         vuforia.setFrameQueueCapacity(2);
 
@@ -41,12 +40,40 @@ public class StoneDetector extends LinearOpMode {
         Image vu_img = frame.getImage(1);
         Bitmap bitmap = Bitmap.createBitmap(vu_img.getWidth(), vu_img.getHeight(), Bitmap.Config.RGB_565);
         bitmap.copyPixelsFromBuffer(vu_img.getPixels());
+        int height = vu_img.getHeight();
+        int width = vu_img.getWidth();
 
         telemetry.addLine();
-        telemetry.addData("Bit Height", bitmap.getHeight());
-        telemetry.addData("Bit Width", bitmap.getWidth());
-        telemetry.addData("Pixel", bitmap.getPixel(0,0));
-        telemetry.addData("Gray", rgbToGray(bitmap.getPixel(0,0)));
+        telemetry.addData("Bit Height", height);
+        telemetry.addData("Bit Width", width);
+
+        {
+            // average left side
+            int leftAvg = 0;
+            int counter = 0;
+            for (int i = 0; i < height; i++) {
+                for (int j = 0; j < width / 2; j++) {
+                    leftAvg += rgbToGray(bitmap.getPixel(j, i));
+                    counter++;
+                }
+            }
+            leftAvg /= counter;
+            telemetry.addData("Left Color", leftAvg);
+        }
+
+        {
+            // average right side
+            int rightAvg = 0;
+            int counter = 0;
+            for (int i = 0; i < height; i++) {
+                for (int j = width/2; j < width; j++) {
+                    rightAvg += rgbToGray(bitmap.getPixel(j, i));
+                    counter++;
+                }
+            }
+            rightAvg /= counter;
+            telemetry.addData("Right Color", rightAvg);
+        }
 
         telemetry.update();
         while (opModeIsActive()) {

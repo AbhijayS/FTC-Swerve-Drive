@@ -156,6 +156,7 @@ public class Robot {
                 }
                 path.pathFollowing(swerveDrive.swerveKinematics.getCenterOfMass());
             } else {
+                UniversalConstants.kS = currentWaypoint.kS;
                 swerveDrive.setPivotX(currentWaypoint.PIVOT_X);
                 swerveDrive.setPivotY(currentWaypoint.PIVOT_Y);
                 swerveDrive.setMaxPower(currentWaypoint.POWER);

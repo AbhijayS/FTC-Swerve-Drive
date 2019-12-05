@@ -21,8 +21,9 @@ public class WayPoint {
     public final boolean enablePID;
     public final double PIVOT_X;
     public final double PIVOT_Y;
+    public final double kS;
 
-    public WayPoint(Pose pose, double power, Clamp.ClampState clampState, JewelSwatter.JewelSwatterState jewelSwatterState, double waitMillis, boolean enablePID, double pivotX, double pivotY, HardStops.HardStopState hardStopState) {
+    public WayPoint(Pose pose, double power, Clamp.ClampState clampState, JewelSwatter.JewelSwatterState jewelSwatterState, double waitMillis, boolean enablePID, double pivotX, double pivotY, HardStops.HardStopState hardStopState, double kS) {
         this.POSE = pose;
         this.X = POSE.getX();
         this.Y = POSE.getY();
@@ -35,6 +36,7 @@ public class WayPoint {
         this.enablePID = enablePID;
         this.PIVOT_X = pivotX;
         this.PIVOT_Y = pivotY;
+        this.kS = kS;
     }
 
     public boolean equals(WayPoint wayPoint) {
