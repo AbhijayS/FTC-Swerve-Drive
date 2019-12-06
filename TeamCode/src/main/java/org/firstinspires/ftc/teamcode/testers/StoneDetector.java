@@ -19,9 +19,8 @@ public class StoneDetector extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
-        parameters.vuforiaLicenseKey = UniversalConstants.vuforiaLicenceKey;
         parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
-
+        parameters.vuforiaLicenseKey = UniversalConstants.vuforiaLicenceKey;
         VuforiaLocalizer vuforia = ClassFactory.getInstance().createVuforia(parameters);
         Vuforia.setFrameFormat(PIXEL_FORMAT.RGB565,true);
         vuforia.setFrameQueueCapacity(2);
