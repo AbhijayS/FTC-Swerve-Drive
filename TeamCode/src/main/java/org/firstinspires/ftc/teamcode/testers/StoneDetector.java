@@ -21,12 +21,6 @@ public class StoneDetector extends LinearOpMode {
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
         parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
         parameters.vuforiaLicenseKey = UniversalConstants.vuforiaLicenceKey;
-<<<<<<< HEAD
-        
-=======
-        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
-
->>>>>>> 4e4fa2cf5c7f567a34b81acb6d06ddd8c03e222f
         VuforiaLocalizer vuforia = ClassFactory.getInstance().createVuforia(parameters);
         Vuforia.setFrameFormat(PIXEL_FORMAT.RGB565,true);
         vuforia.setFrameQueueCapacity(2);
