@@ -30,15 +30,15 @@ public class WayPointTester extends LinearOpMode {
         // TODO: Test with different powers
         WayPoint[] wayPoints = {
                 // move up and right
-                new WayPoint(new Pose(0,0,90),0.1, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.STOW_ALL,0, false,0,0, HardStops.HardStopState.STOW),
-                new WayPoint(new Pose(6,6,90),0.1, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.STOW_ALL,0, false,0,0, HardStops.HardStopState.STOW),
-                new WayPoint(new Pose(12,12,90),0.1, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.STOW_ALL,0, false,0,0, HardStops.HardStopState.STOW),
-                new WayPoint(new Pose(0,12,90),0.1, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.STOW_ALL,0, false,0,0, HardStops.HardStopState.STOW),
+                new WayPoint(new Pose(0,0,90),0.1, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.STOW_ALL,0, false,0,0, HardStops.HardStopState.STOW, 6),
+                new WayPoint(new Pose(6,6,90),0.1, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.STOW_ALL,0, false,0,0, HardStops.HardStopState.STOW, 6),
+                new WayPoint(new Pose(12,12,90),0.1, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.STOW_ALL,0, false,0,0, HardStops.HardStopState.STOW, 6),
+                new WayPoint(new Pose(0,12,90),0.1, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.STOW_ALL,0, false,0,0, HardStops.HardStopState.STOW, 6),
                 // move left
-                new WayPoint(new Pose(-12,12,90),0.1, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.STOW_ALL,0, false,0,0, HardStops.HardStopState.STOW),
+                new WayPoint(new Pose(-12,12,90),0.1, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.STOW_ALL,0, false,0,0, HardStops.HardStopState.STOW, 6),
                 // move down and right
-                new WayPoint(new Pose(-6,6,90),0.1, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.STOW_ALL,0, false,0,0, HardStops.HardStopState.STOW),
-                new WayPoint(new Pose(0,0,90),0.1, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.STOW_ALL,0, false,0,0, HardStops.HardStopState.STOW),
+                new WayPoint(new Pose(-6,6,90),0.1, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.STOW_ALL,0, false,0,0, HardStops.HardStopState.STOW, 6),
+                new WayPoint(new Pose(0,0,90),0.1, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.STOW_ALL,0, false,0,0, HardStops.HardStopState.STOW, 6),
         };
 
         robot.requestState(Robot.RobotState.PATH_FOLLOWING);
