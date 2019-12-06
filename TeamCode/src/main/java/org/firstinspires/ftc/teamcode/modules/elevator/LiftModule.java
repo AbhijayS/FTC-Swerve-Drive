@@ -21,8 +21,10 @@ public class LiftModule {
     private PIDCoefficients pidCoefficients;
     private boolean runPosition = false;
     private boolean holdPosition = true;
+    public boolean moveDown = false;
     private double incremHeight = 5;
     private int increment = 0;
+    private double currentPosition = 0;
 
 
     public void status(String s) {
@@ -56,15 +58,21 @@ public class LiftModule {
 
         liftOne.setDirection(DcMotorSimple.Direction.FORWARD);
         liftTwo.setDirection(DcMotorSimple.Direction.FORWARD);
-        //pidCoefficients = new PIDCoefficients(0, 0, 0);
+        //pidCoefficients = new PIDCoefficients(10, 0, 0);
         //liftOne.setPIDCoefficients(DcMotor.RunMode.RUN_TO_POSITION, pidCoefficients);
         //liftTwo.setPIDCoefficients(DcMotor.RunMode.RUN_TO_POSITION, pidCoefficients);
 
         status("Directions Set");
         liftTwo.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        liftOne.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         setRunMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
     }
+
+    /**
+     * This function allows the specification of the run mode on both motors
+     * @param runMode to set motors to.
+     */
 
     public void setRunMode(DcMotor.RunMode runMode) {
         liftOne.setMode(runMode);
@@ -86,16 +94,19 @@ public class LiftModule {
     }
 
     public void moveHeight(double height, double power) {
-        if (height <= 42) {
+        if (height <= 54) {
             double p = power;
-            //setRunMode(DcMotor.RunMode.RUN_TO_POSITION);
-            if(((int)convertToTicks(height))<liftTwo.getCurrentPosition()){
+
+            liftOne.setTargetPosition((int) convertToTicks(height));
+            liftTwo.setTargetPosition((int) convertToTicks(height));
+            setRunMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            if (((int) convertToTicks(height)) < liftTwo.getCurrentPosition()) {
                 p = -p;
             }
             liftOne.setPower(p);
             liftTwo.setPower(p);
-            liftOne.setTargetPosition((int) convertToTicks(height));
-            liftTwo.setTargetPosition((int) convertToTicks(height));
+
             telemetry.addData("Height: ", height);
             telemetry.addData("Height Conversion: ", (int) convertToTicks(height));
             telemetry.addData("LiftOne Pos: ", liftOne.getCurrentPosition());
@@ -105,33 +116,61 @@ public class LiftModule {
         //double averagePosition = (liftOne.getCurrentPosition() + liftTwo.getTargetPosition()) / 2.0;
         if (liftTwo.getCurrentPosition() <= (liftTwo.getTargetPosition() + 20) && liftTwo.getCurrentPosition() >= (liftTwo.getTargetPosition() - 20)) {
             setRunMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            runPosition = false;
+            holdPosition = false;
 
         }
 
     }
 
-    public void moveToState() {
-        if (PositionalStates.FULL.height <= 54) {
-            setRunMode(DcMotor.RunMode.RUN_TO_POSITION);
-            liftOne.setPower(state.runPower);
-            liftTwo.setPower(state.runPower);
-            //liftOne.setTargetPosition((int) convertToTicks(state.height));
-            liftTwo.setTargetPosition((int) convertToTicks(state.height));
-            telemetry.addData("Height: ", state.height);
-            telemetry.addData("Height Conversion: ", (int) convertToTicks(state.height));
-            //telemetry.addData("LiftOne Pos: ", liftOne.getCurrentPosition());
-            telemetry.addData("LiftTwo Pos: ", liftTwo.getCurrentPosition());
+    /**
+     * This function is designed to hold the position of the lift when it is not being powered to move in a certain direction.
+     *
+     * @param power Input the maximum power to hold the lift position at.
+     */
+
+    public void holdHeight(double power) {
+        double height = convertToInches(currentPosition);
+        double p = power;
+
+        liftOne.setTargetPosition((int) convertToTicks(height));
+        liftTwo.setTargetPosition((int) convertToTicks(height));
+        setRunMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        if (((int) convertToTicks(height)) < liftTwo.getCurrentPosition()) {
+            p = -p;
         }
-        //double averagePosition = (liftOne.getCurrentPosition() + liftTwo.getTargetPosition()) / 2.0;
-        if (liftTwo.getCurrentPosition() <= liftTwo.getTargetPosition() + 20 && liftTwo.getCurrentPosition() >= liftTwo.getTargetPosition() - 20) {
-            runPosition = false;
-            //return true;
+        liftOne.setPower(p);
+        liftTwo.setPower(p);
+
+        telemetry.addData("Height: ", height);
+        telemetry.addData("Height Conversion: ", (int) convertToTicks(height));
+        telemetry.addData("LiftOne Pos: ", liftOne.getCurrentPosition());
+        telemetry.addData("Target Position: ", liftTwo.getTargetPosition());
+        telemetry.addData("LiftTwo Pos: ", liftTwo.getCurrentPosition());
+        if (liftTwo.getCurrentPosition() <= (liftTwo.getTargetPosition() + 20) && liftTwo.getCurrentPosition() >= (liftTwo.getTargetPosition() - 20)) {
+            setRunMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            holdPosition = false;
+
         }
-        //return false;
     }
 
-    public void updateByGamepad(Gamepad g, double stick) {
+    public void alternateState() {
+        runPosition = true;
+
+        if (!moveDown && runPosition) {
+            moveHeight(54, 1);
+            if (!runPosition) {
+                moveDown = true;
+            }
+        } else {
+            moveHeight(0, .5);
+            if (!runPosition) {
+                moveDown = false;
+            }
+        }
+    }
+
+    public void updateByGamepad(Gamepad g, double stick) throws InterruptedException {
 
         // This sets the joystick to control the power with a cubic root function and caps the value at the max power of 1
         double power = Range.clip(Math.cbrt(stick), -.5, .5);
@@ -140,34 +179,54 @@ public class LiftModule {
         } else if (liftTwo.getCurrentPosition() <= convertToTicks(0) && power < 0) {
             power = 0;
         }
-        if(!runPosition) {
+        /*if (power == 0) {
+            holdPosition = true;
+        }*/
+        if (!runPosition && !holdPosition) {
             liftOne.setPower(power);
             liftTwo.setPower(power);
+            currentPosition = liftTwo.getCurrentPosition();
         }
         if (g.Ou) {
-            Range.clip(increment+=1,0,10);
-            setRunMode(DcMotor.RunMode.RUN_TO_POSITION);
+            Range.clip(increment += 1, 0, 10);
+            //setRunMode(DcMotor.RunMode.RUN_TO_POSITION);
             runPosition = true;
+            Thread.sleep(100);
         } else if (g.Od) {
-            Range.clip(increment-=1,0,10);
-            setRunMode(DcMotor.RunMode.RUN_TO_POSITION);
+            Range.clip(increment -= 1, 0, 10);
+            //setRunMode(DcMotor.RunMode.RUN_TO_POSITION);
             runPosition = true;
+            Thread.sleep(100);
         } else if (g.Ol) {
-            setRunMode(DcMotor.RunMode.RUN_TO_POSITION);
+            //setRunMode(DcMotor.RunMode.RUN_TO_POSITION);
             runPosition = true;
+            Thread.sleep(100);
         } else if (g.Or) {
             increment = 0;
-            setRunMode(DcMotor.RunMode.RUN_TO_POSITION);
+            //setRunMode(DcMotor.RunMode.RUN_TO_POSITION);
             runPosition = true;
+            Thread.sleep(100);
         }
         if (runPosition) {
-            moveHeight(Range.clip((incremHeight * increment),0,54),.8);
+            moveHeight(Range.clip((incremHeight * increment), 0, 54), 1);
             telemetry.addLine("moving to position");
+            holdPosition = true;
+            currentPosition = liftTwo.getCurrentPosition();
         }
+        /*if (holdPosition) {
+            holdHeight(1);
+            telemetry.addLine("Holding Position");
+        }*/
 
-        telemetry.addData("increment: ",increment);
+        telemetry.addData("increment: ", increment);
         telemetry.addData("power: ", power);
-        telemetry.addData("position: ", liftTwo.getCurrentPosition());
+        //telemetry.addData("stick: ",stick);
+        /*telemetry.addData("Motor Power 1: ", liftOne.getPower());
+        telemetry.addData("Motor Power 2: ", liftTwo.getPower());
+        telemetry.addData("Motor Velo 1: ", liftOne.getVelocity());
+        telemetry.addData("Motor Velo 2: ", liftTwo.getVelocity());*/
+        telemetry.addData("CURRENT POS: ",currentPosition);
+        telemetry.addData("POSITION: ", liftTwo.getCurrentPosition());
 
     }
 

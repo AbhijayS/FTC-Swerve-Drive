@@ -20,9 +20,9 @@ public class Odometry {
     public Coordinate previous;
     private final double CPR = 512;
     private final double wheel = 1.1811; // inches
-    private double t1;
-    private double t2;
+    private double t1, t2;
     private double velocity; //inches / second
+
 
 
     public void status(String s) {
@@ -59,7 +59,7 @@ public class Odometry {
         t2 = 0;
         velocity = 0;
 
-        status("Miscellaneous Variables Initialized");
+        status("Kinematic Variables Initialized");
     }
 
     /**
@@ -153,9 +153,14 @@ public class Odometry {
      * sets a snapshot of robot movement to be saved so that it can be fed into path following later.
      */
     public void saveSnapshot() {
-        save = snapshot;
+        save.clear();
+        save.addAll(snapshot);
     }
 
+    /**
+     * Calculates the distance between the current point and the previous known location. This is used to calculate a velocity of robot based off of odometry readings.
+     * @return distance between current and previous point.
+     */
     public double calcDistance() {
         double dx = current.getX() - previous.getX();
         double dy = current.getY() - previous.getY();
@@ -168,6 +173,31 @@ public class Odometry {
         double dT = t2 - t1;
         velocity = dP / dT;
     }
+
+    public double calcDistance(double xCoordinate, double yCoordinate){
+        double dx = xCoordinate - current.getX();
+        double dy = yCoordinate - current.getY();
+        double dSquare = Math.pow(dx, 2) + Math.pow(dy, 2);
+        return Math.sqrt(dSquare);
+    }
+
+    public double estimateTimeToPoint(double x, double y){
+        double distance = calcDistance(x,y);
+        return distance / velocity;
+    }
+
+    //needs testing to see how it will return angle values.
+    public double angularDistToPoint(double heading, double x, double y){
+        double adjHeading = heading + 90;
+        double dx = x - current.getX();
+        double dy = y - current.getY();
+        double angleFromZero = Math.toDegrees(Math.atan(y/x));
+        double dAngle = angleFromZero - adjHeading;
+        while (dAngle >= 270) {dAngle -= 360;}
+        while (dAngle <= -90) {dAngle += 360;}
+        return dAngle + 90;
+    }
+
 
 
 }
