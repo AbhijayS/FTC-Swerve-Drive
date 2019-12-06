@@ -417,10 +417,7 @@ public class SwerveDrive {
             default:
                 // Calculate cross-track error
                 trackingPose = path.TRACKING_POSE;
-                double distance = Math.hypot(trackingPose.getX() - CoM.getX(), trackingPose.getY() - CoM.getY());
-
-                if (Math.abs(distance) <= tolerance)
-                    distance = 0;
+                double distance = Math.hypot(trackingPose.getX() - CoM.getX(), trackingPose.getY() - CoM.getY()) - tolerance;
 
                 double pathAngle = path.heading(trackingPose.getX());
                 double crossTrackAngle;
