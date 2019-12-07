@@ -17,7 +17,7 @@ public class FullTeleOp extends LinearOpMode {
         robotDebugger.initialize("TeleOp");
         Robot robot = new Robot(this,robotDebugger);
         robot.requestState(Robot.RobotState.ROBOT_ORIENTED);
-        robot.updateAll();
+//        robot.updateAll();
 
         waitForStart();
 

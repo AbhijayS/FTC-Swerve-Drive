@@ -28,7 +28,7 @@ public class BlueFoundation2SkystonePark extends LinearOpMode {
         Robot robot = new Robot(this, robotDebugger);
         TensorFlowLite tensorFlowLite = new TensorFlowLite(this,.5);
         tensorFlowLite.activateTfod();
-        robot.updateAll();
+//        robot.updateAll();
 
         waitForStart();
 

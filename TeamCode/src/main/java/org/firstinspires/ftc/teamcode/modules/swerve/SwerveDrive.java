@@ -140,13 +140,13 @@ public class SwerveDrive {
             headingGoalSet = true;
         }
 
-        if (g.x == 0 && g.y == 0) {
-            setPower(0);
-            if (turnPID(headingGoal) != 0) {
-                fod(90,0,turnPID(headingGoal),swerveKinematics.getYaw());
-            }
-            return;
-        }
+//        if (g.x == 0 && g.y == 0) {
+//            setPower(0);
+//            if (turnPID(headingGoal) != 0) {
+//                fod(90,0,turnPID(headingGoal),swerveKinematics.getYaw());
+//            }
+//            return;
+//        }
 
         double x_left = g.x;
         double y_left = g.y;

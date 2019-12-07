@@ -114,7 +114,12 @@ public class Robot {
                 swerveDrive.fod(gamepad);
                 clamp.updateByGamepad(gamepad);
                 gamepad.update();
-                lift.updateByGamepad(gamepad,gamepad.lift);
+                try {
+                    lift.updateByGamepad(gamepad,gamepad.lift
+                    );
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e.getMessage());
+                }
                 hardStops.update();
                 debugger.log();
                 break;
@@ -125,7 +130,12 @@ public class Robot {
                 clamp.updateByGamepad(gamepad);
                 swerveDrive.swerveKinematics.update();
                 gamepad.update();
-                lift.updateByGamepad(gamepad,gamepad.lift);
+                try {
+                    lift.updateByGamepad(gamepad,gamepad.lift
+                    );
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e.getMessage());
+                }
                 hardStops.update();
                 debugger.log();
                 break;
