@@ -83,6 +83,7 @@ public class Robot {
                     this.path = null;
                     this.wayPoints = null;
                     this.currentWaypoint = null;
+                    this.hardStops.requestState(HardStops.HardStopState.DEPLOY);
                     swerveDrive.requestState(SwerveState.HUMAN_INPUT);
                     robotState = newState;
                     break;
