@@ -116,7 +116,8 @@ public class LiftModule {
         //double averagePosition = (liftOne.getCurrentPosition() + liftTwo.getTargetPosition()) / 2.0;
         if (liftTwo.getCurrentPosition() <= (liftTwo.getTargetPosition() + 20) && liftTwo.getCurrentPosition() >= (liftTwo.getTargetPosition() - 20)) {
             setRunMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            holdPosition = false;
+            runPosition = false;
+            holdPosition = true;
 
         }
 
@@ -173,7 +174,7 @@ public class LiftModule {
     public void updateByGamepad(Gamepad g, double stick) throws InterruptedException {
 
         // This sets the joystick to control the power with a cubic root function and caps the value at the max power of 1
-        double power = Range.clip(Math.cbrt(stick), -.5, .5);
+        double power = Range.clip(Math.cbrt(stick), -1, 1);
         if (liftTwo.getCurrentPosition() >= convertToTicks(54) && power > 0) {
             power = 0;
         } else if (liftTwo.getCurrentPosition() <= convertToTicks(0) && power < 0) {
@@ -182,12 +183,12 @@ public class LiftModule {
         /*if (power == 0) {
             holdPosition = true;
         }*/
-        if (!runPosition && !holdPosition) {
+        if (!runPosition) {
             liftOne.setPower(power);
             liftTwo.setPower(power);
             currentPosition = liftTwo.getCurrentPosition();
         }
-        if (g.Ou) {
+        /*if (g.Ou) {
             Range.clip(increment += 1, 0, 10);
             //setRunMode(DcMotor.RunMode.RUN_TO_POSITION);
             runPosition = true;
@@ -206,7 +207,7 @@ public class LiftModule {
             //setRunMode(DcMotor.RunMode.RUN_TO_POSITION);
             runPosition = true;
             Thread.sleep(100);
-        }
+        }*/
         if (runPosition) {
             moveHeight(Range.clip((incremHeight * increment), 0, 54), 1);
             telemetry.addLine("moving to position");
