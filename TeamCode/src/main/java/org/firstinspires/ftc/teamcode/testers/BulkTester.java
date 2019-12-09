@@ -30,7 +30,7 @@ public class BulkTester extends LinearOpMode {
         double elapsed;
         double period;
         double hz;
-
+        
         telemetry.addLine("Ready to go!");
         telemetry.update();
 

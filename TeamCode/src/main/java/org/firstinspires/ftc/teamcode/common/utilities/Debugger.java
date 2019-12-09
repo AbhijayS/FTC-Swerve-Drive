@@ -89,15 +89,15 @@ public class Debugger {
         this.initialized = false;
     }
 
-    public void addData(String category, String data) {
+    public void addData(String category, Object data) {
         int index = categories.indexOf(category);
         if (ROBOT_STATUS != Status.RELEASE)
-            telemetry.addData(category, data);
+            telemetry.addData(category, data.toString());
 
         if (index == -1)
             return;
 
-        buffer.set(index, data);
+        buffer.set(index, data.toString());
     }
 
     public void log() {

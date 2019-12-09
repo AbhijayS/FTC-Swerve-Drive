@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.common.utilities;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.util.Range;
 
 // TODO: Port all gamepad commands here
 public class Gamepad {
@@ -18,6 +19,7 @@ public class Gamepad {
     public boolean stow;
     public double lift;
     public boolean stowLift, extendLift, incrementLift, decrementLift;
+    public double microAdjustLift;
 
     public double x, y, z, lx, ly, rx, ry;
 
@@ -29,24 +31,17 @@ public class Gamepad {
     }
 
     public void update() {
+
+        /* Driver Commands*/
         _0 = driver.dpad_right;
         _90 = driver.dpad_up;
         _180 = driver.dpad_left;
         _270 = driver.dpad_down;
-        Oa = operator.a;
-        Ob = operator.b;
-        Ou = operator.dpad_up;
-        Od = operator.dpad_down;
-        Ol = operator.dpad_left;
-        Or = operator.dpad_right;
         slowmo = driver.left_bumper;
-
         if (driver.y)
             fod = !fod;
-
         if (driver.x)
             reset_gyro = true;
-
         heading = (_0 || _90 || _180 || _270) && !(_0 && _90 && _180 && _270);
 
         _45 = _0 && _90;
@@ -57,14 +52,33 @@ public class Gamepad {
         x = driver.left_stick_x;
         y = -driver.left_stick_y;
         z = driver.right_stick_x;
+
+
+
+        /* Operator Commands */
+        Oa = operator.a;
+        Ob = operator.b;
+        Ou = operator.dpad_up;
+        Od = operator.dpad_down;
+        Ol = operator.dpad_left;
+        Or = operator.dpad_right;
+
         lx = operator.left_stick_x;
         ly = operator.left_stick_y;
         ry = operator.right_stick_y;
         rx = operator.right_stick_x;
 
+        // LiftModule.java
         lift = -operator.left_stick_y;
         clamp = operator.right_bumper;
         stow = operator.left_bumper;
+
+        // Lift.java
+        stowLift = operator.dpad_left;
+        extendLift = operator.dpad_right;
+        incrementLift = operator.dpad_up;
+        decrementLift = operator.dpad_down;
+        microAdjustLift = Range.scale(-operator.left_stick_y,-1,1,-0.05,0.05);
     }
 
 }
