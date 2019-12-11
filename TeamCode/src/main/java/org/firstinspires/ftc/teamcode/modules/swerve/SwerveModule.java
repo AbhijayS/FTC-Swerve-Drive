@@ -125,7 +125,11 @@ public class SwerveModule {
 
         linearOpMode.telemetry.addData(swerveModule.servoID.toUpperCase(), "DISABLED");
         return 0;
+    }
 
+    @Deprecated
+    public void setPosition(double position) {
+        turnServo.setPosition(position);
     }
 
     public void setPower(double power) {

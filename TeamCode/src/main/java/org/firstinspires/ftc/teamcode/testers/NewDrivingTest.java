@@ -2,14 +2,24 @@ package org.firstinspires.ftc.teamcode.testers;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.common.UniversalConstants;
 import org.firstinspires.ftc.teamcode.common.utilities.Debugger;
 import org.firstinspires.ftc.teamcode.common.utilities.Gamepad;
 import org.firstinspires.ftc.teamcode.common.utilities.Util;
 import org.firstinspires.ftc.teamcode.modules.swerve.SwerveDrive;
+import org.firstinspires.ftc.teamcode.modules.swerve.SwerveModule;
 
 import java.util.ArrayList;
+
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ModuleConfig.MODULE_ONE;
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ModuleConfig.MODULE_THREE;
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ModuleConfig.MODULE_TWO;
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ModuleConfig.MODULE_ZERO;
 
 @TeleOp(name = "TestOp: New Driving")
 public class NewDrivingTest extends LinearOpMode {
@@ -17,9 +27,13 @@ public class NewDrivingTest extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         Gamepad g = new Gamepad(this);
         MODULE modules[] = {MODULE.LEFT_FRONT, MODULE.RIGHT_FRONT, MODULE.RIGHT_REAR, MODULE.LEFT_REAR};
-
-//        Debugger robotDebugger = new Debugger(Util.getContext(), this, (ArrayList<String>) UniversalConstants.Marker.getDebuggingMarkers());
-//        SwerveDrive swerveDrive = new SwerveDrive(this, null);
+        SwerveDrive swerveDrive = new SwerveDrive(this, null);
+        SwerveModule swerveModules[] = {
+                new SwerveModule(this, MODULE_ZERO, swerveDrive),
+                new SwerveModule(this, MODULE_ONE, swerveDrive),
+                new SwerveModule(this, MODULE_TWO, swerveDrive),
+                new SwerveModule(this, MODULE_THREE, swerveDrive),
+        };
 
         // modules 0 and 2 are normal
         double normal = 0;
@@ -39,64 +53,79 @@ public class NewDrivingTest extends LinearOpMode {
             STR_ANGLE = normalize(STR_ANGLE);
 
             // reset all motor directions
-            for (MODULE m: modules)
+            for (MODULE m: modules) {
                 m.resetDirection();
+            }
+            for (SwerveModule s : swerveModules) {
+                s.resetMotorDirection();
+            }
 
             // opposite angle is closer to the driver input
             if (Math.abs(angleDelta(STR_ANGLE, opposite)) < 90) {
                 opposite = STR_ANGLE;
                 normal = normalize(STR_ANGLE + 180);
-
                 // normal motors flip direction
                 modules[0].flipDirection();
                 modules[2].flipDirection();
+                swerveModules[0].reverseMotorDirection();
+                swerveModules[2].reverseMotorDirection();
             }
 
             // normal angle is closer to the driver input
             else {
                 normal = STR_ANGLE;
                 opposite = normalize(normal + 180);
-
                 // opposite motors flip direction
                 modules[1].flipDirection();
                 modules[3].flipDirection();
+                swerveModules[1].reverseMotorDirection();
+                swerveModules[3].reverseMotorDirection();
             }
 
             // opposite angle is in the dead-zone
             if (opposite > 225 && opposite < 315) {
+                // swivel all to normal angle
                 for (MODULE m : modules) {
                     m.setAngle(ANGLE.NORMAL);
                 }
-                // swerveDrive.swivel(normal)
+                for (SwerveModule s : swerveModules) {
+                    s.setPosition(scaleAngle(normal));
+                }
                 // opposite motors flip direction
                 modules[1].flipDirection();
                 modules[3].flipDirection();
+                swerveModules[1].reverseMotorDirection();
+                swerveModules[3].reverseMotorDirection();
             }
 
             // normal angle is in the dead-zone
             else if (normal > 225 && normal < 315) {
+                // swivel all to opposite angle
                 for (MODULE m : modules) {
                     m.setAngle(ANGLE.OPPOSITE);
                 }
-                // swerveDrive.swivel(opposite);
+                for (SwerveModule s : swerveModules) {
+                    s.setPosition(scaleAngle(opposite));
+                }
                 // normal motors flip direction
                 modules[0].flipDirection();
                 modules[2].flipDirection();
+                swerveModules[0].reverseMotorDirection();
+                swerveModules[2].reverseMotorDirection();
             }
 
             // none are in the dead-zone
             else {
+                // swivel to the respective angles
                 modules[0].setAngle(ANGLE.NORMAL);
                 modules[1].setAngle(ANGLE.OPPOSITE);
                 modules[2].setAngle(ANGLE.NORMAL);
                 modules[3].setAngle(ANGLE.OPPOSITE);
-//                swerveDrive.module0.swivel(target);
-//                swerveDrive.module1.swivel(opposite);
-//                swerveDrive.module2.swivel(target);
-//                swerveDrive.module3.swivel(opposite);
+                swerveModules[0].setPosition(scaleAngle(normal));
+                swerveModules[1].setPosition(scaleAngle(opposite));
+                swerveModules[2].setPosition(scaleAngle(normal));
+                swerveModules[3].setPosition(scaleAngle(opposite));
             }
-
-
 /*
 
              _______   ______   _        ______   __  __   ______   _______   _____   __     __
@@ -121,8 +150,6 @@ public class NewDrivingTest extends LinearOpMode {
             telemetry.update();
             g.update();
         }
-
-
     }
 
     public double normalize(double angle) {
@@ -131,6 +158,8 @@ public class NewDrivingTest extends LinearOpMode {
     }
 
     public double scaleAngle(double angle) {
+        // 225 ==> 0
+        // 315 ==> 1
         if (angle >= 315)
             angle -= 360;
         return (225 - angle) / 270;
@@ -150,6 +179,7 @@ public class NewDrivingTest extends LinearOpMode {
         FORWARD, REVERSE
     }
 
+    // solely for debugging purposes
     enum MODULE {
         LEFT_FRONT(ANGLE.NORMAL, DIRECTION.FORWARD),
         RIGHT_FRONT(ANGLE.OPPOSITE, DIRECTION.FORWARD),
@@ -162,6 +192,7 @@ public class NewDrivingTest extends LinearOpMode {
         MODULE(ANGLE angle, DIRECTION direction) {
             setAngle(angle);
             setMotorDirection(direction);
+
         }
 
         public ANGLE getAngle() {
