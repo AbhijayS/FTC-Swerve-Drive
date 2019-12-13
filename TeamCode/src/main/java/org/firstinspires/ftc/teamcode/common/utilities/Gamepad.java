@@ -20,6 +20,7 @@ public class Gamepad {
     public double lift;
     public boolean stowLift, extendLift, incrementLift, decrementLift;
     public double microAdjustLift;
+    private Stopwatch liftWatch = new Stopwatch();
 
     public double x, y, z, lx, ly, rx, ry;
 
@@ -27,6 +28,8 @@ public class Gamepad {
         this.linearOpMode = linearOpMode;
         this.driver = linearOpMode.gamepad1;
         this.operator = linearOpMode.gamepad2;
+        
+        liftWatch.start();
         update();
     }
 
@@ -74,11 +77,14 @@ public class Gamepad {
         stow = operator.left_bumper;
 
         // Lift.java
-        stowLift = operator.dpad_left;
-        extendLift = operator.dpad_right;
-        incrementLift = operator.dpad_up;
-        decrementLift = operator.dpad_down;
-        microAdjustLift = Range.scale(-operator.left_stick_y,-1,1,-0.05,0.05);
+        if (liftWatch.millis() >= 100) {
+            stowLift = operator.dpad_left;
+            extendLift = operator.dpad_right;
+            incrementLift = operator.dpad_up;
+            decrementLift = operator.dpad_down;
+            microAdjustLift = Range.scale(-operator.left_stick_y,-1,1,-0.05,0.05);
+            liftWatch.reset();
+        }
     }
 
 }
