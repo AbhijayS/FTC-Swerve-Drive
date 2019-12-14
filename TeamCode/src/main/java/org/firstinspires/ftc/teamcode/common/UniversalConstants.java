@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.common;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.PwmControl;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -102,14 +104,15 @@ public class UniversalConstants {
     }
 
     public enum JewelSwatterConfig {
-        LEFT("JSLA1", "JSLA2", Servo.Direction.FORWARD, Servo.Direction.REVERSE, 0),
-        RIGHT("JSRA1", "JSRA2", Servo.Direction.REVERSE, Servo.Direction.FORWARD, 0);
+        LEFT("JSLA1", "JSLA2", DcMotorSimple.Direction.FORWARD, Servo.Direction.REVERSE, 0),
+        RIGHT("JSRA1", "JSRA2", DcMotorSimple.Direction.REVERSE, Servo.Direction.FORWARD, 0);
 
         public String nameAxis1, nameAxis2;
         public double delta;
-        public Servo.Direction directionAxis1, directionAxis2;
+        public DcMotor.Direction directionAxis1;
+        public Servo.Direction directionAxis2;
 
-        JewelSwatterConfig(String axis1, String axis2, Servo.Direction directionAxis1, Servo.Direction directionAxis2, double delta) {
+        JewelSwatterConfig(String axis1, String axis2, DcMotor.Direction directionAxis1, Servo.Direction directionAxis2, double delta) {
             this.nameAxis1 = axis1;
             this.nameAxis2 = axis2;
             this.directionAxis1 = directionAxis1;
@@ -146,8 +149,8 @@ public class UniversalConstants {
     public static final String clampServo = "CS";
     public static final String leftStop = "leftStop";
     public static final String rightStop = "rightStop";
-    public static final String liftMotorA = "liftA";
-    public static final String liftMotorB = "liftB";
+    public static final String liftMotorA = "L1";
+    public static final String liftMotorB = "L2";
     public static final String webcamName = "Webcam 1";
 
 

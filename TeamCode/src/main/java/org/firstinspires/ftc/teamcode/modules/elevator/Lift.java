@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.MotorControlAlgorithm;
 import com.qualcomm.robotcore.hardware.PIDCoefficients;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
@@ -17,11 +18,12 @@ import static org.firstinspires.ftc.teamcode.common.UniversalConstants.PI;
 @Deprecated
 public class Lift {
     // TODO: Test if step over is accurate
-    private final int STEP_OVER = 5; // inches
+    private final int STEP_OVER = 4; // inches
     // TODO: Determine level 1 height imperically
     private final int LEVEL_1_HEIGHT = 2; // inches
     // TODO: Determine feedforward power imperically
     private final double kf = 0;
+    private PIDFCoefficients pidf;
 
     // Level 1 = 1st Stone
     // Level N = Nth Stone
@@ -46,8 +48,12 @@ public class Lift {
         this.motorB.setDirection(DcMotorSimple.Direction.FORWARD);
         this.motorA.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         this.motorB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        this.motorA.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        this.motorB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        this.motorA.setTargetPosition(0);
+        this.motorB.setTargetPosition(0);
+        this.motorA.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        this.motorB.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        this.motorA.setVelocityPIDFCoefficients(2,0.25,0,30);
+        this.motorB.setVelocityPIDFCoefficients(2,0.25,0,30);
         this.targetLevel = MIN_LEVEL;
         this.state = State.STOW;
     }
@@ -70,7 +76,7 @@ public class Lift {
 
         switch (state) {
             case EXTEND: {
-                int targetHeight = (targetLevel-1) * STEP_OVER + LEVEL_1_HEIGHT;
+                int targetHeight = (targetLevel-1) * STEP_OVER + LEVEL_1_HEIGHT - 1;
                 targetEncoder = convertToTicks(targetHeight);
                 break;
             }
@@ -83,19 +89,23 @@ public class Lift {
 
         motorA.setTargetPosition(targetEncoder);
         motorB.setTargetPosition(targetEncoder);
+        motorA.setPower(0.8);
+        motorB.setPower(0.8);
     }
 
     public int updateTargetLevelUsingGamepad(Gamepad gamepad) {
         int status = 0;
+
         if (gamepad.incrementLift)
             status = incrementLevel();
-        else if (gamepad.decrementLift)
+        if (gamepad.decrementLift)
             status = decrementLevel();
-        else if (gamepad.stowLift) {
+
+        if (gamepad.stowLift) {
             status = requestState(State.STOW);
             update();
         }
-        else if (gamepad.extendLift) {
+        if (gamepad.extendLift) {
             status = requestState(State.EXTEND);
             update();
         }
@@ -118,7 +128,7 @@ public class Lift {
 //        double linear_conversion = inches / 4.0;
 //        tickValue = linear_conversion * (1.0 / (2.3 * Math.PI)) * 62 * (38.0 / 62.0) * (1.0 / 38.0) * 560.0;
 //        return (int) Math.round(tickValue);
-        return (int) Math.round(inches*1.63/(4.0*2.0*PI*1.15*560.0));
+        return (int) Math.round(inches*1.63*560.0/(4.0*2.0*PI*1.15));
     }
 
     // quick status of the lift

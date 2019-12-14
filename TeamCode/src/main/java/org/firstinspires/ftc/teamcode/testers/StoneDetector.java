@@ -12,6 +12,7 @@ import com.vuforia.Vuforia;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.teamcode.common.UniversalConstants;
+import org.firstinspires.ftc.teamcode.common.utilities.Stopwatch;
 
 @TeleOp(name = "TestOp: Stone Detector")
 public class StoneDetector extends LinearOpMode {
@@ -29,6 +30,8 @@ public class StoneDetector extends LinearOpMode {
         telemetry.update();
         waitForStart();
 
+        Stopwatch stopwatch = new Stopwatch();
+        stopwatch.start();
         // get image from vuforia
         Frame frame = vuforia.getFrameQueue().take();
         telemetry.addData("Vu Height", frame.getImage(1).getHeight());
@@ -39,13 +42,17 @@ public class StoneDetector extends LinearOpMode {
         Image vu_img = frame.getImage(1);
         Bitmap bitmap = Bitmap.createBitmap(vu_img.getWidth(), vu_img.getHeight(), Bitmap.Config.RGB_565);
         bitmap.copyPixelsFromBuffer(vu_img.getPixels());
-        int height = vu_img.getHeight();
-        int width = vu_img.getWidth();
+        bitmap = Bitmap.createScaledBitmap(bitmap, 2, 1, false);
+        int height = bitmap.getHeight();
+        int width = bitmap.getWidth();
 
+        stopwatch.stop();
         telemetry.addLine();
         telemetry.addData("Bit Height", height);
         telemetry.addData("Bit Width", width);
+        telemetry.addData("Processing time", stopwatch.millis());
 
+        stopwatch.start();
         {
             // average left side
             int leftAvg = 0;
@@ -74,6 +81,8 @@ public class StoneDetector extends LinearOpMode {
             telemetry.addData("Right Color", rightAvg);
         }
 
+        stopwatch.stop();
+        telemetry.addData("Math time", stopwatch.millis());
         telemetry.update();
         while (opModeIsActive()) {
             idle();
