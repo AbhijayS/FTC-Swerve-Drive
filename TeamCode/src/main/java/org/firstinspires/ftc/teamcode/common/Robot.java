@@ -12,6 +12,7 @@ import org.firstinspires.ftc.teamcode.common.utilities.Stopwatch;
 import org.firstinspires.ftc.teamcode.common.utilities.WayPoint;
 import org.firstinspires.ftc.teamcode.modules.HardStops;
 import org.firstinspires.ftc.teamcode.modules.elevator.Clamp;
+import org.firstinspires.ftc.teamcode.modules.elevator.Lift;
 import org.firstinspires.ftc.teamcode.modules.elevator.LiftModule;
 import org.firstinspires.ftc.teamcode.modules.jewelswatter.JewelSwatter;
 import org.firstinspires.ftc.teamcode.modules.swerve.SwerveDrive;
@@ -21,7 +22,7 @@ public class Robot {
     // various hardware variables
     private JewelSwatter jewelSwatter;
     private Clamp clamp;
-    private LiftModule lift;
+    private Lift lift;
 
     // path following variables
     private Path path;
@@ -51,8 +52,8 @@ public class Robot {
         this.pidOverride = false;
         this.robotState = RobotState.FIELD_ORIENTED;
 
-        this.clamp = new Clamp(linearOpMode);
-        this.lift = new LiftModule(linearOpMode);
+        this.lift = new Lift(linearOpMode.hardwareMap, debugger);
+        this.clamp = new Clamp(linearOpMode.hardwareMap);
         this.jewelSwatter = new JewelSwatter(linearOpMode.hardwareMap);
         this.swerveDrive = new SwerveDrive(linearOpMode, debugger);
         this.gamepad = new Gamepad(linearOpMode);
@@ -115,12 +116,6 @@ public class Robot {
                 swerveDrive.fod(gamepad);
                 clamp.updateByGamepad(gamepad);
                 gamepad.update();
-                try {
-                    lift.updateByGamepad(gamepad,gamepad.lift
-                    );
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e.getMessage());
-                }
                 hardStops.update();
                 debugger.log();
                 break;
@@ -131,12 +126,6 @@ public class Robot {
                 clamp.updateByGamepad(gamepad);
                 swerveDrive.swerveKinematics.update();
                 gamepad.update();
-                try {
-                    lift.updateByGamepad(gamepad,gamepad.lift
-                    );
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e.getMessage());
-                }
                 hardStops.update();
                 debugger.log();
                 break;

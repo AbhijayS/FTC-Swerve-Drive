@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.modules.elevator;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -13,72 +14,57 @@ import static org.firstinspires.ftc.teamcode.common.UniversalConstants.clampServ
 
 // TODO: Implement potentiometer for clamp
 public class Clamp {
-    private LinearOpMode linearOpMode;
-    private Telemetry telemetry;
     private CRServo servo;
-    private double maxPower = 1;
     private ClampState clampState;
-    private Potentiometer potentiometer;
+    private double position;
+    private AnalogInput potentiometer;
+    private double kP = 0.8;
+
     public enum ClampState {
-        CLAMP(1),
-        STOW(-1),
+        CLAMP(3.34),
+        STOW(2.48),
+        PARTIAL(2.93),
         COAST(0);
 
-        public final int POWER;
+        public final double position;
 
-        ClampState(int power) {
-            this.POWER = power;
+        ClampState(double power) {
+            this.position= power;
         }
     }
-    private int enable; // -1 = unclamp, 1 = clamp, 0 = no movement
 
-
-    public Clamp(LinearOpMode l) {
-        linearOpMode = l;
-        telemetry = l.telemetry;
-        HardwareMap hardwareMap = l.hardwareMap;
+    public Clamp(HardwareMap hardwareMap) {
         servo = hardwareMap.crservo.get(clampServo);
         servo.setDirection(DcMotorSimple.Direction.REVERSE);
         this.clampState = ClampState.CLAMP;
-        potentiometer = new Potentiometer("P", linearOpMode);
+        potentiometer = hardwareMap.analogInput.get("P");
     }
 
     // TODO: Add restrictions if necessary
     public void requestState(ClampState newState) {
         this.clampState = newState;
-        update();
-        enable = 1;
     }
 
     public void updateByGamepad(Gamepad g) {
         //64-100
         if (g.clamp) {
-            this.clampState = ClampState.CLAMP;
+            requestState(ClampState.CLAMP);
         } else if (g.stow){
-            this.clampState = ClampState.STOW;
+            requestState(ClampState.STOW);
         } else {
-            this.clampState = ClampState.COAST;
-        }
-        if(potentiometer.returnAngle() <= 75 && this.clampState.equals(ClampState.CLAMP)){
-            enable = 0;
-        }else if(potentiometer.returnAngle() >= 99 && this.clampState.equals(ClampState.CLAMP)){
-            enable = 0;
+            requestState(ClampState.COAST);
         }
         update();
     }
 
-    public void clamp() {
-        this.enable = 1;
-        servo.setPower(enable * maxPower);
-    }
-
-    public void stow() {
-        this.enable = -1;
-        servo.setPower(enable * maxPower);
+    private double turnPID() {
+        double error = clampState.position - position;
+        return error*kP;
     }
 
     public void update() {
-        servo.setPower(maxPower * clampState.POWER);
+        position = potentiometer.getVoltage();
+        servo.setPower(turnPID());
     }
 
     public String getStatus() {

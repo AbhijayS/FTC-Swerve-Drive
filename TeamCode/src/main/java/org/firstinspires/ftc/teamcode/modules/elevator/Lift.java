@@ -15,7 +15,6 @@ import org.firstinspires.ftc.teamcode.common.utilities.Gamepad;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.HALF_PI;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.PI;
 
-@Deprecated
 public class Lift {
     // TODO: Test if step over is accurate
     private final int STEP_OVER = 4; // inches

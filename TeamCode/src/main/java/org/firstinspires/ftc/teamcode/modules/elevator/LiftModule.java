@@ -12,6 +12,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.common.states.PositionalStates;
 import org.firstinspires.ftc.teamcode.common.utilities.Gamepad;
 
+@Deprecated
 public class LiftModule {
     //REV Orbital 20
     private LinearOpMode linearOpMode;
