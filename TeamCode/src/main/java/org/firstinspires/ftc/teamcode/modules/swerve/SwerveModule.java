@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.common.UniversalConstants;
 import org.firstinspires.ftc.teamcode.common.utilities.Pose;
+import org.firstinspires.ftc.teamcode.common.utilities.Stopwatch;
 
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ModuleConfig;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.MotorDirection;
@@ -44,6 +45,7 @@ public class SwerveModule {
     private Pose pose;
     private double target;
     private SwerveDrive swerveDrive;
+    private boolean oneEighty; // servo is making a 180 degree turn
 
 
     public SwerveModule(LinearOpMode l, ModuleConfig module, SwerveDrive swerveDrive) {

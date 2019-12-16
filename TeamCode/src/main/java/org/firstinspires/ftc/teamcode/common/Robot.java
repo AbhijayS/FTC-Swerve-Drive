@@ -148,7 +148,7 @@ public class Robot {
                         } catch (Exception e) {
                             throw new RuntimeException(e.getMessage());
                         }
-                        double distance = path.SEGMENT_END.Y - path.SEGMENT_START.Y;
+                        double distance = path.SEGMENT_END.Y - swerveDrive.swerveKinematics.getCenterOfMass().getY();
                         swerveDrive.movePID(distance, currentWaypoint.POWER);
                         swerveDrive.enablePID();
                         pidOverride = true;

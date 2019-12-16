@@ -150,11 +150,11 @@ public class BlueFoundation2SkystonePark extends LinearOpMode {
                 wayPoints = new WayPoint[] {
                         // pick up first skystone
                         new WayPoint(new Pose(0,0,90),0.75, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.DOCK_RIGHT,0, false,0,0, HardStops.HardStopState.PARTIAL_DEPLOY, 2),
-                        new WayPoint(new Pose(2,-16,90),0.5, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.DOCK_RIGHT,0, false,0,0, HardStops.HardStopState.PARTIAL_DEPLOY, 2),
-                        new WayPoint(new Pose(3,-18,90),0.15, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.POSSESS_RIGHT,0, false,0,0, HardStops.HardStopState.STOW, 2),
-                        new WayPoint(new Pose(4,-18,90),0.15, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.POSSESS_RIGHT,0, false,0,0, HardStops.HardStopState.STOW, 1),
+                        new WayPoint(new Pose(2,-10,90),0.5, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.DOCK_RIGHT,0, false,0,0, HardStops.HardStopState.PARTIAL_DEPLOY, 2),
+                        new WayPoint(new Pose(4,-19,90),0.2, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.POSSESS_RIGHT,0, false,0,0, HardStops.HardStopState.STOW, 1),
                         // start heading to foundation
-                        new WayPoint(new Pose(4,-18,190),1, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.POSSESS_RIGHT,1000, false,0,0, HardStops.HardStopState.STOW, 1),
+                        new WayPoint(new Pose(4,-17,90),1, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.POSSESS_RIGHT,0, false,0,0, HardStops.HardStopState.STOW, 1),
+                        new WayPoint(new Pose(4,-17,190),1, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.POSSESS_RIGHT,1000, false,0,0, HardStops.HardStopState.STOW, 1),
                         new WayPoint(new Pose(10,-20,180),1, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.POSSESS_RIGHT,0, false,0,0, HardStops.HardStopState.STOW, 1),
                         new WayPoint(new Pose(40,-20,180),0.5, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.RIDE_HIGH_RIGHT,0, false,0,0, HardStops.HardStopState.STOW, 1),
                         new WayPoint(new Pose(50,-20,180),0.5, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.RIDE_HIGH_RIGHT,0, false,0,0, HardStops.HardStopState.STOW, 1),
@@ -162,8 +162,8 @@ public class BlueFoundation2SkystonePark extends LinearOpMode {
                         new WayPoint(new Pose(55,-25,90),0.5, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.RIDE_LOW_RIGHT,0, false,0,0, HardStops.HardStopState.STOW, 1),
                         new WayPoint(new Pose(60,-28,90),0.5, Clamp.ClampState.PARTIAL, JewelSwatter.JewelSwatterState.RIDE_HIGH_RIGHT_OPEN,0, false,0,0, HardStops.HardStopState.STOW, 1),
                         // head back to quarry
-                        new WayPoint(new Pose(50,-26,90),0.5, Clamp.ClampState.PARTIAL, JewelSwatter.JewelSwatterState.STOW_ALL,0, false,0,0, HardStops.HardStopState.STOW, 1),
-                        new WayPoint(new Pose(0,-26,90),0.5, Clamp.ClampState.PARTIAL, JewelSwatter.JewelSwatterState.STOW_ALL,0, false,0,0, HardStops.HardStopState.STOW, 1),
+                        new WayPoint(new Pose(50,-25,90),0.5, Clamp.ClampState.PARTIAL, JewelSwatter.JewelSwatterState.STOW_ALL,0, false,0,0, HardStops.HardStopState.STOW, 1),
+                        new WayPoint(new Pose(0,-25,90),0.5, Clamp.ClampState.PARTIAL, JewelSwatter.JewelSwatterState.STOW_ALL,0, false,0,0, HardStops.HardStopState.STOW, 1),
 //                        new WayPoint(new Pose(0,-23,180),0.5, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.RIDE_LOW_RIGHT,0, false,0,0, HardStops.HardStopState.STOW, 6),
 //                        new WayPoint(new Pose(11,-27,180),0.5, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.RIDE_LOW_RIGHT,0, false,0,0, HardStops.HardStopState.STOW, 6),
 //                        new WayPoint(new Pose(50,-25,180),0.5, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.RIDE_LOW_RIGHT,0, false,0,0, HardStops.HardStopState.PARTIAL_DEPLOY, 6),
