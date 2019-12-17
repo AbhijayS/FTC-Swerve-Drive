@@ -19,15 +19,22 @@ public class VuforiaDetector {
 
     public VuforiaDetector(HardwareMap hardwareMap) {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        WebcamName webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
+        WebcamName webcamName = hardwareMap.get(WebcamName.class, UniversalConstants.webcamName);
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
         parameters.cameraName = webcamName;
-        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
         parameters.vuforiaLicenseKey = UniversalConstants.vuforiaLicenceKey;
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
         Vuforia.setFrameFormat(PIXEL_FORMAT.RGB565,true);
         vuforia.setFrameQueueCapacity(2);
     }
+
+    /* camera is pointing at the first two stones in the quarry like so:
+     __ __ __ __ __ __
+    |__|__|__|__|__|__|
+    \     /
+     \   /
+      ^^^
+     */
 
     public char getPatternBlue() {
         try {
@@ -36,15 +43,51 @@ public class VuforiaDetector {
             Bitmap bitmap = Bitmap.createBitmap(vu_img.getWidth(), vu_img.getHeight(), Bitmap.Config.RGB_565);
             bitmap.copyPixelsFromBuffer(vu_img.getPixels());
             bitmap = Bitmap.createScaledBitmap(bitmap, 2, 1, false);
-            int height = bitmap.getHeight();
-            int width = bitmap.getWidth();
+
             int left = rgbToGray(bitmap.getPixel(0,0));
             int right = rgbToGray(bitmap.getPixel(1,0));
             int comparison = compare(left, right);
+            switch (comparison) {
+                case 1: return 'B';
+
+                case -1: return 'C';
+
+                default: return 'A';
+            }
         } catch (InterruptedException ie) {
             throw new RuntimeException(ie.getMessage());
         }
-        return 'C';
+    }
+
+    /* camera is pointing at the first two stones in the quarry like so:
+     __ __ __ __ __ __
+    |__|__|__|__|__|__|
+                \     /
+                 \   /
+                  ^^^
+     */
+
+    public char getPatternRed() {
+        try {
+            Frame frame = vuforia.getFrameQueue().take();
+            Image vu_img = frame.getImage(1);
+            Bitmap bitmap = Bitmap.createBitmap(vu_img.getWidth(), vu_img.getHeight(), Bitmap.Config.RGB_565);
+            bitmap.copyPixelsFromBuffer(vu_img.getPixels());
+            bitmap = Bitmap.createScaledBitmap(bitmap, 2, 1, false);
+
+            int left = rgbToGray(bitmap.getPixel(0,0));
+            int right = rgbToGray(bitmap.getPixel(1,0));
+            int comparison = compare(left, right);
+            switch (comparison) {
+                case 1: return 'C';
+
+                case -1: return 'B';
+
+                default: return 'A';
+            }
+        } catch (InterruptedException ie) {
+            throw new RuntimeException(ie.getMessage());
+        }
     }
 
     private int rgbToGray(int color) {

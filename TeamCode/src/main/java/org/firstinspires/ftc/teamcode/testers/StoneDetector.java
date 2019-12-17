@@ -14,6 +14,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.teamcode.common.UniversalConstants;
 import org.firstinspires.ftc.teamcode.common.utilities.Stopwatch;
 
+// TODO: Test to see whether vuforia takes picture during initialization or upon request after the program has begun
 @TeleOp(name = "TestOp: Stone Detector")
 public class StoneDetector extends LinearOpMode {
     @Override
