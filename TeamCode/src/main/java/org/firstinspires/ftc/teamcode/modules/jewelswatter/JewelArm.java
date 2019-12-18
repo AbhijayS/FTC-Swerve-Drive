@@ -27,7 +27,7 @@ class JewelArm {
         update();
 
         this.axis1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        this.axis1.setPower(0.75);
+        this.axis1.setPower(1);
     }
 
     // TODO: add restricttions to states using switch statements
@@ -42,7 +42,7 @@ class JewelArm {
     }
 
     public enum JewelArmState {
-        STOW(0, 0), DOCK(150, 1), POSSESS(150, 0), RIDE_LOW(130, 0), RIDE_LOW_OPEN(130,1), RIDE_HIGH(80, 0), RIDE_HIGH_OPEN(80,1);
+        STOW(0, 0), DOCK(160, 1), POSSESS(150, 0), RIDE_LOW(130, 0), RIDE_LOW_OPEN(130,1), RIDE_HIGH(80, 0), RIDE_HIGH_OPEN(80,1);
         public int axis1, axis2;
 
         JewelArmState(int axis1, int axis2) {
