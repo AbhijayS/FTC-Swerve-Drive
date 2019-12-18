@@ -15,13 +15,23 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.teamcode.common.UniversalConstants;
 
 public class VuforiaDetector {
+    private final int TOLERANCE = 70;
     private VuforiaLocalizer vuforia;
 
     public VuforiaDetector(HardwareMap hardwareMap) {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        WebcamName webcamName = hardwareMap.get(WebcamName.class, UniversalConstants.webcamName);
+        // using webcam
+//        WebcamName webcamName = hardwareMap.get(WebcamName.class, UniversalConstants.webcamName);
+//        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
+//        parameters.cameraName = webcamName;
+//        parameters.vuforiaLicenseKey = UniversalConstants.vuforiaLicenceKey;
+//        vuforia = ClassFactory.getInstance().createVuforia(parameters);
+//        Vuforia.setFrameFormat(PIXEL_FORMAT.RGB565,true);
+//        vuforia.setFrameQueueCapacity(2);
+
+        // using phone
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
-        parameters.cameraName = webcamName;
+        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
         parameters.vuforiaLicenseKey = UniversalConstants.vuforiaLicenceKey;
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
         Vuforia.setFrameFormat(PIXEL_FORMAT.RGB565,true);
@@ -38,12 +48,23 @@ public class VuforiaDetector {
 
     public char getPatternBlue() {
         try {
+            // capture image
             Frame frame = vuforia.getFrameQueue().take();
             Image vu_img = frame.getImage(1);
             Bitmap bitmap = Bitmap.createBitmap(vu_img.getWidth(), vu_img.getHeight(), Bitmap.Config.RGB_565);
             bitmap.copyPixelsFromBuffer(vu_img.getPixels());
+
+            // crop the image for accuracy
+            int x = bitmap.getWidth()/4;
+            int y = 0;
+            int width = bitmap.getWidth()/2;
+            int height = bitmap.getHeight();
+            bitmap = Bitmap.createBitmap(bitmap,x,y,width,height);
+
+            // scale the image down to a 2x1 image
             bitmap = Bitmap.createScaledBitmap(bitmap, 2, 1, false);
 
+            // compare left and right sides
             int left = rgbToGray(bitmap.getPixel(0,0));
             int right = rgbToGray(bitmap.getPixel(1,0));
             int comparison = compare(left, right);
@@ -73,6 +94,15 @@ public class VuforiaDetector {
             Image vu_img = frame.getImage(1);
             Bitmap bitmap = Bitmap.createBitmap(vu_img.getWidth(), vu_img.getHeight(), Bitmap.Config.RGB_565);
             bitmap.copyPixelsFromBuffer(vu_img.getPixels());
+
+            // crop the image for accuracy
+            int x = bitmap.getWidth()/4;
+            int y = 0;
+            int width = bitmap.getWidth()/2;
+            int height = bitmap.getHeight();
+            bitmap = Bitmap.createBitmap(bitmap,x,y,width,height);
+
+            // scale the image down to a 2x1 image
             bitmap = Bitmap.createScaledBitmap(bitmap, 2, 1, false);
 
             int left = rgbToGray(bitmap.getPixel(0,0));
@@ -104,8 +134,13 @@ public class VuforiaDetector {
     a < b = -1
     a == b = 0
      */
-    // TODO: Improve this function with some tolerance
     private int compare(int a, int b) {
-        return Integer.compare(a, b);
+        int difference = a-b;
+        if (difference >= TOLERANCE)
+            return 1;
+        else if (difference <= -TOLERANCE)
+            return -1;
+        else
+            return 0;
     }
 }

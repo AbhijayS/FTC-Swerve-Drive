@@ -134,7 +134,7 @@ public class UniversalConstants {
 
     public static final double  TURN_FACTOR         =   2; // Tune the robot's speed at turns (1 - 5)
     public static final int     servoRange          = 270;      // 225° to -45° on the Unit Circle
-    public static final double  servoSpeed          = 0.2/60;  // sec/1° @ 5V TODO: Update speed for 6V input from the servo power module
+    public static final double  servoSpeed          = 0.14/60;  // sec/1° @ 6V
     public static final int     servoDefaultAngle   = 90;
     public static final int     ticksPerRevolution  = 560;
     public static final int     wheelDiameter       = 3; //inches
