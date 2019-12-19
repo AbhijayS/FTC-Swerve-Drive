@@ -25,9 +25,6 @@ class JewelArm {
         this.config = config;
 
         update();
-
-        this.axis1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        this.axis1.setPower(1);
     }
 
     // TODO: add restricttions to states using switch statements
@@ -37,7 +34,14 @@ class JewelArm {
     }
 
     public void update() {
-        this.axis1.setTargetPosition(state.axis1);
+        if (state == JewelArmState.DOCK || state == JewelArmState.POSSESS) {
+            this.axis1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            this.axis1.setPower(0.5);
+        } else {
+            this.axis1.setTargetPosition(state.axis1);
+            this.axis1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            this.axis1.setPower(0.75);
+        }
         this.axis2.setPosition(state.axis2);
     }
 
