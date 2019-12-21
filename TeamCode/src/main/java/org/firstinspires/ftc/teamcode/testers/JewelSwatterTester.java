@@ -3,13 +3,22 @@ package org.firstinspires.ftc.teamcode.testers;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.common.UniversalConstants;
+import org.firstinspires.ftc.teamcode.common.utilities.Debugger;
+import org.firstinspires.ftc.teamcode.common.utilities.Util;
+import org.firstinspires.ftc.teamcode.modules.jewelswatter.JewelArm;
 import org.firstinspires.ftc.teamcode.modules.jewelswatter.JewelSwatter;
+
+import java.util.ArrayList;
 
 @TeleOp(name = "TestOp: Jewel Swatter")
 public class JewelSwatterTester extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
-        JewelSwatter jewelSwatter = new JewelSwatter(this.hardwareMap);
+        Debugger robotDebugger = new Debugger(Util.getContext(), this, (ArrayList<String>) Debugger.Marker.getDebuggingMarkers());
+        robotDebugger.initialize("Jewel Swatter");
+        JewelSwatter jewelSwatter = new JewelSwatter(hardwareMap,robotDebugger);
+        jewelSwatter.update();
 
         waitForStart();
 
@@ -34,9 +43,8 @@ public class JewelSwatterTester extends LinearOpMode {
                 jewelSwatter.requestState(JewelSwatter.JewelSwatterState.RIDE_LOW_ALL);
             }
 
-            telemetry.addData("STATUS", jewelSwatter.getStatus());
             jewelSwatter.update();
-            telemetry.update();
+            robotDebugger.log();
         }
     }
 }

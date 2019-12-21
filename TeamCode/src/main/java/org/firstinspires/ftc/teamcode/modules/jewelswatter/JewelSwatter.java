@@ -2,15 +2,17 @@ package org.firstinspires.ftc.teamcode.modules.jewelswatter;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.teamcode.common.utilities.Debugger;
+
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.JewelSwatterConfig;
 
 public class JewelSwatter {
     private JewelArm left, right;
     private JewelSwatterState state;
 
-    public JewelSwatter(HardwareMap hardwareMap) {
-        this.left = new JewelArm(hardwareMap, JewelSwatterConfig.LEFT);
-        this.right = new JewelArm(hardwareMap, JewelSwatterConfig.RIGHT);
+    public JewelSwatter(HardwareMap hardwareMap, Debugger debugger) {
+        this.left = new JewelArm(hardwareMap, JewelSwatterConfig.LEFT, debugger);
+        this.right = new JewelArm(hardwareMap, JewelSwatterConfig.RIGHT, debugger);
         this.state = JewelSwatterState.STOW_ALL;
     }
 

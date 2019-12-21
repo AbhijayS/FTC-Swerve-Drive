@@ -438,11 +438,11 @@ public class SwerveDrive {
                 fod(strafeAngle, maxPower, turnPID(headingGoal), yaw);
 
                 if (!ROBOT_STATUS.equals(RELEASE)) {
-                    debugger.addData(PATH.toString(), path.toString());
-                    debugger.addData(PX.toString(), Double.toString(path.TRACKING_POSE.getX()));
-                    debugger.addData(PY.toString(), Double.toString(path.TRACKING_POSE.getY()));
-                    debugger.addData("HEADING GOAL",Double.toString(headingGoal));
-                    debugger.addData(VELOCITY.toString(), Double.toString(velocity));
+//                    debugger.addData(PATH.toString(), path.toString());
+//                    debugger.addData(PX.toString(), Double.toString(path.TRACKING_POSE.getX()));
+//                    debugger.addData(PY.toString(), Double.toString(path.TRACKING_POSE.getY()));
+//                    debugger.addData("HEADING GOAL",Double.toString(headingGoal));
+//                    debugger.addData(VELOCITY.toString(), Double.toString(velocity));
                 }
         }
     }

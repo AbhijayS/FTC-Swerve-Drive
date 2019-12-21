@@ -54,7 +54,7 @@ public class Robot {
 
         this.lift = new Lift(linearOpMode.hardwareMap, debugger);
         this.clamp = new Clamp(linearOpMode.hardwareMap);
-        this.jewelSwatter = new JewelSwatter(linearOpMode.hardwareMap);
+        this.jewelSwatter = new JewelSwatter(linearOpMode.hardwareMap,debugger);
         this.swerveDrive = new SwerveDrive(linearOpMode, debugger);
         this.gamepad = new Gamepad(linearOpMode);
         this.hardStops = new HardStops(linearOpMode);
