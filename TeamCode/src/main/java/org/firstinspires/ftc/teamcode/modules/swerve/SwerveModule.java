@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.common.UniversalConstants;
 import org.firstinspires.ftc.teamcode.common.utilities.Debugger;
+import org.firstinspires.ftc.teamcode.common.utilities.Stopwatch;
 
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.AUTO_MAX_SPEED;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ROBOT_STATUS;
@@ -36,6 +37,8 @@ public class SwerveModule {
     public enum STYLE {
         NORMAL, OPPOSITE
     }
+    public boolean ONE_EIGHTY = false;
+    private Stopwatch timer = new Stopwatch();
 
     public SwerveModule(HardwareMap hardwareMap, UniversalConstants.ModuleConfig config, SwerveDrive swerveDrive) {
         this.config = config;
@@ -61,6 +64,9 @@ public class SwerveModule {
         driveMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         driveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         driveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+
+        swivel(90);
+        setPower(0);
     }
 
     ;
@@ -89,20 +95,19 @@ public class SwerveModule {
                 // opposite motors flip direction
             }
 
-            normal = normalize(normal + delta);
-            opposite = normalize(opposite + delta);
+            double angle = normalize(normal + delta);
 
             // normal angle is in the dead-zone
-            if (normal > 225 && normal < 315) {
+            if (angle > 225 && angle < 315) {
                 // swivel all to opposite angle
-                turnServo.setPosition(scaleAngle(opposite));
+                turnServo.setPosition(scaleAngle(normalize(opposite + delta)));
                 // normal motors flip direction
                 reverseMotorDirection();
             }
             // none are in the dead-zone
             else {
                 // swivel to the respective angles
-                turnServo.setPosition(scaleAngle(normal));
+                turnServo.setPosition(scaleAngle(angle));
             }
         }
 
@@ -122,20 +127,33 @@ public class SwerveModule {
                 reverseMotorDirection();
             }
 
-            normal = normalize(normal + delta);
-            opposite = normalize(opposite + delta);
+            double angle = normalize(opposite + delta);
 
             // opposite angle is in the dead-zone
-            if (opposite > 225 && opposite < 315) {
+            if (angle > 225 && angle < 315) {
                 // swivel all to normal angle
-                turnServo.setPosition(scaleAngle(normal));
+                turnServo.setPosition(scaleAngle(normalize(normal + delta)));
                 // opposite motors flip direction
                 reverseMotorDirection();
             }
             // none are in the dead-zone
             else {
                 // swivel to the respective angles
-                turnServo.setPosition(scaleAngle(opposite));
+                turnServo.setPosition(scaleAngle(angle));
+            }
+        }
+
+        if (angleDelta(targetAngle,servoPosition) >= 180) {
+            ONE_EIGHTY = true;
+            timer.reset();
+            timer.start();
+        }
+
+        // timer control
+        if (ONE_EIGHTY) {
+            if (timer.millis() >= 800) {
+                ONE_EIGHTY = false;
+                timer.reset();
             }
         }
 
@@ -174,8 +192,12 @@ public class SwerveModule {
 
     // drive methods
     public void setPower(double power) {
-        power = Range.clip(power, 0, AUTO_MAX_SPEED);
-        power = motorDirection.assignDirection(power);
+        if (ONE_EIGHTY) {
+            power = 0;
+        } else {
+            power = Range.clip(power, 0, AUTO_MAX_SPEED);
+            power = motorDirection.assignDirection(power);
+        }
 
         if (ROBOT_STATUS != UniversalConstants.Status.DEBUGGING)
             driveMotor.setPower(power);

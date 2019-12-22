@@ -63,7 +63,6 @@ public class SwerveDrive {
         this.swerveState = HUMAN_INPUT;
         this.motionState = MotionState.STOPPED;
 
-        // Define and Initialize Swerve Modules
         module0 = new SwerveModule(l.hardwareMap, ModuleConfig.MODULE_ZERO, this);
         module1 = new SwerveModule(l.hardwareMap, ModuleConfig.MODULE_ONE, this);
         module2 = new SwerveModule(l.hardwareMap, ModuleConfig.MODULE_TWO, this);

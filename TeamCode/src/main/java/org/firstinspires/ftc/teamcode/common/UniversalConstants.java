@@ -69,9 +69,9 @@ public class UniversalConstants {
 
     public enum ModuleConfig {
         MODULE_ZERO     ("Module ZERO",     (-ROBOT_WIDTH/2)-ROBOT_COM_X,(ROBOT_LENGTH/2)-ROBOT_COM_Y,     false,  "fls",    -14.5        ,  Servo.Direction.FORWARD,    "flm",  MotorDirection.REVERSE)  ,
-        MODULE_ONE      ("Module ONE",      (ROBOT_WIDTH/2)-ROBOT_COM_X,(ROBOT_LENGTH/2)-ROBOT_COM_Y,      false,  "frs",   3.8    ,  Servo.Direction.FORWARD,    "frm", MotorDirection.FORWARD)  ,
+        MODULE_ONE      ("Module ONE",      (ROBOT_WIDTH/2)-ROBOT_COM_X,(ROBOT_LENGTH/2)-ROBOT_COM_Y,      false,  "frs",   10.1    ,  Servo.Direction.FORWARD,    "frm", MotorDirection.FORWARD)  ,
         MODULE_TWO      ("Module TWO",      (ROBOT_WIDTH/2)-ROBOT_COM_X,(-ROBOT_LENGTH/2)-ROBOT_COM_Y,     false,  "rrs",    -10.23     ,  Servo.Direction.FORWARD,    "rrm",  MotorDirection.FORWARD)  ,
-        MODULE_THREE    ("Module THREE",    (-ROBOT_WIDTH/2)-ROBOT_COM_X,(-ROBOT_LENGTH/2)-ROBOT_COM_Y,    false,  "rls",     25.93    ,  Servo.Direction.REVERSE,    "rlm",   MotorDirection.REVERSE)  ;
+        MODULE_THREE    ("Module THREE",    (-ROBOT_WIDTH/2)-ROBOT_COM_X,(-ROBOT_LENGTH/2)-ROBOT_COM_Y,    false,  "rls",     20    ,  Servo.Direction.REVERSE,    "rlm",   MotorDirection.REVERSE)  ;
 
         public final String                     moduleName;
         public final String                     servoID;

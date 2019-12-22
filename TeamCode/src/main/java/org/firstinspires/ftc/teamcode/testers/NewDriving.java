@@ -25,14 +25,18 @@ import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ModuleCon
 public class NewDriving extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
+        Debugger robotDebugger = new Debugger(Util.getContext(), this, (ArrayList<String>) Debugger.Marker.getDebuggingMarkers());
+        robotDebugger.initialize("new driving");
         Gamepad g = new Gamepad(this);
-        SwerveDrive swerve = new SwerveDrive(this, null);
+        SwerveDrive swerve = new SwerveDrive(this, robotDebugger);
         waitForStart();
         while (opModeIsActive()) {
             swerve.fod(g);
             g.update();
-            telemetry.update();
+            swerve.swerveKinematics.update();
+            robotDebugger.log();
             idle();
         }
+        robotDebugger.stopLogging();
     }
 }
