@@ -95,19 +95,20 @@ public class SwerveModule {
                 // opposite motors flip direction
             }
 
-            double angle = normalize(normal + delta);
+            normal = normalize(normal + delta);
+            opposite = normalize(opposite + delta);
 
             // normal angle is in the dead-zone
-            if (angle > 225 && angle < 315) {
+            if (normal > 225 && normal < 315) {
                 // swivel all to opposite angle
-                turnServo.setPosition(scaleAngle(normalize(opposite + delta)));
+                turnServo.setPosition(scaleAngle(opposite));
                 // normal motors flip direction
                 reverseMotorDirection();
             }
             // none are in the dead-zone
             else {
                 // swivel to the respective angles
-                turnServo.setPosition(scaleAngle(angle));
+                turnServo.setPosition(scaleAngle(normal));
             }
         }
 
@@ -127,19 +128,20 @@ public class SwerveModule {
                 reverseMotorDirection();
             }
 
-            double angle = normalize(opposite + delta);
+            normal = normalize(normal + delta);
+            opposite = normalize(opposite + delta);
 
             // opposite angle is in the dead-zone
-            if (angle > 225 && angle < 315) {
+            if (opposite > 225 && opposite < 315) {
                 // swivel all to normal angle
-                turnServo.setPosition(scaleAngle(normalize(normal + delta)));
+                turnServo.setPosition(scaleAngle(normal));
                 // opposite motors flip direction
                 reverseMotorDirection();
             }
             // none are in the dead-zone
             else {
                 // swivel to the respective angles
-                turnServo.setPosition(scaleAngle(angle));
+                turnServo.setPosition(scaleAngle(opposite));
             }
         }
 
