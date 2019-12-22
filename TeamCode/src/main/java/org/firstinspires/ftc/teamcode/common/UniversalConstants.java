@@ -5,9 +5,9 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.PwmControl;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.modules.swerve.SwerveModule;
+
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
 
 public class UniversalConstants {
 
@@ -80,6 +80,7 @@ public class UniversalConstants {
         public final boolean                    isModuleDisabled;
         public final String                     motorID;
         public final double                     x, y;
+        public final SwerveModule.STYLE      style;
 
         public final MotorDirection    motorDirection;
         ModuleConfig(String module_name, double x, double y, boolean is_module_disabled, String servo_id, double servo_delta, Servo.Direction servo_direction, String motor_id, MotorDirection motor_direction) {
@@ -92,6 +93,10 @@ public class UniversalConstants {
             this.motorDirection     = motor_direction;
             this.x = x;
             this.y = y;
+            if (this.ordinal() == 0 || this.ordinal() == 2)
+                this.style = SwerveModule.STYLE.NORMAL;
+            else
+                this.style = SwerveModule.STYLE.OPPOSITE;
         }
 
         public double rawX() {

@@ -21,19 +21,16 @@ import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ModuleCon
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ModuleConfig.MODULE_TWO;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ModuleConfig.MODULE_ZERO;
 
-@TeleOp(name = "TestOp: New Driving")
-public class NewDrivingTest extends LinearOpMode {
+@TeleOp(name = "TestOp: Normal Driving")
+public class NormalDriving extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         Gamepad g = new Gamepad(this);
         MODULE modules[] = {MODULE.LEFT_FRONT, MODULE.RIGHT_FRONT, MODULE.RIGHT_REAR, MODULE.LEFT_REAR};
         SwerveDrive swerveDrive = new SwerveDrive(this, null);
-        SwerveModule swerveModules[] = {
-                new SwerveModule(this, MODULE_ZERO, swerveDrive),
-                new SwerveModule(this, MODULE_ONE, swerveDrive),
-                new SwerveModule(this, MODULE_TWO, swerveDrive),
-                new SwerveModule(this, MODULE_THREE, swerveDrive),
-        };
+        SwerveModule s0 = new SwerveModule(hardwareMap,MODULE_ZERO,swerveDrive);
+
+        double delta = -14.5;
 
         // modules 0 and 2 are normal
         double normal = 0;
@@ -46,6 +43,7 @@ public class NewDrivingTest extends LinearOpMode {
         telemetry.update();
         waitForStart();
 
+//        double STR_ANGLE = 180;
         while (opModeIsActive()) {
 
             // normalize driver input to within 0 and 360
@@ -56,9 +54,10 @@ public class NewDrivingTest extends LinearOpMode {
             for (MODULE m: modules) {
                 m.resetDirection();
             }
-            for (SwerveModule s : swerveModules) {
-                s.resetMotorDirection();
-            }
+//            for (SwerveModule s : swerveModules) {
+//                s.resetMotorDirection();
+//            }
+            s0.resetMotorDirection();
 
             // opposite angle is closer to the driver input
             if (Math.abs(angleDelta(STR_ANGLE, opposite)) < 90) {
@@ -67,8 +66,10 @@ public class NewDrivingTest extends LinearOpMode {
                 // normal motors flip direction
                 modules[0].flipDirection();
                 modules[2].flipDirection();
-                swerveModules[0].reverseMotorDirection();
-                swerveModules[2].reverseMotorDirection();
+//                swerveModules[0].reverseMotorDirection();
+//                swerveModules[2].reverseMotorDirection();
+                s0.reverseMotorDirection();
+                telemetry.addLine("Opposite is closer");
             }
 
             // normal angle is closer to the driver input
@@ -76,55 +77,66 @@ public class NewDrivingTest extends LinearOpMode {
                 normal = STR_ANGLE;
                 opposite = normalize(normal + 180);
                 // opposite motors flip direction
-                modules[1].flipDirection();
-                modules[3].flipDirection();
-                swerveModules[1].reverseMotorDirection();
-                swerveModules[3].reverseMotorDirection();
+//                modules[1].flipDirection();
+//                modules[3].flipDirection();
+//                swerveModules[1].reverseMotorDirection();
+//                swerveModules[3].reverseMotorDirection();
+                telemetry.addLine("Normal is closer");
             }
 
-            // opposite angle is in the dead-zone
-            if (opposite > 225 && opposite < 315) {
-                // swivel all to normal angle
-                for (MODULE m : modules) {
-                    m.setAngle(ANGLE.NORMAL);
-                }
-                for (SwerveModule s : swerveModules) {
-                    s.setPosition(scaleAngle(normal));
-                }
-                // opposite motors flip direction
-                modules[1].flipDirection();
-                modules[3].flipDirection();
-                swerveModules[1].reverseMotorDirection();
-                swerveModules[3].reverseMotorDirection();
-            }
+////             opposite angle is in the dead-zone
+//            if (opposite > 225 && opposite < 315) {
+//                // swivel all to normal angle
+//                for (MODULE m : modules) {
+//                    m.setAngle(ANGLE.NORMAL);
+//                }
+////                for (SwerveModule s : swerveModules) {
+////                    s.setPosition(scaleAngle(normal));
+////                }
+//                s2.setPosition(scaleAngle(normal));
+//                // opposite motors flip direction
+//                modules[1].flipDirection();
+//                modules[3].flipDirection();
+////                swerveModules[1].reverseMotorDirection();
+////                swerveModules[3].reverseMotorDirection();
+//                telemetry.addLine("Opposite in dead-zone");
+//            }
+
+            normal = normalize(normal + delta);
+            opposite = normalize(opposite + delta);
 
             // normal angle is in the dead-zone
-            else if (normal > 225 && normal < 315) {
+            if (normal > 225 && normal < 315) {
                 // swivel all to opposite angle
                 for (MODULE m : modules) {
                     m.setAngle(ANGLE.OPPOSITE);
                 }
-                for (SwerveModule s : swerveModules) {
-                    s.setPosition(scaleAngle(opposite));
-                }
+//                for (SwerveModule s : swerveModules) {
+//                    s.setPosition(scaleAngle(opposite));
+//                }
+                s0.setPosition(scaleAngle(opposite));
                 // normal motors flip direction
                 modules[0].flipDirection();
                 modules[2].flipDirection();
-                swerveModules[0].reverseMotorDirection();
-                swerveModules[2].reverseMotorDirection();
+//                swerveModules[0].reverseMotorDirection();
+//                swerveModules[2].reverseMotorDirection();
+                s0.reverseMotorDirection();
+                telemetry.addLine("Normal in dead-zone");
             }
 
             // none are in the dead-zone
             else {
                 // swivel to the respective angles
                 modules[0].setAngle(ANGLE.NORMAL);
-                modules[1].setAngle(ANGLE.OPPOSITE);
+//                modules[1].setAngle(ANGLE.OPPOSITE);
                 modules[2].setAngle(ANGLE.NORMAL);
-                modules[3].setAngle(ANGLE.OPPOSITE);
-                swerveModules[0].setPosition(scaleAngle(normal));
-                swerveModules[1].setPosition(scaleAngle(opposite));
-                swerveModules[2].setPosition(scaleAngle(normal));
-                swerveModules[3].setPosition(scaleAngle(opposite));
+//                modules[3].setAngle(ANGLE.OPPOSITE);
+//                swerveModules[0].setPosition(scaleAngle(normal));
+//                swerveModules[1].setPosition(scaleAngle(opposite));
+//                swerveModules[2].setPosition(scaleAngle(normal));
+//                swerveModules[3].setPosition(scaleAngle(opposite));
+                s0.setPosition(scaleAngle(normal));
+                telemetry.addLine("Live-zone");
             }
 /*
 
@@ -139,16 +151,19 @@ public class NewDrivingTest extends LinearOpMode {
  */
             telemetry.addData("INPUT", (STR_ANGLE));
 //            telemetry.addData("Servo", scaleAngle(STR_ANGLE));
-            telemetry.addLine(modules[0].abbr() + " " + modules[1].abbr());
-            telemetry.addLine(modules[3].abbr() + " " + modules[2].abbr());
-            telemetry.addLine();
-            telemetry.addLine(Math.round(modules[0].getAngle()==ANGLE.NORMAL?normal:opposite) + " " + Math.round(modules[1].getAngle()==ANGLE.NORMAL?normal:opposite));
-            telemetry.addLine(Math.round(modules[3].getAngle()==ANGLE.NORMAL?normal:opposite) + " " + Math.round(modules[2].getAngle()==ANGLE.NORMAL?normal:opposite));
-            telemetry.addLine();
-            telemetry.addLine(modules[0].getMotorDirection() + " " + modules[1].getMotorDirection());
-            telemetry.addLine(modules[3].getMotorDirection() + " " + modules[2].getMotorDirection());
+//            telemetry.addLine(modules[0].abbr() + " " + modules[1].abbr());
+//            telemetry.addLine(modules[3].abbr() + " " + modules[2].abbr());
+//            telemetry.addLine();
+//            telemetry.addLine(Math.round(modules[0].getAngle()==ANGLE.NORMAL?normal:opposite) + " " + Math.round(modules[1].getAngle()==ANGLE.NORMAL?normal:opposite));
+//            telemetry.addLine(Math.round(modules[3].getAngle()==ANGLE.NORMAL?normal:opposite) + " " + Math.round(modules[2].getAngle()==ANGLE.NORMAL?normal:opposite));
+//            telemetry.addLine();
+//            telemetry.addLine(modules[0].getMotorDirection() + " " + modules[1].getMotorDirection());
+//            telemetry.addLine(modules[3].getMotorDirection() + " " + modules[2].getMotorDirection());
+            telemetry.addData("Sim", modules[2].getMotorDirection());
+            telemetry.addData("Real", s0.getMotorDirection().toString());
             telemetry.update();
             g.update();
+            s0.setPower(0.1);
         }
     }
 

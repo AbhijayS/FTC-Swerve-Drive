@@ -18,6 +18,7 @@ import org.firstinspires.ftc.teamcode.modules.sensory.TensorFlowLite;
 import java.util.ArrayList;
 
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ROBOT_LENGTH;
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.decimalFormat;
 
 @Autonomous(name = "Blue Main")
 public class BlueFoundation2SkystonePark extends LinearOpMode {
@@ -166,10 +167,11 @@ public class BlueFoundation2SkystonePark extends LinearOpMode {
                         new WayPoint(new Pose(38,-25,90),0.75, Clamp.ClampState.PARTIAL, JewelSwatter.JewelSwatterState.DOCK_LEFT,0, false,0,0, HardStops.HardStopState.DEPLOY, 4),
                         new WayPoint(new Pose(20,-25,90),0.5, Clamp.ClampState.PARTIAL, JewelSwatter.JewelSwatterState.DOCK_LEFT,0, false,0,0, HardStops.HardStopState.DEPLOY, 4),
                         new WayPoint(new Pose(10,-23,90),0.5, Clamp.ClampState.PARTIAL, JewelSwatter.JewelSwatterState.DOCK_LEFT,0, false,0,0, HardStops.HardStopState.DEPLOY, 4),
-                        new WayPoint(new Pose(0,-20,90),0.2, Clamp.ClampState.PARTIAL, JewelSwatter.JewelSwatterState.DOCK_LEFT,0, false,0,0, HardStops.HardStopState.DEPLOY, 4),
-                        new WayPoint(new Pose(-5,-20,90),0.2, Clamp.ClampState.PARTIAL, JewelSwatter.JewelSwatterState.DOCK_LEFT,0, false,0,0, HardStops.HardStopState.DEPLOY, 4),
-                        new WayPoint(new Pose(-12,-23,90),0.75, Clamp.ClampState.PARTIAL, JewelSwatter.JewelSwatterState.POSSESS_LEFT,3000, false,0,0, HardStops.HardStopState.DEPLOY, 1),
-                        new WayPoint(new Pose(-12,-22,90),0.75, Clamp.ClampState.PARTIAL, JewelSwatter.JewelSwatterState.STOW_ALL,0, false,0,0, HardStops.HardStopState.DEPLOY, 1),
+                        new WayPoint(new Pose(0,-18,90),0.25, Clamp.ClampState.PARTIAL, JewelSwatter.JewelSwatterState.DOCK_LEFT,0, false,0,0, HardStops.HardStopState.DEPLOY, 1),
+                        new WayPoint(new Pose(-5,-18,90),0.25, Clamp.ClampState.PARTIAL, JewelSwatter.JewelSwatterState.DOCK_LEFT,0, false,0,0, HardStops.HardStopState.DEPLOY, 1),
+                        new WayPoint(new Pose(-10,-23,90),0.25, Clamp.ClampState.PARTIAL, JewelSwatter.JewelSwatterState.POSSESS_LEFT,3000, false,0,0, HardStops.HardStopState.DEPLOY, 1),
+                        new WayPoint(new Pose(-10,-22,90),0.25, Clamp.ClampState.PARTIAL, JewelSwatter.JewelSwatterState.STOW_ALL,0, false,0,0, HardStops.HardStopState.DEPLOY, 1),
+                        new WayPoint(new Pose(0,-22,90),0.5, Clamp.ClampState.PARTIAL, JewelSwatter.JewelSwatterState.STOW_ALL,0, false,0,0, HardStops.HardStopState.DEPLOY, 1),
                         new WayPoint(new Pose(10,-21,90),0.75, Clamp.ClampState.PARTIAL, JewelSwatter.JewelSwatterState.STOW_ALL,0, false,0,0, HardStops.HardStopState.DEPLOY, 1),
                         new WayPoint(new Pose(30,-21,90),0.75, Clamp.ClampState.PARTIAL, JewelSwatter.JewelSwatterState.RIDE_HIGH_LEFT,0, false,0,0, HardStops.HardStopState.DEPLOY, 4),
                         new WayPoint(new Pose(50,-21,90),0.5, Clamp.ClampState.PARTIAL, JewelSwatter.JewelSwatterState.RIDE_LOW_LEFT,0, false,0,0, HardStops.HardStopState.DEPLOY, 4),
@@ -218,5 +220,7 @@ public class BlueFoundation2SkystonePark extends LinearOpMode {
             telemetry.addData("Pattern", stonePosition);
             robot.updateAll();
         }
+
+        robotDebugger.stopLogging();
     }
 }

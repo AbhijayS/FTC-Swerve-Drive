@@ -64,10 +64,10 @@ public class SwerveDrive {
         this.motionState = MotionState.STOPPED;
 
         // Define and Initialize Swerve Modules
-        module0 = new SwerveModule(l, ModuleConfig.MODULE_ZERO, this);
-        module1 = new SwerveModule(l, ModuleConfig.MODULE_ONE, this);
-        module2 = new SwerveModule(l, ModuleConfig.MODULE_TWO, this);
-        module3 = new SwerveModule(l, ModuleConfig.MODULE_THREE, this);
+        module0 = new SwerveModule(l.hardwareMap, ModuleConfig.MODULE_ZERO, this);
+        module1 = new SwerveModule(l.hardwareMap, ModuleConfig.MODULE_ONE, this);
+        module2 = new SwerveModule(l.hardwareMap, ModuleConfig.MODULE_TWO, this);
+        module3 = new SwerveModule(l.hardwareMap, ModuleConfig.MODULE_THREE, this);
 
         CoM = new Pose();
         FAKE_COM_X = 0;
