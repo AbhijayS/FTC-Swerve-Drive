@@ -27,6 +27,7 @@ public class SwerveKinematics {
     private Double[] dS;
     private double dT;
     private double velocity;
+    private double acceleration;
     private Debugger debugger;
     private BNO055IMU imu;
     private double IMU_ZERO;
@@ -199,7 +200,14 @@ public class SwerveKinematics {
 
         // calculate velocity
         double dX = Math.hypot(comX - centerOfMass.getX(), comY - centerOfMass.getY());
-        velocity = dX / dT;
+//        acceleration = ((dX/dT) - velocity)/dT;
+//        velocity = dX / dT;
+        double v1 = bulkDataBottom.getMotorVelocity(swerveModules[0].driveMotor);
+        double v2 = bulkDataBottom.getMotorVelocity(swerveModules[1].driveMotor);
+        double v3 = bulkDataBottom.getMotorVelocity(swerveModules[2].driveMotor);
+        double vAvg = convertTicksToInches((v1+v2+v3)/3);
+        acceleration = (vAvg-velocity)/dT;
+        velocity = vAvg;
 
         // update center of mass coordinates
         centerOfMass.setCoordinates(comX, comY);
@@ -248,6 +256,12 @@ public class SwerveKinematics {
         return velocity;
     }
 
+    public double getAcceleration() {
+        if (Double.isNaN(acceleration))
+            return 0;
+        return acceleration;
+    }
+
     public Pose getCenterOfMass() {
         return new Pose(centerOfMass.getX(), centerOfMass.getY(), centerOfMass.getDegrees());
     }
@@ -280,6 +294,10 @@ public class SwerveKinematics {
         return delta;
     }
 
+    private double convertTicksToInches(double ticks) {
+        return ticks * wheelCircumference * driveGearRatio / ticksPerRevolution;
+    }
+
     public void resetGyro() {
         IMU_ZERO = imu.getAngularOrientation().firstAngle;
     }
@@ -295,6 +313,5 @@ public class SwerveKinematics {
     public double getIMU_ZERO() {
         return IMU_ZERO;
     }
-
 
 }

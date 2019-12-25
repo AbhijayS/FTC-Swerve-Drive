@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.modules.swerve;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.teamcode.common.UniversalConstants;
 import org.firstinspires.ftc.teamcode.common.states.MotionState;
 import org.firstinspires.ftc.teamcode.common.states.SwerveState;
 import org.firstinspires.ftc.teamcode.common.utilities.Debugger;
@@ -56,6 +57,8 @@ public class SwerveDrive {
     private double lastTargetAngle;
     private double FAKE_COM_X;
     private double FAKE_COM_Y;
+    private double kF = 0.09;
+    private double kP = 0.1;
 
     public SwerveDrive(LinearOpMode l, Debugger debugger) {
         linearOpMode = l;
@@ -263,7 +266,7 @@ public class SwerveDrive {
             power = 0;
         else {
             cerr += err;
-            power = err * kP + cerr * kI;
+            power = err * UniversalConstants.kP + cerr * UniversalConstants.kI;
         }
         lastTargetAngle = targetAngle;
         return power;
@@ -460,12 +463,22 @@ public class SwerveDrive {
         module3.disablePID();
     }
 
+    @Deprecated
     public void movePID(double position, double power) {
         int encoder = SwerveModule.convertInchesToTicks(position);
         module0.movePID(encoder, power);
         module1.movePID(encoder, power);
         module2.movePID(encoder, power);
         module3.movePID(encoder, power);
+    }
+
+    public double movePID(double yTarget) {
+        double error = (yTarget - swerveKinematics.getCenterOfMass().getY());
+        double angle = Math.toDegrees(Math.atan2(error,0));
+        swivel(angle);
+        error = Math.abs(error);
+        double power = kF + error * kP;
+        return power;
     }
 
     public void resetMotorDirections() {

@@ -131,7 +131,7 @@ public class UniversalConstants {
     public static final double  ROBOT_WIDTH         =   14; // INCHES
     public static final double  ROBOT_LENGTH        =   10; // INCHES
     public static final double  AUTO_MAX_SPEED =   1;
-    public static final double  TELEOP_MAX_SPEED =   0.5;
+    public static final double  TELEOP_MAX_SPEED =   1;
     public static final double  ROBOT_COM_X         =   0; // offset from (0,0)
     public static final double  ROBOT_COM_Y         =   1; // offset from (0,0)
     public static final double  PI                  =   Math.PI;
