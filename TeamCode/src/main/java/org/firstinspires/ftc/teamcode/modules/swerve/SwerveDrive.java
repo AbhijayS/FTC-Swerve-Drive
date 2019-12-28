@@ -15,7 +15,6 @@ import org.firstinspires.ftc.teamcode.common.utilities.Pose;
 import static org.firstinspires.ftc.teamcode.common.utilities.Debugger.Marker.PATH;
 import static org.firstinspires.ftc.teamcode.common.utilities.Debugger.Marker.PX;
 import static org.firstinspires.ftc.teamcode.common.utilities.Debugger.Marker.PY;
-import static org.firstinspires.ftc.teamcode.common.utilities.Debugger.Marker.VELOCITY;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.HALF_PI;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ModuleConfig;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.AUTO_MAX_SPEED;
@@ -207,6 +206,8 @@ public class SwerveDrive {
     public void fod(double strafe_angle, double strafe_power, double turn_power, double yaw) {
         // save computation time if no movement is necessary
         if (strafe_power == 0 && turn_power == 0) {
+//            swivel(90);
+            setPower(0);
             return;
         }
 
@@ -437,7 +438,7 @@ public class SwerveDrive {
                 if (!Double.isNaN(trackingPose.getDegrees()))
                     headingGoal = trackingPose.getDegrees();
 
-                fod(strafeAngle, maxPower, turnPID(headingGoal), yaw);
+                fod(strafeAngle, path.getPower(), turnPID(headingGoal), yaw);
 
                 if (!ROBOT_STATUS.equals(RELEASE)) {
 //                    debugger.addData(PATH.toString(), path.toString());
@@ -463,22 +464,12 @@ public class SwerveDrive {
         module3.disablePID();
     }
 
-    @Deprecated
     public void movePID(double position, double power) {
         int encoder = SwerveModule.convertInchesToTicks(position);
         module0.movePID(encoder, power);
         module1.movePID(encoder, power);
         module2.movePID(encoder, power);
         module3.movePID(encoder, power);
-    }
-
-    public double movePID(double yTarget) {
-        double error = (yTarget - swerveKinematics.getCenterOfMass().getY());
-        double angle = Math.toDegrees(Math.atan2(error,0));
-        swivel(angle);
-        error = Math.abs(error);
-        double power = kF + error * kP;
-        return power;
     }
 
     public void resetMotorDirections() {

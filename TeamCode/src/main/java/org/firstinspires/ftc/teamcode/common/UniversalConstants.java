@@ -145,6 +145,7 @@ public class UniversalConstants {
     public static final int     wheelDiameter       = 3; //inches
     public static final double  wheelCircumference  = wheelDiameter*Math.PI; //inches
     public static final double  driveGearRatio      = 24.0/18.0; // Output rate : Input rate
+    public static final double  fudgeFactor         = 1.0667; // compensates for encoder reading error
 
     // various hardware names
     public static final String expansionHubBottom = "Expansion Hub 1";

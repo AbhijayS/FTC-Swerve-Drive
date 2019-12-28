@@ -12,6 +12,7 @@ import org.openftc.revextensions2.RevBulkData;
 
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ModuleConfig;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.driveGearRatio;
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.fudgeFactor;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.servoDefaultAngle;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ticksPerRevolution;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.wheelCircumference;
@@ -132,11 +133,11 @@ public class SwerveKinematics {
 //                swerveModules[2].getDisplacement(),
 //                swerveModules[3].getDisplacement()
         };
-        dS = new Double[]{
-                (temp[0] - wheelStamps[0]) * swerveModules[0].getMotorDirection().getSign(),
-                (temp[1] - wheelStamps[1]) * swerveModules[1].getMotorDirection().getSign(),
-                (temp[2] - wheelStamps[2]) * swerveModules[2].getMotorDirection().getSign(),
-                (temp[3] - wheelStamps[3]) * swerveModules[3].getMotorDirection().getSign()
+        dS = new Double[] {
+                (temp[0] - wheelStamps[0]) * swerveModules[0].getMotorDirection().getSign() * fudgeFactor,
+                (temp[1] - wheelStamps[1]) * swerveModules[1].getMotorDirection().getSign() * fudgeFactor,
+                (temp[2] - wheelStamps[2]) * swerveModules[2].getMotorDirection().getSign() * fudgeFactor,
+                (temp[3] - wheelStamps[3]) * swerveModules[3].getMotorDirection().getSign() * fudgeFactor
         };
         Double[] k = {
                 angularDeltaRadians / dS[0],
@@ -200,14 +201,15 @@ public class SwerveKinematics {
 
         // calculate velocity
         double dX = Math.hypot(comX - centerOfMass.getX(), comY - centerOfMass.getY());
-//        acceleration = ((dX/dT) - velocity)/dT;
-//        velocity = dX / dT;
-        double v1 = bulkDataBottom.getMotorVelocity(swerveModules[0].driveMotor);
-        double v2 = bulkDataBottom.getMotorVelocity(swerveModules[1].driveMotor);
-        double v3 = bulkDataBottom.getMotorVelocity(swerveModules[2].driveMotor);
-        double vAvg = convertTicksToInches((v1+v2+v3)/3);
-        acceleration = (vAvg-velocity)/dT;
-        velocity = vAvg;
+        acceleration = ((dX/dT) - velocity)/dT;
+        velocity = dX / dT;
+
+//        double v1 = bulkDataBottom.getMotorVelocity(swerveModules[0].driveMotor);
+//        double v2 = bulkDataBottom.getMotorVelocity(swerveModules[1].driveMotor);
+//        double v3 = bulkDataBottom.getMotorVelocity(swerveModules[2].driveMotor);
+//        double vAvg = convertTicksToInches((v1+v2+v3)/3);
+//        acceleration = (vAvg-velocity)/dT;
+//        velocity = vAvg;
 
         // update center of mass coordinates
         centerOfMass.setCoordinates(comX, comY);

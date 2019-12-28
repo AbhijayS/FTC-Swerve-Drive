@@ -108,7 +108,7 @@ public class JewelArm {
         cerr += error;
 //        debugger.addData("Encoder", pos);
 //        debugger.addData("Power", power);
-//        debugger.addData("Feed forward", f);
+//        debugger.addData("Feed forward", fDrive);
 //        debugger.addData("Error", error);
 //        debugger.addData("Cumulative", cerr);
 

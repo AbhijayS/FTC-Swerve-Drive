@@ -15,12 +15,15 @@ import org.firstinspires.ftc.teamcode.modules.swerve.SwerveDrive;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import static org.firstinspires.ftc.teamcode.common.utilities.Debugger.Marker.ACCEL;
+import static org.firstinspires.ftc.teamcode.common.utilities.Debugger.Marker.VEL;
+
 @TeleOp(name = "TestOp: Vel, Accel")
 public class EssentialsTester extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         Debugger robotDebugger = new Debugger(Util.getContext(), this, (ArrayList<String>) Debugger.Marker.getDebuggingMarkers());
-        robotDebugger.initialize("Robot Essentials");
+        robotDebugger.initialize("Robot Essentials 3");
         Gamepad g = new Gamepad(this);
         SwerveDrive swerve = new SwerveDrive(this,robotDebugger);
         swerve.requestState(SwerveState.HUMAN_INPUT);
@@ -39,16 +42,19 @@ public class EssentialsTester extends LinearOpMode {
             if (filter <= 100)
                 filter++;
             else {
-                double vel = Math.abs(swerve.swerveKinematics.getVelocity());
-                double accel = Math.abs(swerve.swerveKinematics.getAcceleration());
-                vels.add(vel);
-                accels.add(accel);
-                telemetry.addData("Vel", vel);
-                telemetry.addData("Accel", accel);
+                double vel = swerve.swerveKinematics.getVelocity();
+                double accel = swerve.swerveKinematics.getAcceleration();
+//                vels.add(vel);
+//                accels.add(accel);
+                robotDebugger.addData(VEL.toString(), vel);
+                robotDebugger.addData(ACCEL.toString(), accel);
+//                telemetry.addData("Vel", vel);
+//                telemetry.addData("Accel", accel);
+                robotDebugger.log();
             }
-            telemetry.update();
             g.update();
         }
+        robotDebugger.stopLogging();
 
         Collections.sort(vels);
         Collections.sort(accels);

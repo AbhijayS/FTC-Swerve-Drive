@@ -33,12 +33,13 @@ public class Debugger {
     private Telemetry telemetry;
 
     public enum Marker {
+        VEL("Velocity"),
+        ACCEL("Acceleration"),
         RX("Robot X"),
         RY("Robot Y"),
         PX("Tracking Pose X"),
         PY("Tracking Pose Y"),
         HEADING("Heading"),
-        VELOCITY("Velocity"),
         PATH("Path");
 
         private final String name;

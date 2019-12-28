@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
+import static org.firstinspires.ftc.teamcode.common.UniversalConstants.AUTO_MAX_SPEED;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ROBOT_STATUS;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.Status.RELEASE;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.tolerance;
@@ -30,6 +31,14 @@ public class Path {
 //    public WayPoint CURRENT_WAYPOINT;
     public WayPoint SEGMENT_START; // start point of the current path segment
     public WayPoint SEGMENT_END; // end point of the current path segment
+
+    // mp variables
+    public double POWER;
+    private float AMAX = 100f;
+    private float DMAX = 25f;
+    private float VMAX = 60f;
+    private final double C = Math.pow(VMAX,2)/(2*DMAX); // shift x to origin
+    private float fDrive = 0.09f;
 
     // private variables
     private PolynomialSplineFunction spline;
@@ -131,6 +140,7 @@ public class Path {
         PATH_SEGMENT = 1;
         this.SEGMENT_START = this.wayPoints[0];
         this.SEGMENT_END = this.wayPoints[1];
+        this.POWER = 0;
     }
 
     /**
@@ -449,7 +459,24 @@ public class Path {
 
     // TODO: Minimum Jerk Trajectory (MJT) for start and end splines
     // TODO: MJT for the whole path would be ideal
-    private double minimumJerkPower() {
+    public double getPower() {
+        switch (DIRECTION) {
+            case FORWARD: {
+                // shift x -> segment_start
+                // shift x -> segment_end + deceleration
+                // velocity sqrt(a*a*x)
+                // max sqrt(v-2*a*x)
+                double y = TRACKING_POSE.getY();
+                double start = SEGMENT_START.Y;
+                double end = SEGMENT_END.Y;
+                double accel = Math.sqrt(2 * AMAX * (y-start)); // acceleration velocity
+                double decel = Math.sqrt(Math.pow(VMAX,2) - 2*DMAX*(y+C-end)); // deceleration velocity
+                if (accel < decel)
+                    return Range.scale(Range.clip(accel,0,VMAX),0,VMAX,fDrive,1);
+                else
+                    return Range.scale(Range.clip(decel,0,VMAX),0,VMAX,-fDrive,1);
+            }
+        }
         return 1;
     }
 
