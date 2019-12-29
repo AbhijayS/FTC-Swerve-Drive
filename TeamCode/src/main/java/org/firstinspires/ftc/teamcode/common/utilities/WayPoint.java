@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.common.utilities;
 
 import org.firstinspires.ftc.teamcode.modules.HardStops;
 import org.firstinspires.ftc.teamcode.modules.elevator.Clamp;
+import org.firstinspires.ftc.teamcode.modules.elevator.Lift;
 import org.firstinspires.ftc.teamcode.modules.jewelswatter.JewelSwatter;
 
 /**
@@ -22,8 +23,10 @@ public class WayPoint {
     public final double PIVOT_X;
     public final double PIVOT_Y;
     public final double kS;
+    public final Lift.State liftState;
+    public final int liftHeight;
 
-    public WayPoint(Pose pose, double power, Clamp.ClampState clampState, JewelSwatter.JewelSwatterState jewelSwatterState, double waitMillis, boolean enablePID, double pivotX, double pivotY, HardStops.HardStopState hardStopState, double kS) {
+    public WayPoint(Pose pose, double power, Clamp.ClampState clampState, JewelSwatter.JewelSwatterState jewelSwatterState, Lift.State liftState, int liftHeight, double waitMillis, boolean enablePID, double pivotX, double pivotY, HardStops.HardStopState hardStopState, double kS) {
         this.POSE = pose;
         this.X = POSE.getX();
         this.Y = POSE.getY();
@@ -37,6 +40,8 @@ public class WayPoint {
         this.PIVOT_X = pivotX;
         this.PIVOT_Y = pivotY;
         this.kS = kS;
+        this.liftState = liftState;
+        this.liftHeight = liftHeight;
     }
 
     public boolean equals(WayPoint wayPoint) {

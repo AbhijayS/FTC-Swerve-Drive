@@ -36,7 +36,7 @@ public class Path {
 
     // mp variables
     public double POWER;
-    private float AMAX = 100f;
+    private float AMAX = 180f;
     private float DMAX = 25f;
     private float VMAX = 60f;
     private final double C = Math.pow(VMAX,2)/(2*DMAX); // shift x to origin
@@ -477,8 +477,11 @@ public class Path {
                 double start = SEGMENT_START.Y;
                 double end = SEGMENT_END.Y;
 
-                if (end - y <= tolerance)
-                    return 0;
+//                if (end - y <= tolerance)
+//                    return 0;
+
+                if (Math.abs(y-start) <= 0.5)
+                    return 0.15;
 
                 double accel = Math.sqrt(2 * AMAX * (y-start)); // acceleration velocity
                 double decel = Math.sqrt(Math.pow(VMAX,2) - 2*DMAX*(y+C-end)); // deceleration velocity
@@ -501,8 +504,11 @@ public class Path {
                 double start = SEGMENT_END.Y;
                 double end = SEGMENT_START.Y;
 
-                if (end - y <= tolerance)
-                    return 0;
+//                if (Math.abs(end - y) <= tolerance)
+//                    return 0;
+
+                if (Math.abs(y-start) <= 0.5)
+                    return 0.15;
 
                 double accel = Math.sqrt(2 * AMAX * (y-start)); // acceleration velocity
                 double decel = Math.sqrt(Math.pow(VMAX,2) - 2*DMAX*(y+C-end)); // deceleration velocity
@@ -525,8 +531,11 @@ public class Path {
                 double start = 0;
                 double end = pathLength;
 
-                if (end - x <= tolerance)
-                    return 0;
+//                if (end - x <= tolerance)
+//                    return 0;
+
+                if (Math.abs(x-start) <= 0.5)
+                    return 0.15;
 
                 double accel = Math.sqrt(2 * AMAX * (x-start)); // acceleration velocity
                 double decel = Math.sqrt(Math.pow(VMAX,2) - 2*DMAX*(x+C-end)); // deceleration velocity
@@ -547,8 +556,11 @@ public class Path {
                 double start = 0;
                 double end = pathLength;
 
-                if (end - x <= tolerance)
-                    return 0;
+//                if (end - x <= tolerance)
+//                    return 0;
+
+                if (Math.abs(x-start) <= 0.5)
+                    return 0.15;
 
                 double accel = Math.sqrt(2 * AMAX * (x-start)); // acceleration velocity
                 double decel = Math.sqrt(Math.pow(VMAX,2) - 2*DMAX*(x+C-end)); // deceleration velocity

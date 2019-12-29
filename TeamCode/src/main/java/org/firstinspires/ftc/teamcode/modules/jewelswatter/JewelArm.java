@@ -64,7 +64,7 @@ public class JewelArm {
 
         if (state == JewelArmState.DOCK || state == JewelArmState.POSSESS) {
             a1Mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER;
-            a1Power = 0.5;
+            a1Power = 0.8;
         } else {
             a1Mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER;
             a1Power = PIDF();

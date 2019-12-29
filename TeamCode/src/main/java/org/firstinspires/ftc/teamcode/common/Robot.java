@@ -108,6 +108,7 @@ public class Robot {
                 jewelSwatter.update();
                 clamp.update();
                 hardStops.update();
+                lift.update();
                 debugger.log();
                 break;
             }
@@ -171,6 +172,8 @@ public class Robot {
         jewelSwatter.requestState(currentWaypoint.JEWEL_SWATTER_STATE);
         clamp.requestState(currentWaypoint.CLAMP_STATE);
         hardStops.requestState(currentWaypoint.HARD_STOP_STATE);
+        lift.setTargetLevel(currentWaypoint.liftHeight);
+        lift.requestState(currentWaypoint.liftState);
 
         // lift stuff
     }
