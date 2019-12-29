@@ -32,6 +32,7 @@ public class Path {
 //    public WayPoint CURRENT_WAYPOINT;
     public WayPoint SEGMENT_START; // start point of the current path segment
     public WayPoint SEGMENT_END; // end point of the current path segment
+    private double pathLength; // crude approximation of the current path length
 
     // mp variables
     public double POWER;
@@ -175,7 +176,7 @@ public class Path {
 
         switch (DIRECTION) {
             case RIGHT: {
-                if (TRACKING_POSE.getX() >= currentSegment.getLast().X) {
+                if (TRACKING_POSE.getX() >= currentSegment.getLast().X - tolerance) {
                     SEGMENT_START = currentSegment.getLast();
                     TRACKING_POSE.setPose(currentSegment.getLast().X, currentSegment.getLast().Y, SEGMENT_END.Z);
                     if (PATH_SEGMENT == segments.size()) {
@@ -213,6 +214,8 @@ public class Path {
                     }
                     spline = splineInterpolator.interpolate(x, y);
                     SEGMENT_END = currentSegment.getLast();
+                    // rough approximation for path length
+                    pathLength = Math.hypot((SEGMENT_END.X-SEGMENT_START.X),(SEGMENT_END.Y-SEGMENT_START.Y));
                 }
 
                 // update
@@ -225,7 +228,7 @@ public class Path {
                 break;
             }
             case LEFT: {
-                if (TRACKING_POSE.getX() <= currentSegment.getLast().X) {
+                if (TRACKING_POSE.getX() <= currentSegment.getLast().X + tolerance) {
                     SEGMENT_START = currentSegment.getLast();
                     TRACKING_POSE.setPose(currentSegment.getLast().X, currentSegment.getLast().Y, SEGMENT_END.Z);
                     if (PATH_SEGMENT == segments.size()) {
@@ -265,6 +268,8 @@ public class Path {
                     }
                     spline = splineInterpolator.interpolate(x, y);
                     SEGMENT_END = currentSegment.getLast();
+                    // rough approximation for path length
+                    pathLength = Math.hypot((SEGMENT_END.X-SEGMENT_START.X),(SEGMENT_END.Y-SEGMENT_START.Y));
                 }
 
                 // update
@@ -514,9 +519,11 @@ public class Path {
             }
 
             case RIGHT: {
-                double x = TRACKING_POSE.getX();
-                double start = SEGMENT_START.X;
-                double end = SEGMENT_END.X;
+                double x = pathLength - Math.hypot(SEGMENT_END.X-TRACKING_POSE.getX(),SEGMENT_END.Y-TRACKING_POSE.getY());
+                if (x < 0)
+                    throw new RuntimeException("(Travelling RIGHT) Path length approximation failure!");
+                double start = 0;
+                double end = pathLength;
 
                 if (end - x <= tolerance)
                     return 0;
@@ -534,19 +541,17 @@ public class Path {
             }
 
             case LEFT: {
+                double x = pathLength - Math.hypot(SEGMENT_END.X-TRACKING_POSE.getX(),SEGMENT_END.Y-TRACKING_POSE.getY());
+                if (x < 0)
+                    throw new RuntimeException("(Travelling LEFT) Path length approximation failure!");
+                double start = 0;
+                double end = pathLength;
 
-                // end-------y--start ==> start--y------end
-                double y = Range.scale(TRACKING_POSE.getX(),SEGMENT_START.X,SEGMENT_END.X,SEGMENT_END.X,SEGMENT_START.X);
-
-                // flip start and end
-                double start = SEGMENT_END.X;
-                double end = SEGMENT_START.X;
-
-                if (end - y <= tolerance)
+                if (end - x <= tolerance)
                     return 0;
 
-                double accel = Math.sqrt(2 * AMAX * (y-start)); // acceleration velocity
-                double decel = Math.sqrt(Math.pow(VMAX,2) - 2*DMAX*(y+C-end)); // deceleration velocity
+                double accel = Math.sqrt(2 * AMAX * (x-start)); // acceleration velocity
+                double decel = Math.sqrt(Math.pow(VMAX,2) - 2*DMAX*(x+C-end)); // deceleration velocity
                 if (Double.isNaN(accel))
                     accel = 0;
                 if (Double.isNaN(decel))
