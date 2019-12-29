@@ -438,6 +438,7 @@ public class SwerveDrive {
                 if (!Double.isNaN(trackingPose.getDegrees()))
                     headingGoal = trackingPose.getDegrees();
 
+                debugger.addData("PROFILE", path.getPower());
                 fod(strafeAngle, path.getPower(), turnPID(headingGoal), yaw);
 
                 if (!ROBOT_STATUS.equals(RELEASE)) {

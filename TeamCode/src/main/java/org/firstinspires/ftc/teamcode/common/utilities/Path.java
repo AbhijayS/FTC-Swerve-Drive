@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.common.utilities;
 
 import com.qualcomm.robotcore.util.Range;
 
+import org.apache.commons.math3.analysis.integration.SimpsonIntegrator;
 import org.apache.commons.math3.analysis.interpolation.SplineInterpolator;
 import org.apache.commons.math3.analysis.polynomials.PolynomialFunction;
 import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
@@ -457,6 +458,7 @@ public class Path {
 
     }
 
+    // TODO: Integrate the left and right polynomials to get the most accurate profile
     // TODO: Minimum Jerk Trajectory (MJT) for start and end splines
     // TODO: MJT for the whole path would be ideal
     public double getPower() {
@@ -469,15 +471,97 @@ public class Path {
                 double y = TRACKING_POSE.getY();
                 double start = SEGMENT_START.Y;
                 double end = SEGMENT_END.Y;
+
+                if (end - y <= tolerance)
+                    return 0;
+
                 double accel = Math.sqrt(2 * AMAX * (y-start)); // acceleration velocity
                 double decel = Math.sqrt(Math.pow(VMAX,2) - 2*DMAX*(y+C-end)); // deceleration velocity
+                if (Double.isNaN(accel))
+                    accel = 0;
+                if (Double.isNaN(decel))
+                    decel = 0;
                 if (accel < decel)
                     return Range.scale(Range.clip(accel,0,VMAX),0,VMAX,fDrive,1);
                 else
                     return Range.scale(Range.clip(decel,0,VMAX),0,VMAX,-fDrive,1);
             }
+
+            case REVERSE: {
+
+                // end-------y--start ==> start--y------end
+                double y = Range.scale(TRACKING_POSE.getY(),SEGMENT_START.Y,SEGMENT_END.Y,SEGMENT_END.Y,SEGMENT_START.Y);
+
+                // flip start and end
+                double start = SEGMENT_END.Y;
+                double end = SEGMENT_START.Y;
+
+                if (end - y <= tolerance)
+                    return 0;
+
+                double accel = Math.sqrt(2 * AMAX * (y-start)); // acceleration velocity
+                double decel = Math.sqrt(Math.pow(VMAX,2) - 2*DMAX*(y+C-end)); // deceleration velocity
+                if (Double.isNaN(accel))
+                    accel = 0;
+                if (Double.isNaN(decel))
+                    decel = 0;
+                if (accel < decel) {
+                    return Range.scale(Range.clip(accel,0,VMAX),0,VMAX,fDrive,1);
+                }
+                else {
+                    return Range.scale(Range.clip(decel,0,VMAX),0,VMAX,-fDrive,1);
+                }
+            }
+
+            case RIGHT: {
+                double x = TRACKING_POSE.getX();
+                double start = SEGMENT_START.X;
+                double end = SEGMENT_END.X;
+
+                if (end - x <= tolerance)
+                    return 0;
+
+                double accel = Math.sqrt(2 * AMAX * (x-start)); // acceleration velocity
+                double decel = Math.sqrt(Math.pow(VMAX,2) - 2*DMAX*(x+C-end)); // deceleration velocity
+                if (Double.isNaN(accel))
+                    accel = 0;
+                if (Double.isNaN(decel))
+                    decel = 0;
+                if (accel < decel)
+                    return Range.scale(Range.clip(accel,0,VMAX),0,VMAX,fDrive,1);
+                else
+                    return Range.scale(Range.clip(decel,0,VMAX),0,VMAX,-fDrive,1);
+            }
+
+            case LEFT: {
+
+                // end-------y--start ==> start--y------end
+                double y = Range.scale(TRACKING_POSE.getX(),SEGMENT_START.X,SEGMENT_END.X,SEGMENT_END.X,SEGMENT_START.X);
+
+                // flip start and end
+                double start = SEGMENT_END.X;
+                double end = SEGMENT_START.X;
+
+                if (end - y <= tolerance)
+                    return 0;
+
+                double accel = Math.sqrt(2 * AMAX * (y-start)); // acceleration velocity
+                double decel = Math.sqrt(Math.pow(VMAX,2) - 2*DMAX*(y+C-end)); // deceleration velocity
+                if (Double.isNaN(accel))
+                    accel = 0;
+                if (Double.isNaN(decel))
+                    decel = 0;
+                if (accel < decel) {
+                    return Range.scale(Range.clip(accel,0,VMAX),0,VMAX,fDrive,1);
+                }
+                else {
+                    return Range.scale(Range.clip(decel,0,VMAX),0,VMAX,-fDrive,1);
+                }
+            }
+
+            default:
+                return 0;
         }
-        return 1;
     }
 
     public Pose getStartLocation() {
