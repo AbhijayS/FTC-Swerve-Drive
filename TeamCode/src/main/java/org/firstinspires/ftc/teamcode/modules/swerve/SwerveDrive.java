@@ -263,8 +263,10 @@ public class SwerveDrive {
         double err = roundTo2DecimalPlaces(heading - setAngle);
         err += (err > 180) ? -360 : (err < -180) ? 360 : 0;
         double power;
-        if (Math.abs(err) <= tolerance)
+        if (Math.abs(err) <= tolerance) {
+            cerr = 0;
             power = 0;
+        }
         else {
             cerr += err;
             power = err * UniversalConstants.kP + cerr * UniversalConstants.kI;

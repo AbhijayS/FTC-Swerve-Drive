@@ -309,6 +309,7 @@ public class Path {
 //                }
                 TRACKING_POSE.setPose(currentSegment.getFirst().X, CoM.getY(), SEGMENT_START.Z);
                 SEGMENT_END = currentSegment.getLast();
+                pathLength = Math.abs(SEGMENT_END.Y-SEGMENT_START.Y);
                 PATH_STATE = PathState.FOLLOW;
                 break;
             }
@@ -340,6 +341,7 @@ public class Path {
                 TRACKING_POSE.setPose(currentSegment.getFirst().X, CoM.getY(), SEGMENT_START.Z);
                 SEGMENT_END = currentSegment.getLast();
                 PATH_STATE = PathState.FOLLOW;
+                pathLength = Math.abs(SEGMENT_END.Y-SEGMENT_START.Y);
                 break;
             }
             default:
@@ -467,6 +469,8 @@ public class Path {
     // TODO: Minimum Jerk Trajectory (MJT) for start and end splines
     // TODO: MJT for the whole path would be ideal
     public double getPower() {
+        if (pathLength <= 10)
+            return 0.4;
         switch (DIRECTION) {
             case FORWARD: {
                 // shift x -> segment_start
@@ -480,7 +484,7 @@ public class Path {
 //                if (end - y <= tolerance)
 //                    return 0;
 
-                if (Math.abs(y-start) <= 0.5)
+                if (Math.abs(y-start) <= tolerance)
                     return 0.2;
 
                 double accel = Math.sqrt(2 * AMAX * (y-start)); // acceleration velocity
@@ -507,7 +511,7 @@ public class Path {
 //                if (Math.abs(end - y) <= tolerance)
 //                    return 0;
 
-                if (Math.abs(y-start) <= 0.5)
+                if (Math.abs(y-start) <= tolerance)
                     return 0.2;
 
                 double accel = Math.sqrt(2 * AMAX * (y-start)); // acceleration velocity
@@ -534,7 +538,7 @@ public class Path {
 //                if (end - x <= tolerance)
 //                    return 0;
 
-                if (Math.abs(x-start) <= 0.5)
+                if (Math.abs(x-start) <= tolerance)
                     return 0.2;
 
                 double accel = Math.sqrt(2 * AMAX * (x-start)); // acceleration velocity
@@ -559,7 +563,7 @@ public class Path {
 //                if (end - x <= tolerance)
 //                    return 0;
 
-                if (Math.abs(x-start) <= 0.5)
+                if (Math.abs(x-start) <= tolerance)
                     return 0.2;
 
                 double accel = Math.sqrt(2 * AMAX * (x-start)); // acceleration velocity
