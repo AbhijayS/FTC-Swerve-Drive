@@ -36,7 +36,7 @@ public class Path {
 
     // mp variables
     public double POWER;
-    private float AMAX = 180f;
+    private float AMAX = 200f;
     private float DMAX = 25f;
     private float VMAX = 60f;
     private final double C = Math.pow(VMAX,2)/(2*DMAX); // shift x to origin
@@ -481,7 +481,7 @@ public class Path {
 //                    return 0;
 
                 if (Math.abs(y-start) <= 0.5)
-                    return 0.15;
+                    return 0.2;
 
                 double accel = Math.sqrt(2 * AMAX * (y-start)); // acceleration velocity
                 double decel = Math.sqrt(Math.pow(VMAX,2) - 2*DMAX*(y+C-end)); // deceleration velocity
@@ -508,7 +508,7 @@ public class Path {
 //                    return 0;
 
                 if (Math.abs(y-start) <= 0.5)
-                    return 0.15;
+                    return 0.2;
 
                 double accel = Math.sqrt(2 * AMAX * (y-start)); // acceleration velocity
                 double decel = Math.sqrt(Math.pow(VMAX,2) - 2*DMAX*(y+C-end)); // deceleration velocity
@@ -535,7 +535,7 @@ public class Path {
 //                    return 0;
 
                 if (Math.abs(x-start) <= 0.5)
-                    return 0.15;
+                    return 0.2;
 
                 double accel = Math.sqrt(2 * AMAX * (x-start)); // acceleration velocity
                 double decel = Math.sqrt(Math.pow(VMAX,2) - 2*DMAX*(x+C-end)); // deceleration velocity
@@ -560,7 +560,7 @@ public class Path {
 //                    return 0;
 
                 if (Math.abs(x-start) <= 0.5)
-                    return 0.15;
+                    return 0.2;
 
                 double accel = Math.sqrt(2 * AMAX * (x-start)); // acceleration velocity
                 double decel = Math.sqrt(Math.pow(VMAX,2) - 2*DMAX*(x+C-end)); // deceleration velocity

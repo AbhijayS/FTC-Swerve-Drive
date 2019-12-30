@@ -23,7 +23,7 @@ public class Clamp {
     public enum ClampState {
         CLAMP(3.34),
         STOW(2.48),
-        PARTIAL(2.93),
+        PARTIAL(3),
         COAST(0);
 
         public final double position;

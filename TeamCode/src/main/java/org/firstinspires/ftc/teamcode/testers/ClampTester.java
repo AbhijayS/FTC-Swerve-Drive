@@ -19,7 +19,8 @@ public class ClampTester extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-            clamp.requestState(Clamp.ClampState.STOW);
+            clamp.requestState(Clamp.ClampState.PARTIAL);
+//            clamp.updateByGamepad();
             clamp.update();
             telemetry.update();
         }
