@@ -21,21 +21,22 @@ public class VuforiaDetector {
     public VuforiaDetector(HardwareMap hardwareMap) {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         // using webcam
-//        WebcamName webcamName = hardwareMap.get(WebcamName.class, UniversalConstants.webcamName);
-//        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
-//        parameters.cameraName = webcamName;
-//        parameters.vuforiaLicenseKey = UniversalConstants.vuforiaLicenceKey;
-//        vuforia = ClassFactory.getInstance().createVuforia(parameters);
-//        Vuforia.setFrameFormat(PIXEL_FORMAT.RGB565,true);
-//        vuforia.setFrameQueueCapacity(2);
-
-        // using phone
+        WebcamName webcamName = hardwareMap.get(WebcamName.class, UniversalConstants.webcamName);
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
-        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
+        parameters.cameraName = webcamName;
+        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.FRONT;
         parameters.vuforiaLicenseKey = UniversalConstants.vuforiaLicenceKey;
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
         Vuforia.setFrameFormat(PIXEL_FORMAT.RGB565,true);
         vuforia.setFrameQueueCapacity(2);
+
+        // using phone
+//        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
+//        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
+//        parameters.vuforiaLicenseKey = UniversalConstants.vuforiaLicenceKey;
+//        vuforia = ClassFactory.getInstance().createVuforia(parameters);
+//        Vuforia.setFrameFormat(PIXEL_FORMAT.RGB565,true);
+//        vuforia.setFrameQueueCapacity(2);
     }
 
     /* camera is pointing at the first two stones in the quarry like so:
