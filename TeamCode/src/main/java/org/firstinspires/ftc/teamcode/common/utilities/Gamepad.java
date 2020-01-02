@@ -16,7 +16,7 @@ public class Gamepad {
 
     // operator controls
     public boolean clamp;
-    public boolean stow;
+    public boolean partial;
     public double lift;
     public boolean stowLift, extendLift, incrementLift, decrementLift;
     private Stopwatch liftWatch = new Stopwatch();
@@ -73,7 +73,7 @@ public class Gamepad {
         // LiftModule.java
         lift = -operator.left_stick_y;
         clamp = operator.right_bumper;
-        stow = operator.left_bumper;
+        partial = operator.left_bumper;
 
         // Lift.java
         if (liftWatch.millis() >= 100) {

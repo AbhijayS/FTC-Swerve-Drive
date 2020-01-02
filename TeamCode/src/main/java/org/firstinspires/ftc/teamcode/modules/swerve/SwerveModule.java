@@ -63,7 +63,7 @@ public class SwerveModule {
         driveMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         driveMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         driveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        driveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        driveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         swivel(90);
         setPower(0);

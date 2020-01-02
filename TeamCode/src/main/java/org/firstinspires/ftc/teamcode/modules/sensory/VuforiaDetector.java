@@ -110,11 +110,11 @@ public class VuforiaDetector {
             int right = rgbToGray(bitmap.getPixel(1,0));
             int comparison = compare(left, right);
             switch (comparison) {
-                case 1: return 'C';
+                case 1: return 'B';
 
-                case -1: return 'B';
+                case -1: return 'A';
 
-                default: return 'A';
+                default: return 'C';
             }
         } catch (InterruptedException ie) {
             throw new RuntimeException(ie.getMessage());

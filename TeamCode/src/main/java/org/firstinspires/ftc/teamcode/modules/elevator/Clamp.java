@@ -1,14 +1,11 @@
 package org.firstinspires.ftc.teamcode.modules.elevator;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.common.utilities.Gamepad;
-import org.firstinspires.ftc.teamcode.modules.sensory.Potentiometer;
 
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.clampServo;
 
@@ -21,7 +18,7 @@ public class Clamp {
     private double kP = 0.8;
 
     public enum ClampState {
-        CLAMP(3.34),
+        CLAMP(6),
         STOW(2.48),
         PARTIAL(3.1),
         COAST(0);
@@ -49,8 +46,8 @@ public class Clamp {
         //64-100
         if (g.clamp) {
             requestState(ClampState.CLAMP);
-        } else if (g.stow){
-            requestState(ClampState.STOW);
+        } else if (g.partial){
+            requestState(ClampState.PARTIAL);
         } else {
             requestState(ClampState.COAST);
         }
@@ -62,9 +59,16 @@ public class Clamp {
         return error*kP;
     }
 
-    public void update() {
+    public double update() {
         position = potentiometer.getVoltage();
-        servo.setPower(turnPID());
+        double power;
+        if (clampState == ClampState.COAST) {
+            power = 0;
+        }
+        else
+            power = turnPID();
+        servo.setPower(power);
+        return power;
     }
 
     public String getStatus() {
