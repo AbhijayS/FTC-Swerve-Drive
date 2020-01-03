@@ -23,6 +23,10 @@ public class Lift {
     // TODO: Determine feedforward power imperically
     private final double kf = 0;
     private PIDFCoefficients pidf;
+    private double fudgeFactor = 1.04; // analytical/actual
+    private double clearance = 4;
+    private double adjust = 0;
+
 
     // Level 1 = 1st Stone
     // Level N = Nth Stone
@@ -32,6 +36,7 @@ public class Lift {
     private Debugger debugger;
     private DcMotorEx motorA, motorB;
     private int targetLevel; // saved level used for State.EXTEND
+    private double targetInches;
     private State state; // lift state
 
     public enum State {
@@ -51,8 +56,8 @@ public class Lift {
         this.motorB.setTargetPosition(0);
         this.motorA.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         this.motorB.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        this.motorA.setVelocityPIDFCoefficients(2,0.25,0,30);
-        this.motorB.setVelocityPIDFCoefficients(2,0.25,0,30);
+        this.motorA.setVelocityPIDFCoefficients(12,5,0,45);
+        this.motorB.setVelocityPIDFCoefficients(12,5,0,45);
         this.targetLevel = MIN_LEVEL;
         this.state = State.STOW;
     }
@@ -75,12 +80,14 @@ public class Lift {
 
         switch (state) {
             case EXTEND: {
-                int targetHeight = (targetLevel-1) * STEP_OVER + LEVEL_1_HEIGHT - 1;
-                targetEncoder = convertToTicks(targetHeight);
+                targetInches = clearance + adjust + (fudgeFactor * ((targetLevel-1) * STEP_OVER + LEVEL_1_HEIGHT));
+                targetEncoder = convertToTicks(targetInches);
                 break;
             }
 
             default: {
+                adjust = 0;
+                targetInches = 0;
                 targetEncoder = 0;
                 break;
             }
@@ -88,8 +95,8 @@ public class Lift {
 
         motorA.setTargetPosition(targetEncoder);
         motorB.setTargetPosition(targetEncoder);
-        motorA.setPower(0.8);
-        motorB.setPower(0.8);
+        motorA.setPower(1);
+        motorB.setPower(1);
     }
 
     public int updateTargetLevelUsingGamepad(Gamepad gamepad) {
@@ -108,6 +115,8 @@ public class Lift {
             status = requestState(State.EXTEND);
             update();
         }
+        adjust += gamepad.microAdjustLift;
+        update();
         return status;
     }
 
@@ -130,11 +139,14 @@ public class Lift {
         return (int) Math.round(inches*1.63*560.0/(4.0*2.0*PI*1.15));
     }
 
+    private int convertToInches(double ticks) {
+        return (int) Math.round(ticks* (4.0*2.0*PI*1.15) / (1.63*560.0));
+    }
+
     // quick status of the lift
     public String getStatus() {
         String status = "Lift: " + state.name();
-        if (state==State.EXTEND)
-            status += " " + targetLevel;
+        status += ", " + targetLevel;// + ", " + targetInches + ", " + convertToInches((motorA.getCurrentPosition() + motorB.getCurrentPosition())/2);
         return status;
     }
 

@@ -8,8 +8,10 @@ import org.firstinspires.ftc.teamcode.common.utilities.Gamepad;
 
 public class HardStops {
     private static final double STOW = 0;
-    private static final double HORIZONTAL = 0.33;
-    private static final double PROTECT = 0.5;
+    private static final double HORIZONTAL = 0.5;
+    private static final double PROTECT = 0.83;
+    private final double LEFT_DELTA = -0.33;
+    private final double RIGHT_DELTA = 0;
     private Servo leftStop;
     private Servo rightStop;
     private HardStopState state;
@@ -17,15 +19,15 @@ public class HardStops {
     public HardStops(HardwareMap hardwareMap) {
         this.leftStop = hardwareMap.servo.get(UniversalConstants.leftStop);
         this.rightStop = hardwareMap.servo.get(UniversalConstants.rightStop);
-        this.leftStop.setDirection(Servo.Direction.REVERSE);
+        this.leftStop.setDirection(Servo.Direction.FORWARD);
         this.rightStop.setDirection(Servo.Direction.REVERSE);
         requestState(HardStopState.STOW_ALL);
         update();
     }
 
     public void update() {
-        this.leftStop.setPosition(state.leftPos);
-        this.rightStop.setPosition(state.rightPos);
+        this.leftStop.setPosition(state.leftPos + LEFT_DELTA);
+        this.rightStop.setPosition(state.rightPos + RIGHT_DELTA);
     }
 
     public void updateUsingGamepad(Gamepad gamepad) {

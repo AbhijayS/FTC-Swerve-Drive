@@ -55,8 +55,6 @@ public class Gamepad {
         y = -driver.left_stick_y;
         z = driver.right_stick_x;
 
-
-
         /* Operator Commands */
         Oa = operator.a;
         Ob = operator.b;
@@ -72,13 +70,21 @@ public class Gamepad {
 
         // LiftModule.java
         lift = -operator.left_stick_y;
-        clamp = operator.right_bumper;
-        partial = operator.left_bumper;
+
+        if (operator.right_bumper) {
+            clamp = true;
+            partial = false;
+        }
+
+        if (operator.left_bumper) {
+            clamp = false;
+            partial = true;
+        }
 
         // Lift.java
         if (liftWatch.millis() >= 100) {
-            stowLift = operator.dpad_left;
-            extendLift = operator.dpad_right;
+            stowLift = operator.x;
+            extendLift = operator.b;
             incrementLift = operator.y;
             decrementLift = operator.a;
             liftWatch.reset();

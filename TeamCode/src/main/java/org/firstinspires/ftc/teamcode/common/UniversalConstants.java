@@ -109,7 +109,7 @@ public class UniversalConstants {
     }
 
     public enum JewelSwatterConfig {
-        LEFT("JSLA1", "JSLA2", DcMotorSimple.Direction.FORWARD, Servo.Direction.FORWARD, 0),
+        LEFT("JSLA1", "JSLA2", DcMotorSimple.Direction.FORWARD, Servo.Direction.REVERSE, 0),
         RIGHT("JSRA1", "JSRA2", DcMotorSimple.Direction.REVERSE, Servo.Direction.REVERSE, 0);
 
         public String nameAxis1, nameAxis2;

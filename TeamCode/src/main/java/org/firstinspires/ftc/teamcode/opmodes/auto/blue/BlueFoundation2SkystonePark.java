@@ -24,7 +24,7 @@ public class BlueFoundation2SkystonePark extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         Debugger robotDebugger = new Debugger(Util.getContext(), this, (ArrayList<String>) Debugger.Marker.getDebuggingMarkers());
         robotDebugger.initialize("Auto_Blue_Main");
-        String stonePosition = "A";
+        String stonePosition = "C";
         Robot robot = new Robot(this, robotDebugger);
 //        TensorFlowLite tensorFlowLite = new TensorFlowLite(this,.5);
 //        tensorFlowLite.activateTfod();

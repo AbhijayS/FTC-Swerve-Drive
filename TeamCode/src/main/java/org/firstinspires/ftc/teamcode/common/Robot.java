@@ -83,7 +83,7 @@ public class Robot {
                     this.path = null;
                     this.wayPoints = null;
                     this.currentWaypoint = null;
-                    this.hardStops.requestState(HardStops.HardStopState.DRIVE);
+                    this.hardStops.requestState(HardStops.HardStopState.STOW_ALL);
                     swerveDrive.requestState(SwerveState.HUMAN_INPUT);
                     robotState = newState;
                     break;
@@ -115,6 +115,7 @@ public class Robot {
             case ROBOT_ORIENTED: {
                 swerveDrive.fod(gamepad);
                 clamp.updateByGamepad(gamepad);
+                lift.updateTargetLevelUsingGamepad(gamepad);
                 gamepad.update();
                 hardStops.update();
                 debugger.log();
@@ -124,6 +125,7 @@ public class Robot {
             default: {
                 swerveDrive.fod(gamepad);
                 clamp.updateByGamepad(gamepad);
+                lift.updateTargetLevelUsingGamepad(gamepad);
                 swerveDrive.swerveKinematics.update();
                 gamepad.update();
                 hardStops.update();

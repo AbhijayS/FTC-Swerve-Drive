@@ -20,20 +20,20 @@ public class Clamp {
     public enum ClampState {
         CLAMP(6),
         STOW(2.48),
-        PARTIAL(3.1),
+        PARTIAL(3),
         COAST(0);
 
         public final double position;
 
-        ClampState(double power) {
-            this.position= power;
+        ClampState(double position) {
+            this.position= position;
         }
     }
 
     public Clamp(HardwareMap hardwareMap) {
         servo = hardwareMap.crservo.get(clampServo);
         servo.setDirection(DcMotorSimple.Direction.REVERSE);
-        this.clampState = ClampState.CLAMP;
+        this.clampState = ClampState.PARTIAL;
         potentiometer = hardwareMap.analogInput.get("P");
     }
 
@@ -46,11 +46,11 @@ public class Clamp {
         //64-100
         if (g.clamp) {
             requestState(ClampState.CLAMP);
-        } else if (g.partial){
-            requestState(ClampState.PARTIAL);
-        } else {
-            requestState(ClampState.COAST);
         }
+        if (g.partial) {
+            requestState(ClampState.PARTIAL);
+        }
+
         update();
     }
 
@@ -72,6 +72,6 @@ public class Clamp {
     }
 
     public String getStatus() {
-        return clampState.name();
+        return "Clamp: " + clampState.name() + " " + position;
     }
 }

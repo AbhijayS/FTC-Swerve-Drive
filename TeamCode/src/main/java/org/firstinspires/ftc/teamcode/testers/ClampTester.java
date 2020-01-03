@@ -11,17 +11,18 @@ import org.firstinspires.ftc.teamcode.common.UniversalConstants;
 import org.firstinspires.ftc.teamcode.common.utilities.Gamepad;
 import org.firstinspires.ftc.teamcode.modules.elevator.Clamp;
 
-@TeleOp(name = "TestOp: Clamp")
+@TeleOp(group = "TestOp", name = "Clamp")
 public class ClampTester extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         Clamp clamp = new Clamp(hardwareMap);
+        Gamepad g = new Gamepad(this);
         waitForStart();
 
         while (opModeIsActive()) {
-            clamp.requestState(Clamp.ClampState.PARTIAL);
-//            clamp.updateByGamepad();
-            clamp.update();
+            clamp.updateByGamepad(g);
+            g.update();
+            telemetry.addData("Clamp", clamp.getStatus());
             telemetry.update();
         }
     }

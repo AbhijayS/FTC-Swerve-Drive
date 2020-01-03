@@ -23,6 +23,7 @@ public class ElevatorTester extends LinearOpMode {
             clamp.updateByGamepad(g);
             lift.updateTargetLevelUsingGamepad(g);
             lift.update();
+            telemetry.addLine(lift.getStatus());
             telemetry.addData("Clamp Power", clamp.update());
             g.update();
             telemetry.update();
