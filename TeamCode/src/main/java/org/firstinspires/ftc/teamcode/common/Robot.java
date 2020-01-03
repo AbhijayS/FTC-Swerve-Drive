@@ -13,7 +13,6 @@ import org.firstinspires.ftc.teamcode.common.utilities.WayPoint;
 import org.firstinspires.ftc.teamcode.modules.HardStops;
 import org.firstinspires.ftc.teamcode.modules.elevator.Clamp;
 import org.firstinspires.ftc.teamcode.modules.elevator.Lift;
-import org.firstinspires.ftc.teamcode.modules.elevator.LiftModule;
 import org.firstinspires.ftc.teamcode.modules.jewelswatter.JewelSwatter;
 import org.firstinspires.ftc.teamcode.modules.swerve.SwerveDrive;
 
@@ -57,7 +56,7 @@ public class Robot {
         this.jewelSwatter = new JewelSwatter(linearOpMode.hardwareMap,debugger);
         this.swerveDrive = new SwerveDrive(linearOpMode, debugger);
         this.gamepad = new Gamepad(linearOpMode);
-        this.hardStops = new HardStops(linearOpMode);
+        this.hardStops = new HardStops(linearOpMode.hardwareMap);
     }
 
     public void setWayPoints(WayPoint[] wayPoints) {
@@ -84,7 +83,7 @@ public class Robot {
                     this.path = null;
                     this.wayPoints = null;
                     this.currentWaypoint = null;
-                    this.hardStops.requestState(HardStops.HardStopState.DEPLOY);
+                    this.hardStops.requestState(HardStops.HardStopState.DRIVE);
                     swerveDrive.requestState(SwerveState.HUMAN_INPUT);
                     robotState = newState;
                     break;

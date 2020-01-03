@@ -28,9 +28,9 @@ public class WayPointsTester extends LinearOpMode {
         waitForStart();
 
         WayPoint[] wayPoints = new WayPoint[] {
-                new WayPoint(new Pose(0,0,90),1, Clamp.ClampState.PARTIAL, JewelSwatter.JewelSwatterState.STOW_ALL, Lift.State.STOW, 1, 0,false,0,0, HardStops.HardStopState.STOW,0.01),
-                new WayPoint(new Pose(-20,0,90),1, Clamp.ClampState.PARTIAL, JewelSwatter.JewelSwatterState.STOW_ALL, Lift.State.STOW, 1, 0,false,0,0, HardStops.HardStopState.STOW,0.01),
-                new WayPoint(new Pose(-40,0,90),1, Clamp.ClampState.PARTIAL, JewelSwatter.JewelSwatterState.STOW_ALL, Lift.State.STOW, 1, 0,false,0,0, HardStops.HardStopState.STOW,0.01)
+                new WayPoint(new Pose(0,0,90),1, Clamp.ClampState.PARTIAL, JewelSwatter.JewelSwatterState.STOW_ALL, Lift.State.STOW, 1, 0,false,0,0, HardStops.HardStopState.STOW_ALL,0.01),
+                new WayPoint(new Pose(-20,0,90),1, Clamp.ClampState.PARTIAL, JewelSwatter.JewelSwatterState.STOW_ALL, Lift.State.STOW, 1, 0,false,0,0, HardStops.HardStopState.STOW_ALL,0.01),
+                new WayPoint(new Pose(-40,0,90),1, Clamp.ClampState.PARTIAL, JewelSwatter.JewelSwatterState.STOW_ALL, Lift.State.STOW, 1, 0,false,0,0, HardStops.HardStopState.STOW_ALL,0.01)
         };
         robot.requestState(Robot.RobotState.PATH_FOLLOWING);
         robot.setWayPoints(wayPoints);

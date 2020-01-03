@@ -153,8 +153,8 @@ public class UniversalConstants {
     public static final String clampServoTop = "CST";
     public static final String clampServoBottom = "CSB";
     public static final String clampServo = "CS";
-    public static final String leftStop = "leftStop";
-    public static final String rightStop = "rightStop";
+    public static final String leftStop = "LS";
+    public static final String rightStop = "RS";
     public static final String liftMotorA = "L1";
     public static final String liftMotorB = "L2";
     public static final String webcamName = "Webcam 1";

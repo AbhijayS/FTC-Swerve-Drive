@@ -1,45 +1,62 @@
 package org.firstinspires.ftc.teamcode.modules;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.common.UniversalConstants;
+import org.firstinspires.ftc.teamcode.common.utilities.Gamepad;
 
 public class HardStops {
-    private LinearOpMode linearOpMode;
+    private static final double STOW = 0;
+    private static final double HORIZONTAL = 0.33;
+    private static final double PROTECT = 0.5;
     private Servo leftStop;
     private Servo rightStop;
     private HardStopState state;
 
-    public HardStops(LinearOpMode l){
-        linearOpMode = l;
-        HardwareMap hardwareMap = l.hardwareMap;
-        leftStop = hardwareMap.servo.get(UniversalConstants.leftStop);
-        rightStop = hardwareMap.servo.get(UniversalConstants.rightStop);
-        leftStop.setDirection(Servo.Direction.REVERSE);
-        rightStop.setDirection(Servo.Direction.REVERSE);
-        state = HardStopState.STOW;
+    public HardStops(HardwareMap hardwareMap) {
+        this.leftStop = hardwareMap.servo.get(UniversalConstants.leftStop);
+        this.rightStop = hardwareMap.servo.get(UniversalConstants.rightStop);
+        this.leftStop.setDirection(Servo.Direction.REVERSE);
+        this.rightStop.setDirection(Servo.Direction.REVERSE);
+        requestState(HardStopState.STOW_ALL);
+        update();
     }
 
-    public void update(){
+    public void update() {
         this.leftStop.setPosition(state.leftPos);
         this.rightStop.setPosition(state.rightPos);
     }
 
-    public void requestState(HardStopState newState){
+    public void updateUsingGamepad(Gamepad gamepad) {
+    }
+
+    public void requestState(HardStopState newState) {
         state = newState;
     }
 
-    public HardStopState getState(){
+    public HardStopState getState() {
         return state;
     }
 
     public enum HardStopState {
-        STOW(0, 0), DEPLOY(.8, .8), PARTIAL_DEPLOY(.4, .4);
+
+        // left stop,
+        HORIZONTAL_LEFT(HORIZONTAL, STOW),
+        PROTECT_LEFT(PROTECT, STOW),
+
+        // right stop,
+        HORIZONTAL_RIGHT(STOW, HORIZONTAL),
+        PROTECT_RIGHT(STOW, PROTECT),
+
+        // misc
+        STOW_ALL(STOW, STOW),
+        DEFENSE(HORIZONTAL, HORIZONTAL),
+        DRIVE(PROTECT, PROTECT);
 
         public double leftPos, rightPos;
-        HardStopState(double leftPosition, double rightPosition){
+
+        HardStopState(double leftPosition, double rightPosition) {
             leftPos = leftPosition;
             rightPos = rightPosition;
         }
