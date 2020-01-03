@@ -25,7 +25,7 @@ public class RedFoundation2SkystonePark extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         Debugger robotDebugger = new Debugger(Util.getContext(), this, (ArrayList<String>) Debugger.Marker.getDebuggingMarkers());
         robotDebugger.initialize("Auto_Blue_Main");
-        char stonePosition = 'A';
+        char stonePosition = 'C';
         Robot robot = new Robot(this, robotDebugger);
 //        VuforiaDetector vd = new VuforiaDetector(hardwareMap);
 
@@ -94,21 +94,20 @@ public class RedFoundation2SkystonePark extends LinearOpMode {
 
                         // move to foundation
                         new WayPoint(new Pose(-6,-28,90),1, Clamp.ClampState.PARTIAL, JewelSwatter.JewelSwatterState.STOW_ALL, Lift.State.STOW, 1, 0, false,0,0, HardStops.HardStopState.DEPLOY, 0.1),
-                        new WayPoint(new Pose(-40,-26,90),1, Clamp.ClampState.PARTIAL, JewelSwatter.JewelSwatterState.RIDE_LOW_RIGHT, Lift.State.STOW, 1, 0, false,0,0, HardStops.HardStopState.DEPLOY, 0.1),
-                        new WayPoint(new Pose(-80,-28,90),1, Clamp.ClampState.PARTIAL, JewelSwatter.JewelSwatterState.RIDE_LOW_RIGHT_OPEN, Lift.State.STOW, 1, 0, false,0,0, HardStops.HardStopState.DEPLOY, 0.75),
+                        new WayPoint(new Pose(-40,-28,90),1, Clamp.ClampState.PARTIAL, JewelSwatter.JewelSwatterState.RIDE_LOW_RIGHT, Lift.State.STOW, 1, 0, false,0,0, HardStops.HardStopState.DEPLOY, 0.1),
+                        new WayPoint(new Pose(-80,-31,90),1, Clamp.ClampState.PARTIAL, JewelSwatter.JewelSwatterState.RIDE_LOW_RIGHT_OPEN, Lift.State.STOW, 1, 0, false,0,0, HardStops.HardStopState.DEPLOY, 0.75),
 
                         // pick up second stone
-                        new WayPoint(new Pose(-80,-28,90),1, Clamp.ClampState.PARTIAL, JewelSwatter.JewelSwatterState.RIDE_HIGH_RIGHT_OPEN, Lift.State.STOW, 1, 0, false,0,0, HardStops.HardStopState.DEPLOY, 0.01),
-                        new WayPoint(new Pose(-78,-28,90),1, Clamp.ClampState.PARTIAL, JewelSwatter.JewelSwatterState.STOW_ALL, Lift.State.STOW, 1, 0, false,0,0, HardStops.HardStopState.DEPLOY, 0.1),
-                        new WayPoint(new Pose(-60,-26,90),1, Clamp.ClampState.PARTIAL, JewelSwatter.JewelSwatterState.STOW_ALL, Lift.State.STOW, 1, 0, false,0,0, HardStops.HardStopState.DEPLOY, 5),
-                        new WayPoint(new Pose(-50,-26,90),1, Clamp.ClampState.PARTIAL, JewelSwatter.JewelSwatterState.DOCK_RIGHT, Lift.State.STOW, 1, 0, false,0,0, HardStops.HardStopState.DEPLOY, 5),
-                        new WayPoint(new Pose(-10,-20,90),1, Clamp.ClampState.PARTIAL, JewelSwatter.JewelSwatterState.DOCK_RIGHT, Lift.State.STOW, 1, 0, false,0,0, HardStops.HardStopState.DEPLOY, 0.75),
-                        new WayPoint(new Pose(-2,-20,90),1, Clamp.ClampState.PARTIAL, JewelSwatter.JewelSwatterState.DOCK_RIGHT, Lift.State.STOW, 1, 0, false,0,0, HardStops.HardStopState.DEPLOY, 0.01),
-                        new WayPoint(new Pose(5,-23,90),1, Clamp.ClampState.PARTIAL, JewelSwatter.JewelSwatterState.DOCK_RIGHT, Lift.State.STOW, 1, 0, false,0,0, HardStops.HardStopState.DEPLOY, 0.01),
-                        new WayPoint(new Pose(15,-31,90),1, Clamp.ClampState.PARTIAL, JewelSwatter.JewelSwatterState.POSSESS_RIGHT, Lift.State.STOW, 1, 200, false,0,0, HardStops.HardStopState.DEPLOY, 0.01),
+                        new WayPoint(new Pose(-80,-31,90),1, Clamp.ClampState.PARTIAL, JewelSwatter.JewelSwatterState.RIDE_HIGH_RIGHT_OPEN, Lift.State.STOW, 1, 0, false,0,0, HardStops.HardStopState.DEPLOY, 0.01),
+                        new WayPoint(new Pose(-78,-30,90),1, Clamp.ClampState.PARTIAL, JewelSwatter.JewelSwatterState.STOW_ALL, Lift.State.STOW, 1, 0, false,0,0, HardStops.HardStopState.DEPLOY, 0.1),
+                        new WayPoint(new Pose(-60,-29,90),1, Clamp.ClampState.PARTIAL, JewelSwatter.JewelSwatterState.STOW_ALL, Lift.State.STOW, 1, 0, false,0,0, HardStops.HardStopState.DEPLOY, 2),
+                        new WayPoint(new Pose(-50,-28,90),1, Clamp.ClampState.PARTIAL, JewelSwatter.JewelSwatterState.STOW_ALL, Lift.State.STOW, 1, 0, false,0,0, HardStops.HardStopState.DEPLOY, 2),
+                        new WayPoint(new Pose(20,-25,90),1, Clamp.ClampState.PARTIAL, JewelSwatter.JewelSwatterState.DOCK_RIGHT, Lift.State.STOW, 1, 200, false,0,0, HardStops.HardStopState.DEPLOY, 0.01),
+                        new WayPoint(new Pose(20,-26,90),1, Clamp.ClampState.PARTIAL, JewelSwatter.JewelSwatterState.DOCK_RIGHT, Lift.State.STOW, 1, 800, false,0,0, HardStops.HardStopState.DEPLOY, 0.01),
+                        new WayPoint(new Pose(20,-31,90),1, Clamp.ClampState.PARTIAL, JewelSwatter.JewelSwatterState.POSSESS_RIGHT, Lift.State.STOW, 1, 200, false,0,0, HardStops.HardStopState.DEPLOY, 0.01),
 
                         // return back to foundation
-                        new WayPoint(new Pose(15,-31,90),1, Clamp.ClampState.PARTIAL, JewelSwatter.JewelSwatterState.STOW_ALL, Lift.State.STOW, 1, 0, false,0,0, HardStops.HardStopState.DEPLOY, 0.1),
+                        new WayPoint(new Pose(20,-31,90),1, Clamp.ClampState.PARTIAL, JewelSwatter.JewelSwatterState.STOW_ALL, Lift.State.STOW, 1, 500, false,0,0, HardStops.HardStopState.DEPLOY, 0.1),
                         new WayPoint(new Pose(-40,-28,90),1, Clamp.ClampState.PARTIAL, JewelSwatter.JewelSwatterState.RIDE_LOW_RIGHT, Lift.State.STOW, 4, 0, false,0,0, HardStops.HardStopState.DEPLOY, 0.01),
                         new WayPoint(new Pose(-80,-36,90),1, Clamp.ClampState.PARTIAL, JewelSwatter.JewelSwatterState.RIDE_LOW_RIGHT_OPEN, Lift.State.STOW, 4, 1000, false,0,0, HardStops.HardStopState.DEPLOY, 0.01),
                         new WayPoint(new Pose(-80,-36,90),1, Clamp.ClampState.PARTIAL, JewelSwatter.JewelSwatterState.STOW_ALL, Lift.State.STOW, 4, 0, false,0,0, HardStops.HardStopState.DEPLOY, 0.01),
