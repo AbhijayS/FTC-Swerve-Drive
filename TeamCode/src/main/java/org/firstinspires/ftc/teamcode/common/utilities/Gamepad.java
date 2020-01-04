@@ -13,9 +13,11 @@ public class Gamepad {
     public boolean _0, _45, _90, _135, _180, _225, _270, _315, heading, Oa, Ob, Ou, Ol, Or, Od, slowmo;
     public boolean fod = false;
     public boolean reset_gyro = false;
+    public boolean stowHardStops,alignRight,alignLeft,drive;
 
     // operator controls
     public boolean clamp;
+    public boolean approach;
     public boolean partial;
     public double lift;
     public boolean stowLift, extendLift, incrementLift, decrementLift;
@@ -55,6 +57,34 @@ public class Gamepad {
         y = -driver.left_stick_y;
         z = driver.right_stick_x;
 
+        if (driver.y) {
+            stowHardStops = true;
+            alignRight = false;
+            alignLeft  = false;
+            drive = false;
+        }
+
+        if (driver.b) {
+            stowHardStops = false;
+            alignRight = true;
+            alignLeft  = false;
+            drive = false;
+        }
+
+        if (driver.x) {
+            stowHardStops = false;
+            alignRight = false;
+            alignLeft  = true;
+            drive = false;
+        }
+
+        if (driver.a) {
+            stowHardStops = false;
+            alignRight = false;
+            alignLeft  = false;
+            drive = true;
+        }
+
         /* Operator Commands */
         Oa = operator.a;
         Ob = operator.b;
@@ -73,16 +103,16 @@ public class Gamepad {
 
         if (operator.right_bumper) {
             clamp = true;
-            partial = false;
+            approach = false;
         }
 
         if (operator.left_bumper) {
             clamp = false;
-            partial = true;
+            approach = true;
         }
 
         // Lift.java
-        if (liftWatch.millis() >= 100) {
+        if (liftWatch.millis() >= 200) {
             stowLift = operator.x;
             extendLift = operator.b;
             incrementLift = operator.y;

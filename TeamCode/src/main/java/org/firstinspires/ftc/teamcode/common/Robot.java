@@ -113,22 +113,28 @@ public class Robot {
             }
 
             case ROBOT_ORIENTED: {
+                telemetry.addLine(clamp.getStatus());
+                telemetry.addLine(lift.getStatus());
+                telemetry.addLine(hardStops.getStatus());
                 swerveDrive.fod(gamepad);
                 clamp.updateByGamepad(gamepad);
                 lift.updateTargetLevelUsingGamepad(gamepad);
+                hardStops.updateUsingGamepad(gamepad);
                 gamepad.update();
-                hardStops.update();
                 debugger.log();
                 break;
             }
 
             default: {
+                telemetry.addLine(clamp.getStatus());
+                telemetry.addLine(lift.getStatus());
+                telemetry.addLine(hardStops.getStatus());
                 swerveDrive.fod(gamepad);
                 clamp.updateByGamepad(gamepad);
                 lift.updateTargetLevelUsingGamepad(gamepad);
+                hardStops.updateUsingGamepad(gamepad);
                 swerveDrive.swerveKinematics.update();
                 gamepad.update();
-                hardStops.update();
                 debugger.log();
                 break;
             }

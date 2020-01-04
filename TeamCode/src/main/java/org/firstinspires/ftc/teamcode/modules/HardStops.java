@@ -8,9 +8,9 @@ import org.firstinspires.ftc.teamcode.common.utilities.Gamepad;
 
 public class HardStops {
     private static final double STOW = 0;
-    private static final double HORIZONTAL = 0.5;
-    private static final double PROTECT = 0.83;
-    private final double LEFT_DELTA = -0.33;
+    private static final double HORIZONTAL = 0.6;
+    private static final double PROTECT = 0.7;
+    private final double LEFT_DELTA = -0.17;
     private final double RIGHT_DELTA = 0;
     private Servo leftStop;
     private Servo rightStop;
@@ -31,6 +31,15 @@ public class HardStops {
     }
 
     public void updateUsingGamepad(Gamepad gamepad) {
+        if (gamepad.stowHardStops)
+            requestState(HardStopState.STOW_ALL);
+        if (gamepad.alignRight)
+            requestState(HardStopState.HORIZONTAL_RIGHT);
+        if (gamepad.alignLeft)
+            requestState(HardStopState.HORIZONTAL_LEFT);
+        if (gamepad.drive)
+            requestState(HardStopState.DRIVE);
+        update();
     }
 
     public void requestState(HardStopState newState) {
@@ -62,5 +71,9 @@ public class HardStops {
             leftPos = leftPosition;
             rightPos = rightPosition;
         }
+    }
+
+    public String getStatus() {
+        return state.toString();
     }
 }
