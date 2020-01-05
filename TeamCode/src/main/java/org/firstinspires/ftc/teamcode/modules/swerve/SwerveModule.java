@@ -145,19 +145,19 @@ public class SwerveModule {
             }
         }
 
-        if (angleDelta(targetAngle,servoPosition) >= 180) {
-            ONE_EIGHTY = true;
-            timer.reset();
-            timer.start();
-        }
-
-        // timer control
-        if (ONE_EIGHTY) {
-            if (timer.millis() >= 800) {
-                ONE_EIGHTY = false;
-                timer.reset();
-            }
-        }
+//        if (angleDelta(targetAngle,servoPosition) >= 180) {
+//            ONE_EIGHTY = true;
+//            timer.reset();
+//            timer.start();
+//        }
+//
+//        // timer control
+//        if (ONE_EIGHTY) {
+//            if (timer.millis() >= 800) {
+//                ONE_EIGHTY = false;
+//                timer.reset();
+//            }
+//        }
 
         servoPosition = targetAngle;
         return 0;
