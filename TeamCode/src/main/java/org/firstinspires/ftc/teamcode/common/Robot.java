@@ -75,6 +75,7 @@ public class Robot {
             switch (newState) {
                 case PATH_FOLLOWING: {
                     swerveDrive.requestState(SwerveState.PATH_FOLLOWING);
+                    swerveDrive.brakesOn();
                     robotState = newState;
                     break;
                 }
@@ -85,6 +86,7 @@ public class Robot {
                     this.currentWaypoint = null;
                     this.hardStops.requestState(HardStops.HardStopState.STOW_ALL);
                     swerveDrive.requestState(SwerveState.HUMAN_INPUT);
+                    swerveDrive.brakesOff();
                     robotState = newState;
                     break;
             }

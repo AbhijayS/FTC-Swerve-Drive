@@ -70,9 +70,9 @@ public class VuforiaDetector {
             int right = rgbToGray(bitmap.getPixel(1,0));
             int comparison = compare(left, right);
             switch (comparison) {
-                case 1: return 'B';
+                case 1: return 'C';
 
-                case -1: return 'C';
+                case -1: return 'B';
 
                 default: return 'A';
             }
@@ -110,9 +110,9 @@ public class VuforiaDetector {
             int right = rgbToGray(bitmap.getPixel(1,0));
             int comparison = compare(left, right);
             switch (comparison) {
-                case 1: return 'B';
+                case 1: return 'A';
 
-                case -1: return 'A';
+                case -1: return 'B';
 
                 default: return 'C';
             }

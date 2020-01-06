@@ -15,15 +15,13 @@ public class Clamp {
     private ClampState clampState;
     private double position;
     private AnalogInput potentiometer;
-    private double kP = 1.2;
-    private double cerr = 0;
-    private double kI = 0.02;
+    private double kP = 2;
 
     public enum ClampState {
         CLAMP(6),
-        STOW(2.48),
-        PARTIAL(3),
-        APPROACH(3.3),
+        STOW(0.76),
+        PARTIAL(0.937),
+        APPROACH(1),
         COAST(0);
 
         public final double position;
@@ -62,10 +60,7 @@ public class Clamp {
 
     private double turnPID() {
         double error = clampState.position - position;
-        cerr += error;
-        if (Math.abs(error)<= 0.001)
-            cerr = 0;
-        return error*kP + cerr*kI;
+        return error*kP;
     }
 
     public double update() {
@@ -73,10 +68,8 @@ public class Clamp {
         double power;
         if (clampState == ClampState.COAST) {
             power = 0;
-            cerr = 0;
         } else if (clampState == ClampState.CLAMP) {
             power = 1;
-            cerr = -1;
         } else
             power = turnPID();
         servo.setPower(power);
@@ -84,6 +77,6 @@ public class Clamp {
     }
 
     public String getStatus() {
-        return "Clamp: " + clampState.name() + " " + position + " " + cerr;
+        return "Clamp: " + clampState.name() + " " + position;
     }
 }

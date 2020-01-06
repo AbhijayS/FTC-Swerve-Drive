@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.modules.swerve;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.common.UniversalConstants;
@@ -487,5 +488,19 @@ public class SwerveDrive {
         module1.reverseMotorDirection();
         module2.reverseMotorDirection();
         module3.reverseMotorDirection();
+    }
+
+    public void brakesOff() {
+        module0.driveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        module1.driveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        module2.driveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        module3.driveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+    }
+
+    public void brakesOn() {
+        module0.driveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        module1.driveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        module2.driveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        module3.driveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
     }
 }
