@@ -27,12 +27,12 @@ public class BlueFoundation2SkystonePark extends LinearOpMode {
         robotDebugger.initialize("Auto_Blue_Main");
         char stonePosition = 'A';
         Robot robot = new Robot(this, robotDebugger);
-//        VuforiaDetector vd = new VuforiaDetector(hardwareMap);
+        VuforiaDetector vd = new VuforiaDetector(hardwareMap);
 
         telemetry.update();
         waitForStart();
 
-//        stonePosition = vd.getPatternBlue();
+        stonePosition = vd.getPatternBlue();
 
         // path following stuff
         WayPoint[] wayPoints;

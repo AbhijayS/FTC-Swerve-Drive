@@ -95,6 +95,9 @@ public class SwerveDrive {
 
     // TODO: Simplify field-oriented drive (fod) code
     public void fod(Gamepad g) {
+        if (g.reset_gyro)
+            swerveKinematics.resetGyro();
+
         if (swerveState == PATH_FOLLOWING || swerveState == PATH_FOLLOWING_COMPLETE) {
             return;
         }

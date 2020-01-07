@@ -42,10 +42,12 @@ public class Gamepad {
         _180 = driver.dpad_left;
         _270 = driver.dpad_down;
         slowmo = driver.left_bumper;
-        if (driver.y)
-            fod = !fod;
-        if (driver.x)
+
+        if (driver.left_trigger >= 0)
             reset_gyro = true;
+        if (driver.left_trigger == 0)
+            reset_gyro = false;
+
         heading = (_0 || _90 || _180 || _270) && !(_0 && _90 && _180 && _270);
 
         _45 = _0 && _90;

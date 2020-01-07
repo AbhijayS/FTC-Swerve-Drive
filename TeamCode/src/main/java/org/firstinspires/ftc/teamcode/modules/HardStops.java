@@ -9,8 +9,8 @@ import org.firstinspires.ftc.teamcode.common.utilities.Gamepad;
 public class HardStops {
     private static final double STOW = 0;
     private static final double HORIZONTAL = 0.5;
-    private static final double PROTECT = 0.6;
-    private final double LEFT_DELTA = -0.025;
+    private static final double PROTECT = 0.8;
+    private final double LEFT_DELTA = 0;
     private final double RIGHT_DELTA = 0;
     private Servo leftStop;
     private Servo rightStop;
@@ -20,7 +20,7 @@ public class HardStops {
         this.leftStop = hardwareMap.servo.get(UniversalConstants.leftStop);
         this.rightStop = hardwareMap.servo.get(UniversalConstants.rightStop);
         this.leftStop.setDirection(Servo.Direction.REVERSE);
-        this.rightStop.setDirection(Servo.Direction.REVERSE);
+        this.rightStop.setDirection(Servo.Direction.FORWARD);
         requestState(HardStopState.STOW_ALL);
         update();
     }
