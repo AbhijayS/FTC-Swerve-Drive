@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.common.utilities.Gamepad;
 import org.firstinspires.ftc.teamcode.modules.elevator.Clamp;
 import org.firstinspires.ftc.teamcode.modules.elevator.Lift;
 
-@TeleOp(name = "TestOp: Fast Lift")
+//@TeleOp(name = "TestOp: Fast Lift")
 public class FastLift extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {

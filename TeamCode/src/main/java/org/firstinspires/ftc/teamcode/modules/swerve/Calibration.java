@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.*;
 
-@TeleOp(name = "DEBUGGING: Servo Calibration")
+@TeleOp(group = "TestOp", name = "DEBUGGING: Servo Calibration")
 public class Calibration extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {

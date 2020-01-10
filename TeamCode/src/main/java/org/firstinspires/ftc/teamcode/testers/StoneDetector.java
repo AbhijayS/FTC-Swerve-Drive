@@ -14,7 +14,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.teamcode.common.UniversalConstants;
 import org.firstinspires.ftc.teamcode.common.utilities.Stopwatch;
 
-@TeleOp(name = "TestOp: Grayscale Tester")
+//@TeleOp(name = "TestOp: Grayscale Tester")
 public class StoneDetector extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {

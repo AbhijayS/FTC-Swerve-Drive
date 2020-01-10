@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.modules.sensory.VuforiaDetector;
 
-@TeleOp(name = "DEBUGGING: Stone Detector")
+@TeleOp(group="TestOp", name = "DEBUGGING: Stone Detector")
 public class VuforiaDetectorTester extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {

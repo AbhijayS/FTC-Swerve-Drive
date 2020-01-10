@@ -18,7 +18,7 @@ import java.util.Collections;
 import static org.firstinspires.ftc.teamcode.common.utilities.Debugger.Marker.ACCEL;
 import static org.firstinspires.ftc.teamcode.common.utilities.Debugger.Marker.VEL;
 
-@TeleOp(name = "TestOp: Vel, Accel")
+//@TeleOp(name = "TestOp: Vel, Accel")
 public class EssentialsTester extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {

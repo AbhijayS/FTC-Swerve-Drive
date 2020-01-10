@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.common.UniversalConstants;
 import org.firstinspires.ftc.teamcode.common.utilities.Gamepad;
 import org.firstinspires.ftc.teamcode.modules.elevator.Clamp;
 
-@TeleOp(name = "TestOp: Motor Swatter")
+//@TeleOp(name = "TestOp: Motor Swatter")
 public class MotorSwatter extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {

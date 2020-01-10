@@ -1,7 +1,7 @@
-package org.firstinspires.ftc.teamcode.testers;
+package org.firstinspires.ftc.teamcode.opmodes.auto.blue;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.common.Robot;
 import org.firstinspires.ftc.teamcode.common.utilities.Debugger;
@@ -15,28 +15,30 @@ import org.firstinspires.ftc.teamcode.modules.jewelswatter.JewelSwatter;
 
 import java.util.ArrayList;
 
-//@TeleOp(name = "TestOp: WayPoints")
-public class WayPointsTester extends LinearOpMode {
+@Autonomous(name = "Just Drive Forward")
+public class BlueJustPark extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         Debugger robotDebugger = new Debugger(Util.getContext(), this, (ArrayList<String>) Debugger.Marker.getDebuggingMarkers());
-        robotDebugger.initialize("Waypoint Tester");
-        Robot robot = new Robot(this,robotDebugger);
+        robotDebugger.initialize("Auto_Just_Park");
+        Robot robot = new Robot(this, robotDebugger);
 
-        telemetry.addLine("Ready to go!");
         telemetry.update();
         waitForStart();
 
-        WayPoint[] wayPoints = new WayPoint[] {
-                new WayPoint(new Pose(0,0,90),1, Clamp.ClampState.PARTIAL, JewelSwatter.JewelSwatterState.STOW_ALL, Lift.State.STOW, 1, 0,false,0,0, HardStops.HardStopState.STOW_ALL,0.01),
-                new WayPoint(new Pose(-20,0,90),1, Clamp.ClampState.PARTIAL, JewelSwatter.JewelSwatterState.STOW_ALL, Lift.State.STOW, 1, 0,false,0,0, HardStops.HardStopState.STOW_ALL,0.01),
-                new WayPoint(new Pose(-40,0,90),1, Clamp.ClampState.PARTIAL, JewelSwatter.JewelSwatterState.STOW_ALL, Lift.State.STOW, 1, 0,false,0,0, HardStops.HardStopState.STOW_ALL,0.01)
+        WayPoint wp[] = new WayPoint[] {
+                new WayPoint(new Pose(0,0,90),1, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.STOW_ALL, Lift.State.STOW, 1, 0, false,0,0, HardStops.HardStopState.STOW_ALL, 0.01),
+                new WayPoint(new Pose(0,15,90),1, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.STOW_ALL, Lift.State.STOW, 1, 0, false,0,0, HardStops.HardStopState.STOW_ALL, 0.01),
+                new WayPoint(new Pose(0,30,90),1, Clamp.ClampState.CLAMP, JewelSwatter.JewelSwatterState.STOW_ALL, Lift.State.STOW, 1, 0, false,0,0, HardStops.HardStopState.STOW_ALL, 0.01),
         };
+
         robot.requestState(Robot.RobotState.PATH_FOLLOWING);
-        robot.setWayPoints(wayPoints);
+        robot.setWayPoints(wp);
+
         while (opModeIsActive()) {
             robot.updateAll();
         }
+
         robotDebugger.stopLogging();
     }
 }

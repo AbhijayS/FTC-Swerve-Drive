@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.modules.sensory.TensorFlowLite;
 
 
-@TeleOp (name = "TensorFlow Tester Red")
+//@TeleOp (name = "TensorFlow Tester Red")
 public class TensorFlowTesterRed extends LinearOpMode {
 
     @Override

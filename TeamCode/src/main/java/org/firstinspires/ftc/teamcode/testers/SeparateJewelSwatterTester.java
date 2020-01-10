@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@TeleOp(name = "DEBUGGING: Jewel Swatter")
+//@TeleOp(name = "DEBUGGING: Jewel Swatter")
 public class SeparateJewelSwatterTester extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {

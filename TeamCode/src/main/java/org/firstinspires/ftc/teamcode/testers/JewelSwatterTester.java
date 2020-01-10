@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.modules.jewelswatter.JewelSwatter;
 
 import java.util.ArrayList;
 
-@TeleOp(name = "TestOp: Jewel Swatter")
+@TeleOp(group = "TestOp", name = "TestOp: Jewel Swatter")
 public class JewelSwatterTester extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {

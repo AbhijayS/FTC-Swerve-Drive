@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import static org.firstinspires.ftc.teamcode.common.utilities.Debugger.Marker.ACCEL;
 import static org.firstinspires.ftc.teamcode.common.utilities.Debugger.Marker.VEL;
 
-@TeleOp(name = "TestOp: Motion Profile")
+//@TeleOp(name = "TestOp: Motion Profile")
 public class MotionProfileTester extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {

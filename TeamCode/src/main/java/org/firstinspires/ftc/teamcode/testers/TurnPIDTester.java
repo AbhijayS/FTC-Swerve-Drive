@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.modules.swerve.SwerveDrive;
 
 import java.util.ArrayList;
 
-@TeleOp(name = "DEBUGGING: Turn PID")
+//@TeleOp(name = "DEBUGGING: Turn PID")
 public class TurnPIDTester extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {

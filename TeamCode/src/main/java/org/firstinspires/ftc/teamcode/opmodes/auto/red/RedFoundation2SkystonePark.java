@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ROBOT_LENGTH;
 
-@TeleOp(name = "Red Main")
+@Autonomous(name = "Red Main")
 public class RedFoundation2SkystonePark extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
@@ -27,6 +27,8 @@ public class RedFoundation2SkystonePark extends LinearOpMode {
         robotDebugger.initialize("Auto_Blue_Main");
         char stonePosition = 'C';
         Robot robot = new Robot(this, robotDebugger);
+        VuforiaDetector vd = new VuforiaDetector(hardwareMap);
+        stonePosition = vd.getPatternRed();
 
         telemetry.update();
         waitForStart();

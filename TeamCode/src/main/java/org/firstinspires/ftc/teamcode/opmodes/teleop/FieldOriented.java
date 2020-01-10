@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.common.utilities.Util;
 
 import java.util.ArrayList;
 
-@TeleOp (name = "TeleOp: Field Oriented")
+//@TeleOp (name = "TeleOp: Field Oriented")
 public class FieldOriented extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {

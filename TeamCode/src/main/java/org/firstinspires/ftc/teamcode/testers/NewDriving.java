@@ -21,7 +21,7 @@ import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ModuleCon
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ModuleConfig.MODULE_TWO;
 import static org.firstinspires.ftc.teamcode.common.UniversalConstants.ModuleConfig.MODULE_ZERO;
 
-@TeleOp(name = "TestOp: New Driving")
+//@TeleOp(name = "TestOp: New Driving")
 public class NewDriving extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {

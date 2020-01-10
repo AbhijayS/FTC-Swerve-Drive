@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.common.utilities.Util;
 
 import java.util.ArrayList;
 
-@TeleOp (name = "Opmode: TeleOp")
+@TeleOp (group = "TeleOp", name = "TeleOp")
 public class FullTeleOp extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
