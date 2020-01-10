@@ -19,6 +19,7 @@ public class Gamepad {
     public boolean clamp;
     public boolean approach;
     public boolean partial;
+    public boolean clampStowed;
     public double lift;
     public boolean stowLift, extendLift, incrementLift, decrementLift;
     private Stopwatch liftWatch = new Stopwatch();
@@ -106,11 +107,19 @@ public class Gamepad {
         if (operator.right_bumper) {
             clamp = true;
             approach = false;
+            clampStowed = false;
         }
 
         if (operator.left_bumper) {
             clamp = false;
             approach = true;
+            clampStowed = false;
+        }
+
+        if (operator.left_trigger > 0.5) {
+            clamp = false;
+            approach = false;
+            clampStowed = true;
         }
 
         // Lift.java

@@ -19,7 +19,7 @@ public class Clamp {
 
     public enum ClampState {
         CLAMP(6),
-        STOW(0.76),
+        STOW(0.78),
         PARTIAL(0.937),
         APPROACH(1),
         COAST(0);
@@ -53,6 +53,9 @@ public class Clamp {
         }
         if (g.partial) {
             requestState(ClampState.PARTIAL);
+        }
+        if (g.clampStowed) {
+            requestState(ClampState.STOW);
         }
 
         update();

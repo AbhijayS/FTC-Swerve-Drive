@@ -31,7 +31,7 @@ public class Lift {
     // Level 1 = 1st Stone
     // Level N = Nth Stone
     private final int MIN_LEVEL = 1; // number of levels
-    private final int MAX_LEVEL = 6; // number of levels
+    private final int MAX_LEVEL = 7; // number of levels
 
     private Debugger debugger;
     private DcMotorEx motorA, motorB;
